@@ -8,6 +8,8 @@
 
 ## [https://github.com/mqyqingfeng/Blog](https://github.com/mqyqingfeng/Blog) --- 冴羽的博客
 
+## [https://github.com/rxaviers/async-pool](https://github.com/rxaviers/async-pool)
+
 ## [https://github.com/airuikun/technology-blog](https://github.com/airuikun/technology-blog)
 
 ## 大厂面试：
