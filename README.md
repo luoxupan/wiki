@@ -1,6 +1,6 @@
 # wiki
 
-## [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop)
+## [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop) --- 汇总各大互联网公司容易考察的高频leetcode题
 
 ## [https://github.com/qappleh/Interview](https://github.com/qappleh/Interview)
 
