@@ -1,6 +1,6 @@
 ## page链接：
 
-[page01](https://ygxqqx.github.io/wiki/page01/)
+[page01](https://ygxqqx.github.io/wiki/pages/page01/)
 
 ## 资源链接：
 
