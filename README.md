@@ -4,7 +4,7 @@
 
 ## 资源链接：
 
-## [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop)（汇总各大互联网公司高频leetcode题）
+## [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop)（汇总各大互联网高频LC题）
 
 ## [https://github.com/qappleh/Interview](https://github.com/qappleh/Interview)
 
