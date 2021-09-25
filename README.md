@@ -4,13 +4,13 @@
 
 ## 资源链接：
 
-## [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop)（汇总各大互联网公司容易考察的高频leetcode题）
+## [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop)（汇总各大互联网公司高频leetcode题）
 
 ## [https://github.com/qappleh/Interview](https://github.com/qappleh/Interview)
 
 ## [https://github.com/7kms/react-illustration-series](https://github.com/7kms/react-illustration-series)（图解react源码）
 
-## [https://github.com/ascoders/weekly](https://github.com/ascoders/weekly)（前端精读周刊。帮你理解最前沿、实用的技术）
+## [https://github.com/ascoders/weekly](https://github.com/ascoders/weekly)（前端精读周刊）
 
 ## [https://github.com/mqyqingfeng/Blog](https://github.com/mqyqingfeng/Blog)（冴羽的博客）
 
