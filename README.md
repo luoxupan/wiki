@@ -4,21 +4,21 @@
 
 ## 资源链接：
 
-## [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop) --- 汇总各大互联网公司容易考察的高频leetcode题
+## [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop)（汇总各大互联网公司容易考察的高频leetcode题）
 
 ## [https://github.com/qappleh/Interview](https://github.com/qappleh/Interview)
 
-## [https://github.com/7kms/react-illustration-series](https://github.com/7kms/react-illustration-series) --- 图解react源码
+## [https://github.com/7kms/react-illustration-series](https://github.com/7kms/react-illustration-series)（图解react源码）
 
-## [https://github.com/ascoders/weekly](https://github.com/ascoders/weekly) --- 前端精读周刊。帮你理解最前沿、实用的技术。
+## [https://github.com/ascoders/weekly](https://github.com/ascoders/weekly)（前端精读周刊。帮你理解最前沿、实用的技术）
 
-## [https://github.com/mqyqingfeng/Blog](https://github.com/mqyqingfeng/Blog) --- 冴羽的博客
+## [https://github.com/mqyqingfeng/Blog](https://github.com/mqyqingfeng/Blog)（冴羽的博客）
 
 ## [https://github.com/rxaviers/async-pool](https://github.com/rxaviers/async-pool)
 
 ## [https://github.com/airuikun/technology-blog](https://github.com/airuikun/technology-blog)
 
-## [https://github.com/taowen/awesome-lowcode](https://github.com/taowen/awesome-lowcode) --- 国内低代码平台从业者交流
+## [https://github.com/taowen/awesome-lowcode](https://github.com/taowen/awesome-lowcode)（国内低代码平台从业者交流）
 
 ## 大厂面试：
  - [大厂面经面试题汇总](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzA4MDg4NDczMQ==&action=getalbum&album_id=1790586969761103872#wechat_redirect)
