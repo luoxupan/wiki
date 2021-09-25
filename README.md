@@ -31,10 +31,6 @@
 
 ### HTML
 
->[第112题(2019-12-24)：请使用canvas画一个五角星。](https://github.com/qappleh/Web-Daily-Question/issues/114)
-
-讨论与参考答案：[第112题](https://github.com/qappleh/Web-Daily-Question/issues/114)
-
 
 >[第190题(2020-04-10)：dangerousSetInnerHTMl知道不？和innerHTML的区别？（美团）](https://github.com/qappleh/Web-Daily-Question/issues/192)
 
@@ -65,79 +61,14 @@
 
 ### javaScript
 
->[第1题(2019-07-22) 以下代码会输出什么?](https://github.com/qappleh/Web-Daily-Question/issues/3)
-
-讨论与参考答案：[第1题](https://github.com/qappleh/Web-Daily-Question/issues/3)
-
-
->[第2题(2019-07-23)：a在什么情况下，控制台会输出hello world（答案不唯一）](https://github.com/qappleh/Web-Daily-Question/issues/4)
-
-讨论与参考答案：[第2题](https://github.com/qappleh/Web-Daily-Question/issues/4)
-
-
->[第3题(2019-07-24)：请使用原型链相关知识实现b继承n=1;c继承n=2;m=3](https://github.com/qappleh/Web-Daily-Question/issues/5)
-
-讨论与参考答案：[第3题](https://github.com/qappleh/Web-Daily-Question/issues/5)
-
-
->[第4题(2019-07-25) 以下代码输出什么？](https://github.com/qappleh/Web-Daily-Question/issues/6)
-
-讨论与参考答案：[第4题](https://github.com/qappleh/Web-Daily-Question/issues/6)
-
-
->[第5题(2019-07-26) 已知以下数组： 编写一个程序将数组扁平化去并除其中重复部分数据，最终得到一个升序并且不重复的数组 ](https://github.com/qappleh/Web-Daily-Question/issues/7)
-
-讨论与参考答案：[第5题](https://github.com/qappleh/Web-Daily-Question/issues/7)
-
-
->[第6题(2019-07-29)：实现一个函数add,满足下列输出结果](https://github.com/qappleh/Web-Daily-Question/issues/8)
-
-讨论与参考答案：[第6题](https://github.com/qappleh/Web-Daily-Question/issues/8)
-
-
->[第7题(2019-07-30)：以下代码会输出什么？](https://github.com/qappleh/Web-Daily-Question/issues/9)
-
-讨论与参考答案：[第7题](https://github.com/qappleh/Web-Daily-Question/issues/9)
-
-
->[第10题(2019-08-02)：输出以下代码运行结果](https://github.com/qappleh/Web-Daily-Question/issues/12)
-
-讨论与参考答案：[第10题](https://github.com/qappleh/Web-Daily-Question/issues/12)
-
-
->[第12题（2019-08-6）：编程题，根据以下要求，写一个数组去重函数](https://github.com/qappleh/Web-Daily-Question/issues/14)
+>[第 19题(2019-08-15)：请求时浏览器缓存 from memory cache 和 from disk cache 的依据是什么，哪些数据什么时候存放在 Memory Cache 和 Disk Cache中？](https://github.com/qappleh/Web-Daily-Question/issues/14)
 
 讨论与参考答案：[第12题](https://github.com/qappleh/Web-Daily-Question/issues/14)
 
 
->[第13题（2019-08-7）：为什么for循环嵌套顺序会影响性能?](https://github.com/qappleh/Web-Daily-Question/issues/15)
+>[第 20题(2019-08-16)：下面代码中 a 在什么情况下会打印 1？](https://github.com/qappleh/Web-Daily-Question/issues/15)
 
 讨论与参考答案：[第13题](https://github.com/qappleh/Web-Daily-Question/issues/15)
-
-
->[第14题（2019-08-8）：统计 1 ~ n 整数中出现 1 的次数](https://github.com/qappleh/Web-Daily-Question/issues/16)
-
-讨论与参考答案：[第14题](https://github.com/qappleh/Web-Daily-Question/issues/16)
-
-
->[第15题(2019-08-09)：修改以下 print 函数，使之输出 0 到 99，或者 99 到 0 ](https://github.com/qappleh/Web-Daily-Question/issues/17)
-
-讨论与参考答案：[第15题](https://github.com/qappleh/Web-Daily-Question/issues/17)
-
-
->[第18题(2019-08-14)：实现一个 sleep 函数，比如 sleep(1000) 意味着等待1000毫秒，可从 Promise、Generator、Async/Await 等角度实现](https://github.com/qappleh/Web-Daily-Question/issues/19)
-
-讨论与参考答案：[第18题](https://github.com/qappleh/Web-Daily-Question/issues/19)
-
-
->[第20题(2019-08-16)：下面代码中 a 在什么情况下会打印 1？](https://github.com/qappleh/Web-Daily-Question/issues/22)
-
-讨论与参考答案：[第20题](https://github.com/qappleh/Web-Daily-Question/issues/22)
-
-
->[第21题(2019-08-19)：vue 是如何对数组方法进行变异的？例如 push、pop、splice 等方法](https://github.com/qappleh/Web-Daily-Question/issues/23)
-
-讨论与参考答案：[第21题](https://github.com/qappleh/Web-Daily-Question/issues/23)
 
 
 >[第22题(2019-08-20)：：ES5/ES6 的继承除了写法以外还有什么区别？](https://github.com/qappleh/Web-Daily-Question/issues/24)
@@ -174,53 +105,9 @@
 讨论与参考答案：[第31题](https://github.com/qappleh/Web-Daily-Question/issues/33)
 
 
->[第32题(2019-09-03)：考察作用域的一道代码题](https://github.com/qappleh/Web-Daily-Question/issues/34)
-
-讨论与参考答案：[第32题](https://github.com/qappleh/Web-Daily-Question/issues/34)
-
-
->[第34题(2019-09-05)：请把俩个数组 [A1, A2, B1, B2, C1, C2, D1, D2] 和 [A, B, C, D]，合并为 [A1, A2, A, B1, B2, B, C1, C2, C, D1, D2, D]](https://github.com/qappleh/Web-Daily-Question/issues/36)
-
-讨论与参考答案：[第34题](https://github.com/qappleh/Web-Daily-Question/issues/36)
-
-
->[第35题(2019-09-06)：使用迭代的方式实现 flatten 函数](https://github.com/qappleh/Web-Daily-Question/issues/37)
-
-讨论与参考答案：[第35题](https://github.com/qappleh/Web-Daily-Question/issues/37)
-
-
->[第36题(2019-09-09)：改造下面的代码，使之输出0 - 9，写出你能想到的所有解法](https://github.com/qappleh/Web-Daily-Question/issues/38)
-
-讨论与参考答案：[第36题](https://github.com/qappleh/Web-Daily-Question/issues/38)
-
-
->[第52题(2019-10-08)：谈谈你对事件委托(代理)的理解及它们的使用场景](https://github.com/qappleh/Web-Daily-Question/issues/54)
-
-讨论与参考答案：[第52题](https://github.com/qappleh/Web-Daily-Question/issues/54)
-
->[第53题(2019-10-09)：谈谈你对闭包的理解、优缺点及使用场景](https://github.com/qappleh/Web-Daily-Question/issues/55)
-
-讨论与参考答案：[第53题](https://github.com/qappleh/Web-Daily-Question/issues/55)
-
-
->[第54题(2019-10-10)：实现一个函数clone，可以对JavaScript中的5种主要的数据类型（包括Number、String、Object、Array、Boolean）进行值复制 ](https://github.com/qappleh/Web-Daily-Question/issues/56)
-
-讨论与参考答案：[第54题](https://github.com/qappleh/Web-Daily-Question/issues/56)
-
-
->[第55题(2019-10-11)：在Javascript中什么是伪数组？如何将伪数组转化为标准数组？](https://github.com/qappleh/Web-Daily-Question/issues/57)
-
-讨论与参考答案：[第55题](https://github.com/qappleh/Web-Daily-Question/issues/57)
-
-
 >[第56题(2019-10-12)：对作用域上下文和this的理解，看下列代码：](https://github.com/qappleh/Web-Daily-Question/issues/58)
 
 讨论与参考答案：[第56题](https://github.com/qappleh/Web-Daily-Question/issues/58)
 
 
->[第57题(2019-10-14)：编写一个 JavaScript 函数，输入指定类型的选择器 ( 仅需支持 id ， class ，tagName 三种简单 CSS 选择器，无需兼容组合选择器 ) 可以返回匹配的 DOM 节点，需考虑浏览器兼容性和性能。](https://github.com/qappleh/Web-Daily-Question/issues/59)
 
-讨论与参考答案：[第57题](https://github.com/qappleh/Web-Daily-Question/issues/59)
-
-
->[第58题(2019-10-15)：定义一个log方法，让它
