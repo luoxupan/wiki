@@ -1,4 +1,8 @@
-# wiki
+## page链接：
+
+[page01](https://ygxqqx.github.io/wiki/page01/)
+
+## 资源链接：
 
 ## [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop) --- 汇总各大互联网公司容易考察的高频leetcode题
 
