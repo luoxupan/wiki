@@ -8,8 +8,6 @@
 
 - [https://github.com/qappleh/Interview](https://github.com/qappleh/Interview)
 
-- [https://github.com/7kms/react-illustration-series](https://github.com/7kms/react-illustration-series)（图解react源码）
-
 - [https://github.com/ascoders/weekly](https://github.com/ascoders/weekly)（前端精读周刊）
 
 - [https://github.com/mqyqingfeng/Blog](https://github.com/mqyqingfeng/Blog)（冴羽的博客）
