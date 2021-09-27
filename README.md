@@ -25,13 +25,6 @@
 
 ## 分类  
 
-### HTML
-
-
-- [dangerousSetInnerHTMl知道不？和innerHTML的区别？（美团）](https://github.com/qappleh/Web-Daily-Question/issues/192)
-
-- [dom树和cssom树原理是什么？（阿里）](https://github.com/qappleh/Web-Daily-Question/issues/204)
-
 
 ### CSS
 
