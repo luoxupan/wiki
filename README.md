@@ -49,8 +49,6 @@
 
 - [输出以下代码执行结果](https://github.com/qappleh/Web-Daily-Question/issues/28)
 
-- [如何将 [{id: 1}, {id: 2, pId: 1}, ...] 的重复数组（有重复数据）转成树形结构的数组 [{id: 1, child: [{id: 2, pId: 1}]}, ...] （需要去重）](https://github.com/qappleh/Web-Daily-Question/issues/32)
-
 - [介绍下 Set、Map、WeakSet 和 WeakMap 的区别？](https://github.com/qappleh/Web-Daily-Question/issues/33)
 
 - [对作用域上下文和this的理解，看下列代码：](https://github.com/qappleh/Web-Daily-Question/issues/58)
