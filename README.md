@@ -49,8 +49,6 @@
 
 - [输出以下代码执行结果](https://github.com/qappleh/Web-Daily-Question/issues/28)
 
-- [什么是防抖和节流？有什么区别？如何实现？](https://github.com/qappleh/Web-Daily-Question/issues/31)
-
 - [如何将 [{id: 1}, {id: 2, pId: 1}, ...] 的重复数组（有重复数据）转成树形结构的数组 [{id: 1, child: [{id: 2, pId: 1}]}, ...] （需要去重）](https://github.com/qappleh/Web-Daily-Question/issues/32)
 
 - [介绍下 Set、Map、WeakSet 和 WeakMap 的区别？](https://github.com/qappleh/Web-Daily-Question/issues/33)
