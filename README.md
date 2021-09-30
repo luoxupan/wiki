@@ -43,10 +43,6 @@
 
 - [ES5/ES6 的继承除了写法以外还有什么区别？](https://github.com/qappleh/Web-Daily-Question/issues/24)
 
-- [介绍下观察者模式和订阅-发布模式的区别，各自适用于什么场景 ](https://github.com/qappleh/Web-Daily-Question/issues/25)
-
-- [有以下 3 个判断数组的方法，Object.prototype.toString.call() 、 instanceof 以及 Array.isArray()，请分别介绍它们之间的区别和优劣](https://github.com/qappleh/Web-Daily-Question/issues/27)
-
 - [输出以下代码执行结果](https://github.com/qappleh/Web-Daily-Question/issues/28)
 
 - [介绍下 Set、Map、WeakSet 和 WeakMap 的区别？](https://github.com/qappleh/Web-Daily-Question/issues/33)
