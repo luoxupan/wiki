@@ -14,8 +14,6 @@
 
 - [https://github.com/rxaviers/async-pool](https://github.com/rxaviers/async-pool)
 
-- [https://github.com/airuikun/technology-blog](https://github.com/airuikun/technology-blog)
-
 - [https://github.com/taowen/awesome-lowcode](https://github.com/taowen/awesome-lowcode)（国内低代码平台从业者交流）
 
 ## 大厂面试：
