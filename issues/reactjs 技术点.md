@@ -336,6 +336,13 @@ const Button = React.memo((props) => {
 
 这不是一个 Hook 因为它的写法和 Hook 不同。`React.memo` 等效于 `PureComponent`，但它只比较 props。（你也可以通过第二个参数指定一个自定义的比较函数来比较新旧 props。如果函数返回 true，就会跳过更新。）
 
+### [react 高阶组件](https://github.com/ascoders/weekly/blob/master/%E5%89%8D%E6%B2%BF%E6%8A%80%E6%9C%AF/12.%E7%B2%BE%E8%AF%BB%E3%80%8AReact%20%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6%E3%80%8B.md)
+
+高阶组件（ higher-order component ，HOC ）是react中复用组件逻辑的一种进阶技巧。是一种 React 组件的设计理念。
+我们可以通过类比高阶函数来理解高阶组件的概念。高阶函数是把函数作为参数传入到函数中并返回一个新的函数。这里我们把函数替换为组件，就是高阶组件了。
+```js
+const EnhancedComponent = higherOrderComponent(WrappedComponent);
+```
 
 
 
