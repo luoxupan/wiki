@@ -1,3 +1,4 @@
+## 模块化导出原理
 > ./src/a.js
 ```js
 let b = require("./src/base/b.js")
@@ -58,4 +59,6 @@ console.log(str);
 
 [https://mp.weixin.qq.com/s/yGjk4WeumU560d_IJYL92A](https://mp.weixin.qq.com/s/yGjk4WeumU560d_IJYL92A)
 
+
+----
 
