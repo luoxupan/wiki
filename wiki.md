@@ -1,17 +1,4 @@
-```js
-window.addEventListener('hashchange', (event) => {
-  console.log('event:', event);
-});
-```
-
 当然可以啊。比赛不限年龄学历的，比较常见的竞赛网站天池，aistudio，kaggle。拿个第一名基本都是五六万起步
-
-```js
-function flatDeep(arr, d = 1) {
-  return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
-               : arr.slice();
-};
-```
 
 ```js
 // 以下是最终得到的数据结构
@@ -74,6 +61,19 @@ function flatDeep(arr, d = 1) {
     ]
   },
 ]
+```
+
+```js
+window.addEventListener('hashchange', (event) => {
+  console.log('event:', event);
+});
+```
+
+```js
+function flatDeep(arr, d = 1) {
+  return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
+               : arr.slice();
+};
 ```
 
 ```js
