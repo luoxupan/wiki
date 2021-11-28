@@ -1,6 +1,6 @@
 ## page链接：
 
-[page01](https://ygxqqx.github.io/wiki/pages/page01/index.html)
+[page01](https://luoxupan.github.io/wiki/pages/page01/index.html)
 
 ## 资源链接：
 
