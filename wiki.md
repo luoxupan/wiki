@@ -6,41 +6,6 @@ window.addEventListener('hashchange', (event) => {
 
 当然可以啊。比赛不限年龄学历的，比较常见的竞赛网站天池，aistudio，kaggle。拿个第一名基本都是五六万起步
 
-
-5、ES5的继承和ES6的继承有什么区别？
-参考答案
-ES5的继承时通过prototype或构造函数机制来实现。ES5的继承实质上是先创建子类的实例对象，
-  然后再将父类的方法添加到this上（Parent.apply(this)）。
-ES6的继承机制完全不同，实质上是先创建父类的实例对象this（所以必须先调用父类的super()方法），然后再用子类的构造函数修改this。
-具体的：ES6通过class关键字定义类，里面有构造方法，类之间通过extends关键字实现继承。
-  子类必须在constructor方法中调用super方法，否则新建实例报错。因为子类没有自己的this对象，
-  而是继承了父类的this对象，然后对其进行加工。如果不调用super方法，子类得不到this对象。
-ps：super关键字指代父类的实例，即父类的this对象。在子类构造函数中，调用super后，才可使用this关键字，否则报错。
-
-
-2、TCP三次握手和四次挥手
-参考答案
-三次握手之所以是三次是保证client和server均让对方知道自己的接收和发送能力没问题而保证的最小次数。
-第一次client => server 只能server判断出client具备发送能力
-第二次 server => client client就可以判断出server具备发送和接受能力。此时client还需让server知道自己接收能力没问题于是就有了第三次
-第三次 client => server 双方均保证了自己的接收和发送能力没有问题
-其中，为了保证后续的握手是为了应答上一个握手，每次握手都会带一个标识 seq，后续的ACK都会对这个seq进行加一来进行确认。
-
-被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
-
-拍平数组
-hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
-react为什么删除那三个生命周期
-1.1和2.0区别 2.0多路复用具体是怎么弄的，https和http区别 对称和非对称
-cdn回源机制，如何判断回源
-setState什么时候是异步的
-
-
-componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
-getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
-getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
-
-
 ```js
 function flatDeep(arr, d = 1) {
   return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
@@ -613,18 +578,6 @@ flex 1 具体是什么
 one(add(two()))
 two(add(one()))
 
-事件捕获，事件代理
-button吸底效果
-阻止冒泡、
-new String(',,')
-webpack循环引用配置
-postMessage跨域处理
-CORS options预检请求
-padding 100%指的是多高
-rem布局中，1px像素怎么处理 => https://www.cnblogs.com/sonechao/p/14822241.html
-0.1 + 0.2 精度的处理
-做过哪些优化
-
 ```js
 var count = 1;
 function log() {
@@ -684,6 +637,50 @@ class Demo extends React.Component {
   }
 }
 ```
+
+事件捕获，事件代理
+button吸底效果
+阻止冒泡、
+new String(',,')
+webpack循环引用配置
+postMessage跨域处理
+CORS options预检请求
+padding 100%指的是多高
+rem布局中，1px像素怎么处理 => https://www.cnblogs.com/sonechao/p/14822241.html
+0.1 + 0.2 精度的处理
+做过哪些优化
+
+### ES5的继承和ES6的继承有什么区别？
+参考答案
+1. ES5的继承时通过prototype或构造函数机制来实现。ES5的继承实质上是先创建子类的实例对象，然后再将父类的方法添加到this上（Parent.apply(this)）。
+2. ES6的继承机制完全不同，实质上是先创建父类的实例对象this（所以必须先调用父类的super()方法），然后再用子类的构造函数修改this。
+3. 具体的：ES6通过class关键字定义类，里面有构造方法，类之间通过extends关键字实现继承。
+   - 子类必须在constructor方法中调用super方法，否则新建实例报错。因为子类没有自己的this对象，
+   - 而是继承了父类的this对象，然后对其进行加工。如果不调用super方法，子类得不到this对象。
+4. ps：super关键字指代父类的实例，即父类的this对象。在子类构造函数中，调用super后，才可使用this关键字，否则报错。
+
+
+### TCP三次握手和四次挥手
+参考答案
+
+三次握手之所以是三次是保证client和server均让对方知道自己的接收和发送能力没问题而保证的最小次数。
+1. 第一次client => server 只能server判断出client具备发送能力
+2. 第二次 server => client client就可以判断出server具备发送和接受能力。此时client还需让server知道自己接收能力没问题于是就有了第三次
+3. 第三次 client => server 双方均保证了自己的接收和发送能力没有问题。其中，为了保证后续的握手是为了应答上一个握手，每次握手都会带一个标识 seq，后续的ACK都会对这个seq进行加一来进行确认。
+
+被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
+
+拍平数组
+hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
+react为什么删除那三个生命周期
+1.1和2.0区别 2.0多路复用具体是怎么弄的，https和http区别 对称和非对称
+cdn回源机制，如何判断回源
+setState什么时候是异步的
+
+
+componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
+getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
+getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
 
 对称加密：加密解密都是同一把秘钥
 优点：算法简单，加密解密容易，效率高，执行快。
