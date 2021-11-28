@@ -544,10 +544,11 @@ flex 1 具体是什么
   // Add the one thing we want added to the window object.
   window.setZeroTimeout = setZeroTimeout;
 })();
-```
+
 // 最小延时 >=4ms
 // 在浏览器中，setTimeout()/setInterval() 的每调用一次定时器的最小间隔是4ms，
 // 这通常是由于函数嵌套导致（嵌套层级达到一定深度），或者是由于已经执行的setInterval的回调函数阻塞导致的。
+```
 
 ```js
 /**
@@ -574,9 +575,6 @@ flex 1 具体是什么
   return array.join('');
 };
 ```
-
-one(add(two()))
-two(add(one()))
 
 ```js
 var count = 1;
@@ -638,6 +636,26 @@ class Demo extends React.Component {
 }
 ```
 
+```js
+function LoadPage(loader: any) {
+  const Com = React.lazy(loader);
+  // 已经Resolved了（已经加载完毕）则直接返回,否则将通过 throw 将 thenable 抛出到上层
+  const Loading = (
+    <Spin />
+  );
+  return props => (
+    // 如果 thenable 处于 pending 状态，则会将其 children 都渲染成 fallback 的值，
+    // 一旦 thenable 被 resolve 则 SuspenseComponent 的子组件会重新渲染一次。
+    <React.Suspense fallback={Loading}>
+      <Com {...props}></Com>
+    </React.Suspense>
+  );
+}
+```
+
+one(add(two()));
+two(add(one()));
+
 事件捕获，事件代理
 button吸底效果
 阻止冒泡、
@@ -690,8 +708,6 @@ getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之
 优点：安全，即使密文被拦截、公钥被获取，但是无法获取到私钥，也就无法破译密文。作为接收方，务必要保管好自己的密钥。
 缺点：加密算法及其复杂，安全性依赖算法与密钥，而且加密和解密效率很低。
 
-
-
 setState 是同步还是异步的
 setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。
 在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，
@@ -701,8 +717,7 @@ setState 并不是单纯同步/异步的，它的表现会因调用场景的不�
 同步： 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
 
 
-
-2、webpack构建流程（原理）
+### webpack构建流程（原理）
 从启动构建到输出结果一系列过程：
   （1）初始化参数：解析webpack配置参数，合并shell传入和webpack.config.js文件配置的参数，形成最后的配置结果。
   （2）开始编译：上一步得到的参数初始化compiler对象，注册所有配置的插件，插件监听webpack构建生命周期的事件节点，做出相应的反应，执行对象的 run 方法开始执行编译。
@@ -726,13 +741,13 @@ setState 并不是单纯同步/异步的，它的表现会因调用场景的不�
   3. 通过ajax获取json数据和script标签获取最新js资源
 
 
-setTimeout 后面的时间指的是什么意思？
+### setTimeout 后面的时间指的是什么意思？
 
 函数 setTimeout 接受两个参数：待加入队列的消息和一个时间值（可选，默认为 0）。
 这个时间值代表了消息被实际加入到队列的最小延迟时间
 
 
-CORB
+### CORB
 宏任务和微任务---事件队列执行顺序
 div和script是同时执行的吗
 前端64位数字存储 和 运算
@@ -745,7 +760,8 @@ Context 旨在共享一个组件树内可被视为 “全局” 的数据
 
 redux的reducer为什么是纯函数
 react的原生事件和组合事件
-合成事件特点
+
+### 合成事件特点
 1. React 上注册的事件最终会绑定在document这个 DOM 上，
   而不是 React 组件对应的 DOM(减少内存开销就是因为所有的事件都绑定在 document 上，其他节点没有绑定事件)
 2. React 自身实现了一套事件冒泡机制，所以这也就是为什么我们 event.stopPropagation() 无效的原因。
@@ -754,7 +770,7 @@ react的原生事件和组合事件
 5. React 通过对象池的形式管理合成事件对象的创建和销毁，减少了垃圾的生成和新对象内存的分配，提高了性能
 
 
-前端性能优化
+### 前端性能优化
 1. CDN
 2. 图片懒加载
 3. PNG图片压缩大小
@@ -835,7 +851,7 @@ HTTP/2.0
   一方面，头信息使用gzip或compress压缩后再发送；
   另一方面，客户端和服务器同时维护一张头信息表，所有字段都会存入这个表，产生一个索引号，之后就不发送同样字段了，只需发送索引号
 
-事件循环机制
+### 事件循环机制
   1. 由于JavaScript是单线程
   2. JavaScript代码执行过程中，除了依靠函数调用栈来搞定函数的执行顺序外，还依靠任务队列(task queue)来搞定另外一些代码的执行。
   3. 任务队列又分为macro-task（宏任务）与micro-task（微任务），在最新标准中，它们被分别称为task与jobs。
@@ -954,23 +970,6 @@ react原理
   4. commit更新
 6. 前端路由
 
-```js
-function LoadPage(loader: any) {
-  const Com = React.lazy(loader);
-  // 已经Resolved了（已经加载完毕）则直接返回,否则将通过 throw 将 thenable 抛出到上层
-  const Loading = (
-    <Spin />
-  );
-  return props => (
-    // 如果 thenable 处于 pending 状态，则会将其 children 都渲染成 fallback 的值，
-    // 一旦 thenable 被 resolve 则 SuspenseComponent 的子组件会重新渲染一次。
-    <React.Suspense fallback={Loading}>
-      <Com {...props}></Com>
-    </React.Suspense>
-  );
-}
-```
-
 hashHistory：通常应用于老版本浏览器，主要通过hash来实现
 browserHistory：通常应用于高版本浏览器，通过html5中的history来实现, history.pushState
 
@@ -1049,20 +1048,15 @@ alert(object.getNameFunc()()); // result:The Window
 this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象调用时，this等于那个对象。不过，匿名函数具有全局性，因此this对象通常指向window。
 
 
-
 做了什么事情
 做这个事情思考了哪些事情
 达到了什么目标，得到了什么结果（技术问题 怎么解决 怎么思考，业务问题）
 体验优势，反馈，给别人得到效率提升
 
 
-
-
 动态表单，通过研究npm Doc文档测试包采用发布方案
 指导组内同学机器迁移，发现由于基础设施完善组内同学在平常只专注于业务开发 对上线部署原理不清楚，我画了部署和用户访问原理架构图
 路由页面全部按需加载
-
-
 
 
 第二个要命的问题，就是我发现自己在每一次事变里都不是核心成员。
