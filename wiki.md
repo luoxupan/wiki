@@ -738,14 +738,6 @@ webpack有哪些事件
 函数 setTimeout 接受两个参数：待加入队列的消息和一个时间值（可选，默认为 0）。
 这个时间值代表了消息被实际加入到队列的最小延迟时间
 
-### 合成事件特点
-1. React 上注册的事件最终会绑定在document这个 DOM 上，
-  而不是 React 组件对应的 DOM(减少内存开销就是因为所有的事件都绑定在 document 上，其他节点没有绑定事件)
-2. React 自身实现了一套事件冒泡机制，所以这也就是为什么我们 event.stopPropagation() 无效的原因。
-3. React 通过队列的形式，从触发的组件向父组件回溯，然后调用他们 JSX 中定义的 callback
-4. React 有一套自己的合成事件 SyntheticEvent，不是原生的，这个可以自己去看官网
-5. React 通过对象池的形式管理合成事件对象的创建和销毁，减少了垃圾的生成和新对象内存的分配，提高了性能
-
 ### 事件循环机制
 1. 由于JavaScript是单线程
 2. JavaScript代码执行过程中，除了依靠函数调用栈来搞定函数的执行顺序外，还依靠任务队列(task queue)来搞定另外一些代码的执行。
@@ -847,6 +839,22 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
   一方面，头信息使用gzip或compress压缩后再发送；
   另一方面，客户端和服务器同时维护一张头信息表，所有字段都会存入这个表，产生一个索引号，之后就不发送同样字段了，只需发送索引号
 
+### 闭包
+```js
+var name = "The Window";
+var object = {
+  name : "My Object",
+  getNameFunc : function(){
+    return function(){
+      return this.name;
+    };
+  }
+};
+alert(object.getNameFunc()()); // result:The Window
+```
+this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象调用时，this等于那个对象。不过，匿名函数具有全局性，因此this对象通常指向window。
+
+
 ### 图片之间的缝隙: [链接]()
    - 原因：是行内元素之间的回车符系统默认为一个空格，占据了一定宽度
    - 深入原因：vertical-align默认的对齐方式是baseline。
@@ -871,33 +879,100 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
 6. Tree Shaking
 6. 代码压缩
 
+### react合成事件特点
+1. React 上注册的事件最终会绑定在document这个 DOM 上，
+  而不是 React 组件对应的 DOM(减少内存开销就是因为所有的事件都绑定在 document 上，其他节点没有绑定事件)
+2. React 自身实现了一套事件冒泡机制，所以这也就是为什么我们 event.stopPropagation() 无效的原因。
+3. React 通过队列的形式，从触发的组件向父组件回溯，然后调用他们 JSX 中定义的 callback
+4. React 有一套自己的合成事件 SyntheticEvent，不是原生的，这个可以自己去看官网
+5. React 通过对象池的形式管理合成事件对象的创建和销毁，减少了垃圾的生成和新对象内存的分配，提高了性能
+
+### vue和react差异和相同点(优缺点)
+1. 都是解决UI和状态同步问题 组件化  生命周期，Vue是模板 react是jsx
+
+1. 高阶组件、react hook和高阶组件的区别
+2. 介绍一下react router
+3. setState如何更新的
+4. setState什么时候是异步的
+5. React hooks 原理是什么？
+6. React Fiber 的理解和原理
+7. React setState具体做了哪些事情
+8. React 具体是如何更新的
+9. Context 旨在共享一个组件树内可被视为 “全局” 的数据
+10. redux的reducer为什么是纯函数
+11. hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
+12. react为什么删除那三个生命周期
+  - 被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
+13. componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
+14. getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
+15. getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
+16. setState 是同步还是异步的
+   - setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。
+   - 在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，
+   - 如果值为 true 则执行异步操作，为 false 则直接更新。
+   - **异步：** 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。
+   - **同步：** 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
+
+其次是 VDOM 和真实 DOM 的区别和优化：
+1. 虚拟 DOM 不会立马进行排版与重绘操作
+2. 虚拟 DOM 进行频繁修改，然后一次性比较并修改真实 DOM 中需要改的部分，最后在真实 DOM 中进行排版与重绘，减少过多DOM节点排版与重绘损耗
+3. 虚拟 DOM 有效降低大面积真实 DOM 的重绘与排版，因为最终与真实 DOM 比较差异，可以只渲染局部
+
+
+react原理
+1. 函数式编程
+   1. 纯函数
+   2. 不可变值
+2. vdom和diff
+   1. diff只比较同级，不跨级比较
+   2. tag不相同，则直接删掉重建，不在深度比较
+   3. tag和key，两者都相同，则认为是相同节点
+3. 合成事件
+   1. 所有事件挂在document上
+   2. event不是原生的，是SyntheticEvent合成事件对象
+  优点：
+     1. 更好的兼容性和跨平台
+     2. 挂载到document上，减少内存消耗，避免频繁解绑
+     3. 方便事件的统一管理（如事务机制）
+4. setState和batchUpdate
+  setState
+     1. 有时异步（普通使用），有时同步（setTimeout,DOM事件中）
+     2. 有时合并（对象形式），有时不合并（函数形式）
+  setState是异步还是同步
+     1. setState无所谓异步还是同步
+     2. 看是否能命中batchUpdate机制
+     3. 判断isBatchUpdates（true、false）来判断是否命中batchUpdate机制
+5. 组件渲染过程
+   1. setState(newState)-->dirtyComponents（可能有子组件）
+   2. render()生成newVnode
+   3. diff比较算法
+   4. commit更新
+6. 前端路由
+
+hashHistory：通常应用于老版本浏览器，主要通过hash来实现
+browserHistory：通常应用于高版本浏览器，通过html5中的history来实现, history.pushState
 
 
 
-one(add(two()));
-
-two(add(one()));
-
-Promise then返回是一个新的Promise。Promise优缺点 深入点的
-
-button吸底效果
-
-postMessage跨域处理
-
-CORS options预检请求
-
-
-0.1 + 0.2 精度的处理
-
-
-错误监控
-
-
-数字金额切割
 
 
 
-垂直居中有哪些方案
+### 杂项聚合
+1. 0.1 + 0.2 精度的处理
+2. 错误监控
+3. 数字金额切割
+4. CORS options预检请求
+5. postMessage跨域处理
+6. button吸底效果
+7. Promise then返回是一个新的Promise。Promise优缺点 深入点的
+8. 垂直居中有哪些方案
+9. 一个iframe禁止嵌入 如何解决
+10. 原型链：先查找自己有没有这个属性，没有找__proto__上有没有
+11. 为什么 es module 能够更好的tree-shaking 而require不行？es module是编译时决定引用， commonjs是运行时决定引用。
+12. one(add(two())); two(add(one()));
+
+
+
 设置transform会有哪些变化
 <div style='background-color: red'>
   <div style='display: inline-block;'></div>
@@ -924,88 +999,6 @@ function Fcon() {
   )
 }
 ```
-Vue和react差异和相同点
-都是解决UI和状态同步问题 组件化  生命周期，Vue是模板 react是jsx，
-高阶组件
-react hook和高阶组件的区别
-介绍一下react router
-setState如何更新的
-setState什么时候是异步的
-React hooks 原理是什么？
-React Fiber 的理解和原理
-React setState具体做了哪些事情
-React 具体是如何更新的
-react和vue之间的优缺点
-
-Context 旨在共享一个组件树内可被视为 “全局” 的数据
-
-redux的reducer为什么是纯函数
-react的原生事件和组合事件
-
-hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
-react为什么删除那三个生命周期
-
-被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
-
-componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
-getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
-getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
-
-setState 是同步还是异步的
-setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。
-在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，
-如果值为 true 则执行异步操作，为 false 则直接更新。
-
-异步： 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。
-同步： 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
-
-其次是 VDOM 和真实 DOM 的区别和优化：
-1. 虚拟 DOM 不会立马进行排版与重绘操作
-2. 虚拟 DOM 进行频繁修改，然后一次性比较并修改真实 DOM 中需要改的部分，最后在真实 DOM 中进行排版与重绘，减少过多DOM节点排版与重绘损耗
-3. 虚拟 DOM 有效降低大面积真实 DOM 的重绘与排版，因为最终与真实 DOM 比较差异，可以只渲染局部
-
-
-react原理
-1. 函数式编程
-  1. 纯函数
-  2. 不可变值
-2. vdom和diff
-  1. diff只比较同级，不跨级比较
-  2. tag不相同，则直接删掉重建，不在深度比较
-  3. tag和key，两者都相同，则认为是相同节点
-3. 合成事件
-  1. 所有事件挂在document上
-  2. event不是原生的，是SyntheticEvent合成事件对象
-  优点：
-    1. 更好的兼容性和跨平台
-    2. 挂载到document上，减少内存消耗，避免频繁解绑
-    3. 方便事件的统一管理（如事务机制）
-4. setState和batchUpdate
-  setState
-    1. 有时异步（普通使用），有时同步（setTimeout,DOM事件中）
-    2. 有时合并（对象形式），有时不合并（函数形式）
-  setState是异步还是同步
-    1. setState无所谓异步还是同步
-    2. 看是否能命中batchUpdate机制
-    3. 判断isBatchUpdates（true、false）来判断是否命中batchUpdate机制
-5. 组件渲染过程
-  1. setState(newState)-->dirtyComponents（可能有子组件）
-  2. render()生成newVnode
-  3. diff比较算法
-  4. commit更新
-6. 前端路由
-
-hashHistory：通常应用于老版本浏览器，主要通过hash来实现
-browserHistory：通常应用于高版本浏览器，通过html5中的history来实现, history.pushState
-
-
-
-
-
-
-
-一个iframe禁止嵌入 如何解决
-
 
 
 
@@ -1014,24 +1007,8 @@ typeof [1, 2] 结果是 object ，结果中没有array 这一项，引用类型�
 typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symbol实例是唯一且不可改变的这是 ES6 新增的知识点.
 
 
-原型链
-先查找自己有没有这个属性，没有找__proto__上有没有
 
-```js
-// 闭包
-var name = "The Window";
-var object = {
-  name : "My Object",
-  getNameFunc : function(){
-    return function(){
-      return this.name;
-    };
-  }
-};
-alert(object.getNameFunc()()); // result:The Window
-```
 
-this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象调用时，this等于那个对象。不过，匿名函数具有全局性，因此this对象通常指向window。
 
 做了哪些事情  解决了什么问题
 
@@ -1044,6 +1021,7 @@ this对象是在运行时基于函数的执行环境绑定的：在全局函数�
 动态表单，通过研究npm Doc文档测试包采用发布方案
 指导组内同学机器迁移，发现由于基础设施完善组内同学在平常只专注于业务开发 对上线部署原理不清楚，我画了部署和用户访问原理架构图
 路由页面全部按需加载
+
 
 面试：基础、框架、项目、工具
 自我介绍一下
@@ -1069,7 +1047,7 @@ this对象是在运行时基于函数的执行环境绑定的：在全局函数�
     如何让css只在当前组件起作用，v-if和v-show的区别
     Vue2.0实现数据双向绑定的原理，Vue是如何监听数组的变化的
 
-为什么 es module 能够更好的tree-shaking 而require不行？es module是编译时决定引用， commonjs是运行时决定引用。
+
 
 
 考察实习生/社招/校招知识点
