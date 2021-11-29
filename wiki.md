@@ -170,7 +170,7 @@ function delegate(element, targetSelector, type, handler) {
 }
 ```
 
-### rem缩放初始化
+### rem自适应方案初始化代码
 ```js
 (function() {
   var
