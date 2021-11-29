@@ -715,6 +715,23 @@ Func.b(); // b
    - 编译完成后通过socket通知客户端文件有变动
 3. 通过ajax获取json数据和script标签获取最新js资源
 
+webpack打包优化
+1. happypack多线程打包
+2. splitChunks.cacheGroups将功能库打成一个包（antd...）
+3. loader配置对应的include、exclude
+
+Tree Shaking 哪些情况下不会生效
+1. 只有在ES Module中才会生效
+2. CommonJS
+
+webpack chunk
+文件内容没改变单身hash值改变了 https://juejin.cn/post/6844903942384517127
+
+webpack打包成es modal的时候 最后是怎么执行的
+1. 最后都是CommonJS
+webpack循环引用配置
+webpack有哪些事件
+
 
 ### setTimeout 后面的时间指的是什么意思？
 
@@ -736,6 +753,9 @@ Func.b(); // b
 4. macro-task大概包括: script(整体代码), setTimeout, setInterval, setImmediate, I/O, UI rendering。
 5. micro-task大概包括: process.nextTick, Promise, Object.observe(已废弃), MutationObserver(html5新特性)
 6. setTimeout/Promise等我们称之为任务源。来自不同任务源的任务会进入到不同的任务队列，而进入任务队列的是他们指定的具体执行任务。
+7. **evenloop执行顺序**
+   - 宏任务：DOM渲染后触发，如setTimeout
+   - 微任务：DOM渲染前触发，如Promise
   
 ### CommonJS 和 ES6 中模块引入的区别？
 1. CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
@@ -827,9 +847,23 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
   一方面，头信息使用gzip或compress压缩后再发送；
   另一方面，客户端和服务器同时维护一张头信息表，所有字段都会存入这个表，产生一个索引号，之后就不发送同样字段了，只需发送索引号
 
+### 图片之间的缝隙: [链接]()
+   - 原因：是行内元素之间的回车符系统默认为一个空格，占据了一定宽度
+   - 深入原因：vertical-align默认的对齐方式是baseline。
+**如何消除:**
+1. 父元素设置font-size: 0;
+2. img标签设置display: block;
+3. img标签设置vertical-align: bottom;
+
+### async await原理
+1. async 函数是 Generator 函数的语法糖。
+2. async 返回值是 Promise。比 Generator 函数返回的 Iterator 对象方便，可以直接使用 then() 方法进行调用
+3. 更好的语义。async 和 await 相较于 * 和 yield 更加语义化
+
+### CORB [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#corb)
 
 ### 前端性能优化
-1. CDN
+1. CDN（回源机制，如何判断回源）
 2. 图片懒加载
 3. PNG图片压缩大小
 4. 搜索框节流（throttle）处理
@@ -838,25 +872,7 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
 6. 代码压缩
 
 
-CORB
-宏任务和微任务---事件队列执行顺序
-div和script是同时执行的吗
-前端64位数字存储 和 运算
-React hooks 原理是什么？
-React Fiber 的理解和原理
-React setState具体做了哪些事情
-React 具体是如何更新的
 
-Context 旨在共享一个组件树内可被视为 “全局” 的数据
-
-redux的reducer为什么是纯函数
-react的原生事件和组合事件
-
-hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
-react为什么删除那三个生命周期
-1.1和2.0区别 2.0多路复用具体是怎么弄的，https和http区别 对称和非对称
-cdn回源机制，如何判断回源
-setState什么时候是异步的
 
 one(add(two()));
 
@@ -866,8 +882,6 @@ Promise then返回是一个新的Promise。Promise优缺点 深入点的
 
 button吸底效果
 
-webpack循环引用配置
-
 postMessage跨域处理
 
 CORS options预检请求
@@ -875,39 +889,161 @@ CORS options预检请求
 
 0.1 + 0.2 精度的处理
 
-做过哪些优化
-
-
 
 错误监控
 
 
-
-
-Vue和react差异和相同点
-都是解决UI和状态同步问题 组件化  生命周期，Vue是模板 react是jsx，
-
-webpack打包成es modal的时候 最后是怎么执行的
-1. 最后都是CommonJS
-
-useEffect 官方例子  
-
-
-
 数字金额切割
-react hook和高阶组件的区别
-做了哪些事情  解决了什么问题
-高阶组件
-webpack有哪些事件
-介绍一下react router
-webpack热更新机制
 
-setState如何更新的
+
+
 垂直居中有哪些方案
 设置transform会有哪些变化
 <div style='background-color: red'>
   <div style='display: inline-block;'></div>
 </div>
+
+```js
+function Fcon() {
+  const [count, setCount] = React.useState(0);
+
+  const _onclick = () => {
+    setTimeout(() => {
+      console.log(count)
+    }, 3000)
+  }
+  return (
+    <div>
+      <div>{count}</div>
+      <div onClick={_onclick}>触发</div>
+      <div onClick={() => {
+        setCount(count + 1);
+        setCount(count + 1);
+      }}>+1</div>
+    </div>
+  )
+}
+```
+Vue和react差异和相同点
+都是解决UI和状态同步问题 组件化  生命周期，Vue是模板 react是jsx，
+高阶组件
+react hook和高阶组件的区别
+介绍一下react router
+setState如何更新的
+setState什么时候是异步的
+React hooks 原理是什么？
+React Fiber 的理解和原理
+React setState具体做了哪些事情
+React 具体是如何更新的
+react和vue之间的优缺点
+
+Context 旨在共享一个组件树内可被视为 “全局” 的数据
+
+redux的reducer为什么是纯函数
+react的原生事件和组合事件
+
+hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
+react为什么删除那三个生命周期
+
+被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
+
+componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
+getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
+getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
+
+setState 是同步还是异步的
+setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。
+在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，
+如果值为 true 则执行异步操作，为 false 则直接更新。
+
+异步： 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。
+同步： 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
+
+其次是 VDOM 和真实 DOM 的区别和优化：
+1. 虚拟 DOM 不会立马进行排版与重绘操作
+2. 虚拟 DOM 进行频繁修改，然后一次性比较并修改真实 DOM 中需要改的部分，最后在真实 DOM 中进行排版与重绘，减少过多DOM节点排版与重绘损耗
+3. 虚拟 DOM 有效降低大面积真实 DOM 的重绘与排版，因为最终与真实 DOM 比较差异，可以只渲染局部
+
+
+react原理
+1. 函数式编程
+  1. 纯函数
+  2. 不可变值
+2. vdom和diff
+  1. diff只比较同级，不跨级比较
+  2. tag不相同，则直接删掉重建，不在深度比较
+  3. tag和key，两者都相同，则认为是相同节点
+3. 合成事件
+  1. 所有事件挂在document上
+  2. event不是原生的，是SyntheticEvent合成事件对象
+  优点：
+    1. 更好的兼容性和跨平台
+    2. 挂载到document上，减少内存消耗，避免频繁解绑
+    3. 方便事件的统一管理（如事务机制）
+4. setState和batchUpdate
+  setState
+    1. 有时异步（普通使用），有时同步（setTimeout,DOM事件中）
+    2. 有时合并（对象形式），有时不合并（函数形式）
+  setState是异步还是同步
+    1. setState无所谓异步还是同步
+    2. 看是否能命中batchUpdate机制
+    3. 判断isBatchUpdates（true、false）来判断是否命中batchUpdate机制
+5. 组件渲染过程
+  1. setState(newState)-->dirtyComponents（可能有子组件）
+  2. render()生成newVnode
+  3. diff比较算法
+  4. commit更新
+6. 前端路由
+
+hashHistory：通常应用于老版本浏览器，主要通过hash来实现
+browserHistory：通常应用于高版本浏览器，通过html5中的history来实现, history.pushState
+
+
+
+
+
+
+
+一个iframe禁止嵌入 如何解决
+
+
+
+
+typeof null 结果是 object ，JavaScript 诞生以来便如此，由于 null 代表的是空指针（大多数平台下值为 0x00）。
+typeof [1, 2] 结果是 object ，结果中没有array 这一项，引用类型除了function其他的全部都是 object。
+typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symbol实例是唯一且不可改变的这是 ES6 新增的知识点.
+
+
+原型链
+先查找自己有没有这个属性，没有找__proto__上有没有
+
+```js
+// 闭包
+var name = "The Window";
+var object = {
+  name : "My Object",
+  getNameFunc : function(){
+    return function(){
+      return this.name;
+    };
+  }
+};
+alert(object.getNameFunc()()); // result:The Window
+```
+
+this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象调用时，this等于那个对象。不过，匿名函数具有全局性，因此this对象通常指向window。
+
+做了哪些事情  解决了什么问题
+
+做了什么事情
+做这个事情思考了哪些事情
+达到了什么目标，得到了什么结果（技术问题 怎么解决 怎么思考，业务问题）
+体验优势，反馈，给别人得到效率提升
+
+
+动态表单，通过研究npm Doc文档测试包采用发布方案
+指导组内同学机器迁移，发现由于基础设施完善组内同学在平常只专注于业务开发 对上线部署原理不清楚，我画了部署和用户访问原理架构图
+路由页面全部按需加载
 
 面试：基础、框架、项目、工具
 自我介绍一下
@@ -950,157 +1086,6 @@ setState如何更新的
   什么情况用redux？redux数据类型怎么设计？react state有哪些设计原则？
   react 用的时候怎么减少不必要的渲染、怎么提高性能？
 5. 说一下 fiber 的节点遍历顺序
-
-```js
-function Fcon() {
-  const [count, setCount] = React.useState(0);
-
-  const _onclick = () => {
-    setTimeout(() => {
-      console.log(count)
-    }, 3000)
-  }
-  return (
-    <div>
-      <div>{count}</div>
-      <div onClick={_onclick}>触发</div>
-      <div onClick={() => {
-        setCount(count + 1);
-        setCount(count + 1);
-      }}>+1</div>
-    </div>
-  )
-}
-```
-
-被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
-
-componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
-getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
-getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
-
-setState 是同步还是异步的
-setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。
-在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，
-如果值为 true 则执行异步操作，为 false 则直接更新。
-
-异步： 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。
-同步： 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
-
-react原理
-1. 函数式编程
-  1. 纯函数
-  2. 不可变值
-2. vdom和diff
-  1. diff只比较同级，不跨级比较
-  2. tag不相同，则直接删掉重建，不在深度比较
-  3. tag和key，两者都相同，则认为是相同节点
-3. 合成事件
-  1. 所有事件挂在document上
-  2. event不是原生的，是SyntheticEvent合成事件对象
-  优点：
-    1. 更好的兼容性和跨平台
-    2. 挂载到document上，减少内存消耗，避免频繁解绑
-    3. 方便事件的统一管理（如事务机制）
-4. setState和batchUpdate
-  setState
-    1. 有时异步（普通使用），有时同步（setTimeout,DOM事件中）
-    2. 有时合并（对象形式），有时不合并（函数形式）
-  setState是异步还是同步
-    1. setState无所谓异步还是同步
-    2. 看是否能命中batchUpdate机制
-    3. 判断isBatchUpdates（true、false）来判断是否命中batchUpdate机制
-5. 组件渲染过程
-  1. setState(newState)-->dirtyComponents（可能有子组件）
-  2. render()生成newVnode
-  3. diff比较算法
-  4. commit更新
-6. 前端路由
-
-hashHistory：通常应用于老版本浏览器，主要通过hash来实现
-browserHistory：通常应用于高版本浏览器，通过html5中的history来实现, history.pushState
-
-
-async await原理
-1. async 函数是 Generator 函数的语法糖。
-2. async 返回值是 Promise。比 Generator 函数返回的 Iterator 对象方便，可以直接使用 then() 方法进行调用
-3. 更好的语义。async 和 await 相较于 * 和 yield 更加语义化
-
-
-Tree Shaking 哪些情况下不会生效
-1. 只有在ES Module中才会生效
-2. CommonJS
-
-
-webpack打包优化
-1. happypack多线程打包
-2. splitChunks.cacheGroups将功能库打成一个包（antd...）
-3. loader配置对应的include、exclude
-
-
-其次是 VDOM 和真实 DOM 的区别和优化：
-1. 虚拟 DOM 不会立马进行排版与重绘操作
-2. 虚拟 DOM 进行频繁修改，然后一次性比较并修改真实 DOM 中需要改的部分，最后在真实 DOM 中进行排版与重绘，减少过多DOM节点排版与重绘损耗
-3. 虚拟 DOM 有效降低大面积真实 DOM 的重绘与排版，因为最终与真实 DOM 比较差异，可以只渲染局部
-
-
-
-
-
-webpack chunk
-文件内容没改变单身hash值改变了 https://juejin.cn/post/6844903942384517127
-
-一个iframe禁止嵌入 如何解决
-
-evenloop执行顺序
-宏任务：DOM渲染后触发，如setTimeout
-微任务：DOM渲染前触发，如Promise
-
-图片之间的缝隙:
-  原因：是行内元素之间的回车符系统默认为一个空格，占据了一定宽度
-  深入原因：vertical-align默认的对齐方式是baseline。
-如何消除:
-1. 父元素设置font-size: 0;
-2. img标签设置display: block;
-3. img标签设置vertical-align: bottom;
-
-react和vue之间的优缺点
-
-
-typeof null 结果是 object ，JavaScript 诞生以来便如此，由于 null 代表的是空指针（大多数平台下值为 0x00）。
-typeof [1, 2] 结果是 object ，结果中没有array 这一项，引用类型除了function其他的全部都是 object。
-typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symbol实例是唯一且不可改变的这是 ES6 新增的知识点.
-
-
-原型链
-先查找自己有没有这个属性，没有找__proto__上有没有
-
-```js
-// 闭包
-var name = "The Window";
-var object = {
-  name : "My Object",
-  getNameFunc : function(){
-    return function(){
-      return this.name;
-    };
-  }
-};
-alert(object.getNameFunc()()); // result:The Window
-```
-this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象调用时，this等于那个对象。不过，匿名函数具有全局性，因此this对象通常指向window。
-
-
-做了什么事情
-做这个事情思考了哪些事情
-达到了什么目标，得到了什么结果（技术问题 怎么解决 怎么思考，业务问题）
-体验优势，反馈，给别人得到效率提升
-
-
-动态表单，通过研究npm Doc文档测试包采用发布方案
-指导组内同学机器迁移，发现由于基础设施完善组内同学在平常只专注于业务开发 对上线部署原理不清楚，我画了部署和用户访问原理架构图
-路由页面全部按需加载
-
 
 第二个要命的问题，就是我发现自己在每一次事变里都不是核心成员。
 大家可以想象，一个想要从原来的单位出走自立的团队，其核心成员一定事先密谋了很久，等一切准备就绪了才会行动。
