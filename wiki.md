@@ -120,6 +120,8 @@ count = 10;
 log();
 ```
 
+### hooks模拟 this.setState(value, () => {})
+
 ### add(1, 2); add(1)(2);
 ```js
 function add() {
@@ -334,8 +336,20 @@ new Promise((resolve, reject) => {
   resolve(4);
 }).then((v) => {
   console.log(v);
-})
+});
+
+try {
+  Promise.reject().then(() => {
+    console.log('======');
+    return Promise.resolve(3)
+  }).catch(() => {
+    console.log('===catch===');
+  })
+} catch (error) {
+  console.log('error:', error);
+}
 ```
+
 ### 节流(throttle)：在n秒内只执行一次func
 ```js
 // 节流：在n秒内只执行一次func, 前置执行。
@@ -583,14 +597,26 @@ maxSubNum([2,-3,3,50]);
 };
 ```
 
+### React.lazy
 ```js
-Object.prototype.a = () => console.log('a')
-Function.prototype.b = () => console.log('b')
-function Func() {
-  console.log('c')
+function LoadPage(loader: any) {
+  const Com = React.lazy(loader);
+  // 已经Resolved了（已经加载完毕）则直接返回,否则将通过 throw 将 thenable 抛出到上层
+  const Loading = (
+    <Spin />
+  );
+  return props => (
+    // 如果 thenable 处于 pending 状态，则会将其 children 都渲染成 fallback 的值，
+    // 一旦 thenable 被 resolve 则 SuspenseComponent 的子组件会重新渲染一次。
+    <React.Suspense fallback={Loading}>
+      <Com {...props}></Com>
+    </React.Suspense>
+  );
 }
 ```
+React.lazy原理
 
+### setState更新
 ```js
 class Demo extends React.Component {
   constructor(props) {
@@ -627,24 +653,23 @@ class Demo extends React.Component {
 ```
 
 ```js
-function LoadPage(loader: any) {
-  const Com = React.lazy(loader);
-  // 已经Resolved了（已经加载完毕）则直接返回,否则将通过 throw 将 thenable 抛出到上层
-  const Loading = (
-    <Spin />
-  );
-  return props => (
-    // 如果 thenable 处于 pending 状态，则会将其 children 都渲染成 fallback 的值，
-    // 一旦 thenable 被 resolve 则 SuspenseComponent 的子组件会重新渲染一次。
-    <React.Suspense fallback={Loading}>
-      <Com {...props}></Com>
-    </React.Suspense>
-  );
+Object.prototype.a = () => console.log('a')
+Function.prototype.b = () => console.log('b')
+function Func() {
+  console.log('c')
 }
+Func.b(); // b
+(new Func()).a(); // c a
+(new Func()).b(); // c 报错
 ```
 
 one(add(two()));
+
 two(add(one()));
+
+Promise then返回是一个新的Promise。Promise优缺点 深入点的
+useEffect模拟监听object变化执行代码
+flex 1 具体是什么
 
 事件捕获，事件代理
 button吸底效果
