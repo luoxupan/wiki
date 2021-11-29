@@ -839,7 +839,7 @@ this对象是在运行时基于函数的执行环境绑定的：在全局函数�
 10. redux的reducer为什么是纯函数
 11. hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
 12. react为什么删除那三个生命周期
-   - 被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
+    - 被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
 13. componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
 14. getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
 15. getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
@@ -1003,19 +1003,20 @@ function Fcon() {
 
 
 typeof null 结果是 object ，JavaScript 诞生以来便如此，由于 null 代表的是空指针（大多数平台下值为 0x00）。
+
 typeof [1, 2] 结果是 object ，结果中没有array 这一项，引用类型除了function其他的全部都是 object。
+
 typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symbol实例是唯一且不可改变的这是 ES6 新增的知识点.
 
 
 
 
 
-做了哪些事情  解决了什么问题
 
-做了什么事情
-做这个事情思考了哪些事情
-达到了什么目标，得到了什么结果（技术问题 怎么解决 怎么思考，业务问题）
-体验优势，反馈，给别人得到效率提升
+1. 做了什么事情, 解决了什么问题
+2. 做这个事情思考了哪些事情
+3. 达到了什么目标，得到了什么结果（技术问题 怎么解决 怎么思考，业务问题）
+4. 体验优势，反馈，给别人得到效率提升
 
 
 动态表单，通过研究npm Doc文档测试包采用发布方案
@@ -1029,23 +1030,23 @@ typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symb
     说一下盒子模型，border-box和content-box的区别
     水平垂直居中有哪些方法，说说flex布局（左右两栏布局）
 2. JavaScript：
-    基本数据类型有哪些
-    有哪些作用域，函数作用域、块作用域（let，const）
-    请简述一下js的闭包、原型链
-    同步和异步的执行顺序（说说事件循环）
-    == 和 === 的区别
-    数组常用的方法有哪些
-    JS如何实现倒计时，为什么不准，校正方式
-    数组去重方法
+    - 基本数据类型有哪些
+    - 有哪些作用域，函数作用域、块作用域（let，const）
+    - 请简述一下js的闭包、原型链
+    - 同步和异步的执行顺序（说说事件循环）
+    - == 和 === 的区别
+    - 数组常用的方法有哪些
+    - JS如何实现倒计时，为什么不准，校正方式
+    - 数组去重方法
 3. git（merge cherry-pick, stash） Linux 常用命令
 4. HTTP get post 请求头，响应头里面有哪些，讲讲同源策略，什么情况算是跨域（有哪些、nginx、后端CORS），
 5. cookie（子域名会把主域名的cookie带到后端吗）,sessionStorage和localStorage的区别
 6. 排序算法有哪些，每个排序的大致过程 了解TCP协议吗 说说三次握手和四次挥手
 7. 了解webpack吗 说说你的理解，有没有抓过包Charles用过吗 说一下原理
 9. 框架（Vue）
-    说一下有哪些生命周期，created、mounted这两个生命周期分别做了哪些东西
-    如何让css只在当前组件起作用，v-if和v-show的区别
-    Vue2.0实现数据双向绑定的原理，Vue是如何监听数组的变化的
+    - 说一下有哪些生命周期，created、mounted这两个生命周期分别做了哪些东西
+    - 如何让css只在当前组件起作用，v-if和v-show的区别
+    - vue2.0实现数据双向绑定的原理，Vue是如何监听数组的变化的
 
 
 
@@ -1055,14 +1056,14 @@ typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symb
   1. 泛型
 2. ES5的继承和ES6的继承有什么区别？
 3. 大致讲下diff算法和key扮演的作用；了解过hoc和render props吗，如何设计更通用的组件；
-  memo和purecomponent干嘛用的&原理；如何在更新阶段修改组件内部state；
-  深层嵌套的组件如何共享数据；错误处理怎么做的；react组件怎么绑定ref；
-  如何在root元素外渲染组件；合成事件机制描述下过程；jsx写法以及为什么顶部引入react对象；
-  redux/mobx概念，不同之处，怎么处理异步；router几种类型，实现一个类似vue里keep-alive的功能；
-  怎么SSR；常用ui库哪些，出了问题怎么排查；
+   - memo和purecomponent干嘛用的&原理；如何在更新阶段修改组件内部state；
+   - 深层嵌套的组件如何共享数据；错误处理怎么做的；react组件怎么绑定ref；
+   - 如何在root元素外渲染组件；合成事件机制描述下过程；jsx写法以及为什么顶部引入react对象；
+   - redux/mobx概念，不同之处，怎么处理异步；router几种类型，实现一个类似vue里keep-alive的功能；
+   - 怎么SSR；常用ui库哪些，出了问题怎么排查；
 4. react 生命周期是哪些？什么是高阶组件？高阶组建有哪些应用场景？和vue有什么区别和联系？
-  什么情况用redux？redux数据类型怎么设计？react state有哪些设计原则？
-  react 用的时候怎么减少不必要的渲染、怎么提高性能？
+   - 什么情况用redux？redux数据类型怎么设计？react state有哪些设计原则？
+   - react 用的时候怎么减少不必要的渲染、怎么提高性能？
 5. 说一下 fiber 的节点遍历顺序
 
 第二个要命的问题，就是我发现自己在每一次事变里都不是核心成员。
