@@ -191,6 +191,7 @@ function delegate(element, targetSelector, type, handler) {
   document.addEventListener('DOMContentLoaded', recalc, false);
 })();
 ```
+### rem布局中，1px像素处理: https://www.cnblogs.com/sonechao/p/14822241.html
 
 ### 正则匹配替换
 ```js
@@ -614,7 +615,7 @@ function LoadPage(loader: any) {
   );
 }
 ```
-React.lazy原理
+### React.lazy原理
 
 ### setState更新
 ```js
@@ -663,25 +664,11 @@ Func.b(); // b
 (new Func()).b(); // c 报错
 ```
 
-one(add(two()));
+### flex:1; 具体是什么 [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#flex%E5%B8%83%E5%B1%80)
 
-two(add(one()));
+### 事件机制 [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)
 
-Promise then返回是一个新的Promise。Promise优缺点 深入点的
-useEffect模拟监听object变化执行代码
-flex 1 具体是什么
-
-事件捕获，事件代理
-button吸底效果
-阻止冒泡、
-new String(',,')
-webpack循环引用配置
-postMessage跨域处理
-CORS options预检请求
-padding 100%指的是多高
-rem布局中，1px像素怎么处理 => https://www.cnblogs.com/sonechao/p/14822241.html
-0.1 + 0.2 精度的处理
-做过哪些优化
+### padding: 100%; 指的是多高 [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#margin-padding-%E8%B5%8B%E5%80%BC%E4%B8%BA%E7%99%BE%E5%88%86%E6%AF%94%E7%9A%84%E6%97%B6%E5%80%99%E6%98%AF%E6%8C%89%E7%88%B6%E5%85%83%E7%B4%A0%E7%9A%84width%E4%B8%BA%E5%8F%82%E7%85%A7%E7%89%A9)
 
 ### ES5的继承和ES6的继承有什么区别？
 参考答案
@@ -700,36 +687,6 @@ rem布局中，1px像素怎么处理 => https://www.cnblogs.com/sonechao/p/14822
 1. 第一次client => server 只能server判断出client具备发送能力
 2. 第二次 server => client client就可以判断出server具备发送和接受能力。此时client还需让server知道自己接收能力没问题于是就有了第三次
 3. 第三次 client => server 双方均保证了自己的接收和发送能力没有问题。其中，为了保证后续的握手是为了应答上一个握手，每次握手都会带一个标识 seq，后续的ACK都会对这个seq进行加一来进行确认。
-
-被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
-
-拍平数组
-hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
-react为什么删除那三个生命周期
-1.1和2.0区别 2.0多路复用具体是怎么弄的，https和http区别 对称和非对称
-cdn回源机制，如何判断回源
-setState什么时候是异步的
-
-
-componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
-getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
-getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
-
-对称加密：加密解密都是同一把秘钥
-优点：算法简单，加密解密容易，效率高，执行快。
-缺点：相对来说不算特别安全，只有一把钥匙，密文如果被拦截，且密钥也被劫持，那么，信息很容易被破译。
-
-非对称加密：
-优点：安全，即使密文被拦截、公钥被获取，但是无法获取到私钥，也就无法破译密文。作为接收方，务必要保管好自己的密钥。
-缺点：加密算法及其复杂，安全性依赖算法与密钥，而且加密和解密效率很低。
-
-setState 是同步还是异步的
-setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。
-在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，
-如果值为 true 则执行异步操作，为 false 则直接更新。
-
-异步： 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。
-同步： 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
 
 
 ### webpack构建流程（原理）
@@ -793,6 +750,46 @@ react的原生事件和组合事件
 5. splitChunks提取公共第三⽅库
 6. Tree Shaking
 6. 代码压缩
+
+
+
+
+拍平数组
+hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
+react为什么删除那三个生命周期
+1.1和2.0区别 2.0多路复用具体是怎么弄的，https和http区别 对称和非对称
+cdn回源机制，如何判断回源
+setState什么时候是异步的
+
+one(add(two()));
+
+two(add(one()));
+
+Promise then返回是一个新的Promise。Promise优缺点 深入点的
+
+button吸底效果
+
+webpack循环引用配置
+
+postMessage跨域处理
+
+CORS options预检请求
+
+
+0.1 + 0.2 精度的处理
+
+做过哪些优化
+
+
+
+对称加密：加密解密都是同一把秘钥
+优点：算法简单，加密解密容易，效率高，执行快。
+缺点：相对来说不算特别安全，只有一把钥匙，密文如果被拦截，且密钥也被劫持，那么，信息很容易被破译。
+
+非对称加密：
+优点：安全，即使密文被拦截、公钥被获取，但是无法获取到私钥，也就无法破译密文。作为接收方，务必要保管好自己的密钥。
+缺点：加密算法及其复杂，安全性依赖算法与密钥，而且加密和解密效率很低。
+
 
 
 错误监控
@@ -955,6 +952,20 @@ function Fcon() {
 }
 ```
 
+被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
+
+componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
+getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
+getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
+
+setState 是同步还是异步的
+setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。
+在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，
+如果值为 true 则执行异步操作，为 false 则直接更新。
+
+异步： 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。
+同步： 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
+
 react原理
 1. 函数式编程
   1. 纯函数
@@ -1012,7 +1023,7 @@ webpack打包优化
 3. 虚拟 DOM 有效降低大面积真实 DOM 的重绘与排版，因为最终与真实 DOM 比较差异，可以只渲染局部
 
 
-CommonJS 和 ES6 中模块引入的区别？
+### CommonJS 和 ES6 中模块引入的区别？
 1. CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
 2. CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
 3. CommonJs 是单个值导出，ES6 Module可以导出多个
