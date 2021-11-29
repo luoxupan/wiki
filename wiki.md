@@ -120,7 +120,7 @@ count = 10;
 log();
 ```
 
-### hooks模拟 this.setState(value, () => {})
+### hooks模拟 this.setState(value, () => {}) [链接](https://github.com/luoxupan/wiki/blob/master/issues/reactjs%20%E6%8A%80%E6%9C%AF%E7%82%B9.md#hooks%E6%A8%A1%E6%8B%9Fsetstatestatechange-callback%E7%9A%84callback)
 
 ### add(1, 2); add(1)(2);
 ```js
