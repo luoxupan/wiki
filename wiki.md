@@ -68,14 +68,26 @@ window.addEventListener('hashchange', (event) => {
   console.log('event:', event);
 });
 ```
-
+### 数组拍平
 ```js
 function flatDeep(arr, d = 1) {
   return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
                : arr.slice();
 };
 ```
+```js
+function flatten(arr) {
+  while (arr.some((item) => Array.isArray(item))) {
+    // some返回true/false
+    arr = [].concat(...arr);
+  }
+  return arr;
+}
+let arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
+console.log(flatten(arr));
+```
 
+### useState倒计时
 ```js
 function Count() {
   const [count, setCount] = React.useState(0);
@@ -94,7 +106,21 @@ function Count() {
   );
 }
 ```
+```js
+// 原理：相当于函数传参
+var count = 1;
+function log() {
+  var num = count; // 相当于hook的useState
+  setTimeout(() => {
+    console.log(num);
+  }, 3000);
+}
+log();
+count = 10;
+log();
+```
 
+### add(1, 2); add(1)(2);
 ```js
 function add() {
   var args = [...arguments];
@@ -111,6 +137,7 @@ console.log(add(1)(2)(3)); // 6
 console.log(add(1,2,3)(4)); // 10
 ```
 
+### 深拷贝
 ```js
 function deepCopy(data) {
   var ret = data;
@@ -126,18 +153,7 @@ function deepCopy(data) {
 }
 ```
 
-```js
-function flatten(arr) {
-  while (arr.some((item) => Array.isArray(item))) {
-    // some返回true/false
-    arr = [].concat(...arr);
-  }
-  return arr;
-}
-let arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
-console.log(flatten(arr));
-```
-
+### 事件代理
 ```js
 // 用原生JavaScript实现事件代理
 function delegate(element, targetSelector, type, handler) {
@@ -152,6 +168,7 @@ function delegate(element, targetSelector, type, handler) {
 }
 ```
 
+### rem缩放初始化
 ```js
 (function() {
   var
@@ -173,6 +190,7 @@ function delegate(element, targetSelector, type, handler) {
 })();
 ```
 
+### 正则匹配替换
 ```js
 // 正则匹配替换
 function tranformMsg(string, keyword) {
@@ -186,6 +204,7 @@ function tranformMsg(string, keyword) {
 tranformMsg('@sds_4353ff_把九点半@nihao 第三方不仅是对', '把');
 ```
 
+### webpack打包产物
 ```js
 (function (modules) {
   var installedModules = {};
@@ -218,6 +237,7 @@ tranformMsg('@sds_4353ff_把九点半@nihao 第三方不仅是对', '把');
 })
 ```
 
+### 归并排序
 ```js
 /**
  * 
@@ -264,6 +284,7 @@ mergesort(array, 0, array.length - 1)
 console.log(array); // [ 4, 5, 6, 7 ]
 ```
 
+### Promise.all
 ```js
 Promise.prototype.all = function(args) {
   let index = 0
@@ -290,7 +311,10 @@ Promise.prototype.all = function(args) {
     }
   })
 }
+```
 
+### Promise.finally
+```js
 Promise.prototype.finally = function(onDone) {
   if (typeof onDone !== 'function') return this.then();
   let Promise = this.constructor;
@@ -312,7 +336,7 @@ new Promise((resolve, reject) => {
   console.log(v);
 })
 ```
-
+### 节流(throttle)：在n秒内只执行一次func
 ```js
 // 节流：在n秒内只执行一次func, 前置执行。
 // 应用场景：搜索框联想功能，表单重复提交，滚动加载-适用于触发之后内容不再变化
@@ -331,7 +355,7 @@ function throttle(fn, delay) {
   }
 }
 ```
-
+### 防抖(debounce): 在n秒内执行最后一次func
 ```js
 // 防抖: 在n秒内执行最后一次func,后置执行。
 // 应用场景：手机号邮箱等输入检测，搜索框输入完执行最后一次搜索，鼠标移动-适用于用户输入完整的内容后执行
@@ -349,7 +373,7 @@ function debounce(fn, delay) {
   };
 }
 ```
-
+### bind
 ```js
 Function.prototype.bind2 = function(context) {
   var args = [...arguments];
@@ -359,7 +383,7 @@ Function.prototype.bind2 = function(context) {
   }
 }
 ```
-
+### call
 ```js
 Function.prototype.call2 = function(context) {
   var context = context || window;
@@ -370,7 +394,7 @@ Function.prototype.call2 = function(context) {
   return res;
 }
 ```
-
+### instanceof
 ```js
 function instance_of(left, right) {
   let rightProto = right.prototype; // 取右表达式的 prototype 值
@@ -391,7 +415,7 @@ function Func() {
 var func = new Func();
 func.__proto__ === Func.prototype; // true
 ```
-
+### new
 ```js
 // new操作符都做了什么
 // 四大步骤：
@@ -409,7 +433,7 @@ function new(func) {
   return target;
 }
 ```
-
+### asyncPool
 ```js
 async function asyncPool(poolLimit, array, iteratorFn) {
   const ret = [];
@@ -466,12 +490,12 @@ return asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(results => {
   ...
 });
 ```
-
+### 连续子数组的和最大和
 ```js
 /**
  * @param {number[]} nums
  * @return {number}
- * 连续子数组的和最大
+ * 连续子数组的和最大和
  */
  var maxSubArray = function(nums) {
   var sum = nums[0];
@@ -498,23 +522,6 @@ function maxSubNum(nums) {
 }
 maxSubNum([2,-3,3,50]);
 ```
-
-```js
-try {
-  Promise.reject().then(() => {
-    console.log('======');
-    return Promise.resolve(3)
-  }).catch(() => {
-    console.log('===catch===');
-  })
-} catch (error) {
-  console.log('error:', error);
-}
-```
-
-Promise then返回是一个新的Promise 优缺点 深入点的
-react.lazy原理
-flex 1 具体是什么
 
 ```js
 // 在浏览器中实现0ms延时的定时器
@@ -549,7 +556,7 @@ flex 1 具体是什么
 // 在浏览器中，setTimeout()/setInterval() 的每调用一次定时器的最小间隔是4ms，
 // 这通常是由于函数嵌套导致（嵌套层级达到一定深度），或者是由于已经执行的setInterval的回调函数阻塞导致的。
 ```
-
+### 字符串相加
 ```js
 /**
  * @param {string} num1
@@ -577,29 +584,12 @@ flex 1 具体是什么
 ```
 
 ```js
-var count = 1;
-function log() {
-  var num = count; // 相当于hook的useState
-  setTimeout(() => {
-    console.log(num);
-  }, 3000);
-}
-log();
-count = 10;
-log();
-```
-
-hooks模拟 this.setState(value, () => {})
-
-```js
 Object.prototype.a = () => console.log('a')
 Function.prototype.b = () => console.log('b')
 function Func() {
   console.log('c')
 }
 ```
-
-useEffect模拟监听object变化执行代码
 
 ```js
 class Demo extends React.Component {
