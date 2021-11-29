@@ -775,6 +775,122 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
 对于容器中的项目，我们可以使用order属性来指定项目的排列顺序，还可以使用flex-grow来指定当排列空间有剩余的时候，
 项目的放大比例。还可以使用flex-shrink来指定当排列空间不足时，项目的缩小比例。
 
+### 闭包
+```js
+var name = "The Window";
+var object = {
+  name : "My Object",
+  getNameFunc : function(){
+    return function(){
+      return this.name;
+    };
+  }
+};
+alert(object.getNameFunc()()); // result:The Window
+```
+this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象调用时，this等于那个对象。不过，匿名函数具有全局性，因此this对象通常指向window。
+
+
+### 图片之间的缝隙: [链接]()
+   - 原因：是行内元素之间的回车符系统默认为一个空格，占据了一定宽度
+   - 深入原因：vertical-align默认的对齐方式是baseline。
+**如何消除:**
+1. 父元素设置font-size: 0;
+2. img标签设置display: block;
+3. img标签设置vertical-align: bottom;
+
+### async await原理
+1. async 函数是 Generator 函数的语法糖。
+2. async 返回值是 Promise。比 Generator 函数返回的 Iterator 对象方便，可以直接使用 then() 方法进行调用
+3. 更好的语义。async 和 await 相较于 * 和 yield 更加语义化
+
+### CORB [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#corb)
+
+### 前端性能优化
+1. CDN（回源机制，如何判断回源）
+2. 图片懒加载
+3. PNG图片压缩大小
+4. 搜索框节流（throttle）处理
+5. splitChunks提取公共第三⽅库
+6. Tree Shaking
+6. 代码压缩
+
+### react合成事件特点
+1. React 上注册的事件最终会绑定在document这个 DOM 上，
+  而不是 React 组件对应的 DOM(减少内存开销就是因为所有的事件都绑定在 document 上，其他节点没有绑定事件)
+2. React 自身实现了一套事件冒泡机制，所以这也就是为什么我们 event.stopPropagation() 无效的原因。
+3. React 通过队列的形式，从触发的组件向父组件回溯，然后调用他们 JSX 中定义的 callback
+4. React 有一套自己的合成事件 SyntheticEvent，不是原生的，这个可以自己去看官网
+5. React 通过对象池的形式管理合成事件对象的创建和销毁，减少了垃圾的生成和新对象内存的分配，提高了性能
+
+### vue和react差异和相同点(优缺点)
+1. 都是解决UI和状态同步问题 组件化  生命周期，Vue是模板 react是jsx
+
+### react问题聚合
+1. 高阶组件、react hook和高阶组件的区别
+2. 介绍一下react router
+3. setState如何更新的
+4. setState什么时候是异步的
+5. React hooks 原理是什么？
+6. React Fiber 的理解和原理
+7. React setState具体做了哪些事情
+8. React 具体是如何更新的
+9. Context 旨在共享一个组件树内可被视为 “全局” 的数据
+10. redux的reducer为什么是纯函数
+11. hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
+12. react为什么删除那三个生命周期
+   - 被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
+13. componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
+14. getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
+15. getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
+16. setState 是同步还是异步的
+    - setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。
+    - 在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，
+    - 如果值为 true 则执行异步操作，为 false 则直接更新。
+    - **异步：** 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。
+    - **同步：** 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
+
+其次是 VDOM 和真实 DOM 的区别和优化：
+1. 虚拟 DOM 不会立马进行排版与重绘操作
+2. 虚拟 DOM 进行频繁修改，然后一次性比较并修改真实 DOM 中需要改的部分，最后在真实 DOM 中进行排版与重绘，减少过多DOM节点排版与重绘损耗
+3. 虚拟 DOM 有效降低大面积真实 DOM 的重绘与排版，因为最终与真实 DOM 比较差异，可以只渲染局部
+
+
+react原理
+1. 函数式编程
+   1. 纯函数
+   2. 不可变值
+2. vdom和diff
+   1. diff只比较同级，不跨级比较
+   2. tag不相同，则直接删掉重建，不在深度比较
+   3. tag和key，两者都相同，则认为是相同节点
+3. 合成事件
+   1. 所有事件挂在document上
+   2. event不是原生的，是SyntheticEvent合成事件对象
+  优点：
+     1. 更好的兼容性和跨平台
+     2. 挂载到document上，减少内存消耗，避免频繁解绑
+     3. 方便事件的统一管理（如事务机制）
+4. setState和batchUpdate
+  setState
+     1. 有时异步（普通使用），有时同步（setTimeout,DOM事件中）
+     2. 有时合并（对象形式），有时不合并（函数形式）
+  setState是异步还是同步
+     1. setState无所谓异步还是同步
+     2. 看是否能命中batchUpdate机制
+     3. 判断isBatchUpdates（true、false）来判断是否命中batchUpdate机制
+5. 组件渲染过程
+   1. setState(newState)-->dirtyComponents（可能有子组件）
+   2. render()生成newVnode
+   3. diff比较算法
+   4. commit更新
+6. 前端路由
+
+hashHistory：通常应用于老版本浏览器，主要通过hash来实现
+browserHistory：通常应用于高版本浏览器，通过html5中的history来实现, history.pushState
+
+
+
 ### http1.0 2.0区别
 **Http1.x**
 
@@ -838,122 +954,6 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
   HTTP/2 对这一点做了优化，引入了头信息压缩机制；
   一方面，头信息使用gzip或compress压缩后再发送；
   另一方面，客户端和服务器同时维护一张头信息表，所有字段都会存入这个表，产生一个索引号，之后就不发送同样字段了，只需发送索引号
-
-### 闭包
-```js
-var name = "The Window";
-var object = {
-  name : "My Object",
-  getNameFunc : function(){
-    return function(){
-      return this.name;
-    };
-  }
-};
-alert(object.getNameFunc()()); // result:The Window
-```
-this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象调用时，this等于那个对象。不过，匿名函数具有全局性，因此this对象通常指向window。
-
-
-### 图片之间的缝隙: [链接]()
-   - 原因：是行内元素之间的回车符系统默认为一个空格，占据了一定宽度
-   - 深入原因：vertical-align默认的对齐方式是baseline。
-**如何消除:**
-1. 父元素设置font-size: 0;
-2. img标签设置display: block;
-3. img标签设置vertical-align: bottom;
-
-### async await原理
-1. async 函数是 Generator 函数的语法糖。
-2. async 返回值是 Promise。比 Generator 函数返回的 Iterator 对象方便，可以直接使用 then() 方法进行调用
-3. 更好的语义。async 和 await 相较于 * 和 yield 更加语义化
-
-### CORB [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#corb)
-
-### 前端性能优化
-1. CDN（回源机制，如何判断回源）
-2. 图片懒加载
-3. PNG图片压缩大小
-4. 搜索框节流（throttle）处理
-5. splitChunks提取公共第三⽅库
-6. Tree Shaking
-6. 代码压缩
-
-### react合成事件特点
-1. React 上注册的事件最终会绑定在document这个 DOM 上，
-  而不是 React 组件对应的 DOM(减少内存开销就是因为所有的事件都绑定在 document 上，其他节点没有绑定事件)
-2. React 自身实现了一套事件冒泡机制，所以这也就是为什么我们 event.stopPropagation() 无效的原因。
-3. React 通过队列的形式，从触发的组件向父组件回溯，然后调用他们 JSX 中定义的 callback
-4. React 有一套自己的合成事件 SyntheticEvent，不是原生的，这个可以自己去看官网
-5. React 通过对象池的形式管理合成事件对象的创建和销毁，减少了垃圾的生成和新对象内存的分配，提高了性能
-
-### vue和react差异和相同点(优缺点)
-1. 都是解决UI和状态同步问题 组件化  生命周期，Vue是模板 react是jsx
-
-1. 高阶组件、react hook和高阶组件的区别
-2. 介绍一下react router
-3. setState如何更新的
-4. setState什么时候是异步的
-5. React hooks 原理是什么？
-6. React Fiber 的理解和原理
-7. React setState具体做了哪些事情
-8. React 具体是如何更新的
-9. Context 旨在共享一个组件树内可被视为 “全局” 的数据
-10. redux的reducer为什么是纯函数
-11. hook模拟生命周期，shouldupdate, react常见优化手段，class和hook函数组件的区别
-12. react为什么删除那三个生命周期
-  - 被废弃的三个函数都是在render之前，在异步渲染中,因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次
-13. componentDidMount 会在组件挂载后（插入 DOM 树中）立即调用。
-14. getDerivedStateFromProps 的存在只有一个目的：让组件在 props 变化时更新 state。
-15. getSnapshotBeforeUpdate 在最近一次渲染输出（提交到 DOM 节点）之前调用。
-16. setState 是同步还是异步的
-   - setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。
-   - 在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，
-   - 如果值为 true 则执行异步操作，为 false 则直接更新。
-   - **异步：** 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。
-   - **同步：** 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
-
-其次是 VDOM 和真实 DOM 的区别和优化：
-1. 虚拟 DOM 不会立马进行排版与重绘操作
-2. 虚拟 DOM 进行频繁修改，然后一次性比较并修改真实 DOM 中需要改的部分，最后在真实 DOM 中进行排版与重绘，减少过多DOM节点排版与重绘损耗
-3. 虚拟 DOM 有效降低大面积真实 DOM 的重绘与排版，因为最终与真实 DOM 比较差异，可以只渲染局部
-
-
-react原理
-1. 函数式编程
-   1. 纯函数
-   2. 不可变值
-2. vdom和diff
-   1. diff只比较同级，不跨级比较
-   2. tag不相同，则直接删掉重建，不在深度比较
-   3. tag和key，两者都相同，则认为是相同节点
-3. 合成事件
-   1. 所有事件挂在document上
-   2. event不是原生的，是SyntheticEvent合成事件对象
-  优点：
-     1. 更好的兼容性和跨平台
-     2. 挂载到document上，减少内存消耗，避免频繁解绑
-     3. 方便事件的统一管理（如事务机制）
-4. setState和batchUpdate
-  setState
-     1. 有时异步（普通使用），有时同步（setTimeout,DOM事件中）
-     2. 有时合并（对象形式），有时不合并（函数形式）
-  setState是异步还是同步
-     1. setState无所谓异步还是同步
-     2. 看是否能命中batchUpdate机制
-     3. 判断isBatchUpdates（true、false）来判断是否命中batchUpdate机制
-5. 组件渲染过程
-   1. setState(newState)-->dirtyComponents（可能有子组件）
-   2. render()生成newVnode
-   3. diff比较算法
-   4. commit更新
-6. 前端路由
-
-hashHistory：通常应用于老版本浏览器，主要通过hash来实现
-browserHistory：通常应用于高版本浏览器，通过html5中的history来实现, history.pushState
-
-
-
 
 
 
