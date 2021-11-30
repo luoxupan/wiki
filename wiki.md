@@ -617,6 +617,45 @@ function LoadPage(loader: any) {
 
 LoadPage(() => import('src/app.tsx'));
 ```
+`LoadPage(() => import('src/app.tsx'));`会被webpack编译成如下代码
+```js
+LoadPage(function() {
+  return Promise.all([
+    __webpack_require__.e(0),  /*! import() | layout_app */
+    __webpack_require__.e("layout_app"),
+    __webpack_require__.e("async-vendors"),
+  ]).then(__webpack_require__.bind(null, "./src/pages/app/app.tsx"));
+});
+```
+`import('src/app.tsx')`会被单独打成一个chunks文件`http://xxx..com/assets/js/chunks/0_a0095e36.js`, 文件内容类似如下
+```js
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[0], {
+	"./src/actions/upm.ts": (function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    __webpack_require__.r(__webpack_exports__); /* harmony export (binding) */
+    __webpack_require__.d(__webpack_exports__, "UpmActions", function() {
+      return UpmActions;
+    }); /* harmony import */
+    var _http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./http */ "./src/actions/http.ts");
+    var UpmActions = /** @class */
+    (function() {
+      function UpmActions() {}
+      UpmActions.setTicket = function(code) {
+        return Object(_http__WEBPACK_IMPORTED_MODULE_0__["genHttpAction"])({
+          type: 'UPM_SET_TICKET',
+          url: '/pantheon/v1/upm/ticket',
+          method: 'POST',
+          data: {
+            code: code
+          },
+        });
+      };
+      return UpmActions;
+    }());
+	}),
+}]);
+```
+
 ### React.lazy原理 [需整理](https://github.com/liyongning/webpack-bundle-analysis)
 
 ### setState更新
