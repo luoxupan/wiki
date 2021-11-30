@@ -625,34 +625,35 @@ LoadPage(function() {
   return Promise.all([
     __webpack_require__.e(0),  /*! import() | layout_app */
     __webpack_require__.e("layout_app"),
-    __webpack_require__.e("async-vendors"),
   ]).then(__webpack_require__.bind(null, "./src/pages/app/app.tsx"));
 });
 ```
-`import('src/app.tsx')`会被单独打成一个chunks文件`http://xxx..com/assets/js/chunks/0_a0095e36.js`, 文件内容类似如下
+`import('src/app.tsx')`会被单独打成一个chunks文件`http://xxx.com/assets/js/chunks/layout_app_c25913c2.js`, 文件内容类似如下
 ```js
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[0], {
-  "./src/actions/upm.ts": (function(module, __webpack_exports__, __webpack_require__) {
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["layout_app"], {
+  "./src/pages/app/app.tsx":
+  /*!*******************************!*\
+    !*** ./src/pages/app/app.tsx ***!
+    \*******************************/
+  /*! exports provided: default */
+  /***/
+  (function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.r(__webpack_exports__); /* harmony export (binding) */
-    __webpack_require__.d(__webpack_exports__, "UpmActions", function() {
-      return UpmActions;
-    }); /* harmony import */
-    var _http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./http */ "./src/actions/http.ts");
-    var UpmActions = (function() {
-      function UpmActions() {}
-      UpmActions.setTicket = function(code) {
-        return Object(_http__WEBPACK_IMPORTED_MODULE_0__["genHttpAction"])({
-          type: 'UPM_SET_TICKET',
-          url: '/pantheon/v1/upm/ticket',
-          method: 'POST',
-          data: {
-            code: code
-          },
-        });
-      };
-      return UpmActions;
-    }());
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+    __webpack_require__.d(__webpack_exports__, "default", function() {
+      return App;
+    });
+    function App(props) {
+      var _this = this;
+      return (
+        react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: 'head-portrait'
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+          src: 'https://img0.didiglobal.com/static/gstar/img/XvsRAxSaPb1617940385585.png'
+        }))
+      );
+    }
   }),
 }]);
 ```
