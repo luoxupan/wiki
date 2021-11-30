@@ -630,7 +630,7 @@ LoadPage(function() {
 `import('src/app.tsx')`会被单独打成一个chunks文件`http://xxx..com/assets/js/chunks/0_a0095e36.js`, 文件内容类似如下
 ```js
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[0], {
-	"./src/actions/upm.ts": (function(module, __webpack_exports__, __webpack_require__) {
+  "./src/actions/upm.ts": (function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__); /* harmony export (binding) */
     __webpack_require__.d(__webpack_exports__, "UpmActions", function() {
@@ -651,7 +651,7 @@ LoadPage(function() {
       };
       return UpmActions;
     }());
-	}),
+  }),
 }]);
 ```
 
