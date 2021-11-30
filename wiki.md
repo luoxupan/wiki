@@ -614,8 +614,10 @@ function LoadPage(loader: any) {
     </React.Suspense>
   );
 }
+
+LoadPage(() => import('src/app.tsx'));
 ```
-### React.lazy原理
+### React.lazy原理 [需整理](https://github.com/liyongning/webpack-bundle-analysis)
 
 ### setState更新
 ```js
