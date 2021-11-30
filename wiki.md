@@ -637,8 +637,7 @@ LoadPage(function() {
       return UpmActions;
     }); /* harmony import */
     var _http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./http */ "./src/actions/http.ts");
-    var UpmActions = /** @class */
-    (function() {
+    var UpmActions = (function() {
       function UpmActions() {}
       UpmActions.setTicket = function(code) {
         return Object(_http__WEBPACK_IMPORTED_MODULE_0__["genHttpAction"])({
