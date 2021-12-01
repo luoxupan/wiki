@@ -617,7 +617,11 @@ function LoadPage(loader: any) {
 // 使用方式
 LoadPage(() => import('src/app.tsx'));
 ```
-### React.lazy原理 [需整理](https://github.com/liyongning/webpack-bundle-analysis)
+### React.lazy原理
+
+[需整理](https://github.com/liyongning/webpack-bundle-analysis)
+
+[import()懒加载例子](https://luoxupan.github.io/wiki/pages/page02/index.html)
 
 `LoadPage(() => import('src/app.tsx'));`会被webpack编译成如下代码
 ```js
