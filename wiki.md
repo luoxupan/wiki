@@ -622,7 +622,7 @@ LoadPage(() => import('src/app.tsx'));
 [需整理](https://github.com/liyongning/webpack-bundle-analysis)
 
 1. `React.lazy`：[React.lazy源代码](https://github.com/facebook/react/blob/main/packages/react/src/ReactLazy.js#L121)
-    1. 如果组件已经加载完成（`payload._status === Resolved`）直接返回
+    1. 如果组件已经加载完成（`payload._status === Resolved`）直接返回`return payload._result;`
     2. 如果组件未加载，`import('src/app.tsx');`加载文件，然后`throw payload._result`（叫thenable是Promise）
     3. 加载完成后将`resolved._result = defaultExport;`结果缓存起来, `resolved._status = Resolved;`
 2. `React.Suspense`：
