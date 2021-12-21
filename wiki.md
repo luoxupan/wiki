@@ -69,22 +69,42 @@ window.addEventListener('hashchange', (event) => {
 });
 ```
 ### 数组拍平
+
 ```js
-function flatDeep(arr, d = 1) {
-  return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
-               : arr.slice();
-};
-```
-```js
-function flatten(arr) {
-  while (arr.some((item) => Array.isArray(item))) {
-    // some返回true/false
-    arr = [].concat(...arr);
+function flat(arr) {
+  let ret = [];
+  for (let i = 0; i < arr.length; ++i) {
+    if (Array.isArray(arr[i])) {
+      let data = flat(arr[i]);
+      ret.push(...data);
+    } else {
+      ret.push(arr[i]);
+    }
   }
-  return arr;
-}
+  return ret;
+};
 let arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
-console.log(flatten(arr));
+console.log(flat(arr));
+```
+支持深度
+```js
+function flat(arr, d = 1) {
+  if (d <= 0) {
+    return arr.slice();
+  }
+  let ret = [];
+  for (let i = 0; i < arr.length; ++i) {
+    if (Array.isArray(arr[i])) {
+      let data = flat(arr[i], d - 1);
+      ret.push(...data);
+    } else {
+      ret.push(arr[i]);
+    }
+  }
+  return ret;
+};
+let arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
+console.log(flat(arr));
 ```
 
 ### useState倒计时
