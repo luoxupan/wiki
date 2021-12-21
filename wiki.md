@@ -76,14 +76,15 @@ function flat(arr) {
   for (let i = 0; i < arr.length; ++i) {
     if (Array.isArray(arr[i])) {
       let data = flat(arr[i]);
-      ret.push(...data);
+      // ret.push(...data);
+      Array.prototype.push.apply(ret, data);
     } else {
       ret.push(arr[i]);
     }
   }
   return ret;
 };
-let arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
+var arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
 console.log(flat(arr));
 ```
 支持深度
@@ -103,7 +104,7 @@ function flat(arr, d = 1) {
   }
   return ret;
 };
-let arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
+var arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
 console.log(flat(arr));
 ```
 
