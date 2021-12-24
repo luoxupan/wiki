@@ -287,6 +287,16 @@ const eleRef = React.useRef();
 inputRef.current.getData();
 ```
 
+### hooks获取上一次的state
+```js
+function usePreState(state) {
+  const ref = React.useRef(null as any);
+  React.useEffect(() => {
+    ref.current = state
+  }, [state]);
+  return ref.current;
+}
+```
 
 ### hooks模拟setState(stateChange[, callback])的callback
 
