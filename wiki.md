@@ -1170,6 +1170,92 @@ Object.keys({ s: undefined }); => ['s']
 一个对象可以使用另外一个对象的属性或者方法，就称之为继承。具体是通过将这个对象的原型设置为另外一个对象，这样根据原型链的规则，如果查找一个对象属性且在自身不存在时，就会查找另外一个对象，相当于一个对象可以使用另外一个对象的属性和方法了。
 
 继承代码
-```js
 
+Object.create() 会创建一个 “新” 对象，然后将此对象内部的 [[Prototype]] 关联到你指定的对象（Foo.prototype）。Object.create(null) 创建一个空 [[Prototype]] 链接的对象，这个对象无法进行委托。
+```js
+function Parent(name) {
+  this.name = name;
+}
+Parent.prototype.getName = function() {
+  return this.name;
+}
+
+// 继承属性，通过借用构造函数调用
+function Bar(name, label) {
+  Parent.call(this, name);
+  this.label = label;
+}
+
+// 继承方法，创建备份
+Bar.prototype = Object.create(Parent.prototype);
+// 必须设置回正确的构造函数，要不然在会发生判断类型出错
+Bar.prototype.constructor = Bar;
+
+// 必须在上一步之后
+Bar.prototype.getLabel = function() {
+  return this.label;
+}
+
+const bar = new Bar("a", "obj a");
+bar.getName(); // "a"
+bar.getLabel(); // "obj a"
 ```
+
+知道 ES6 的 Class 嘛？Static 关键字有了解吗？
+为这个类的函数对象直接添加方法，而不是加在这个函数对象的原型对象上
+
+深比较依赖
+```js
+import { isEqual } from 'lodash'; // 深比较
+export function useDeepCompareEffect(fn, deps) {
+  const trigger = React.useRef(0);
+  const prevDeps = React.useRef(deps);
+  if (!isEqual(prevDeps.current, deps)) {
+    trigger.current++;
+  }
+  prevDeps.current = deps;
+  return React.useEffect(fn, [trigger.current]);
+}
+```
+
+以 URL 为数据仓库
+https://mp.weixin.qq.com/s/G2PIkzmS10kwedioXhAAyw
+
+```js
+function useQuery() {
+  const history = useHistory();
+  const { search, pathname } = useLocation();
+  // 保存query状态
+  const queryState = React.useRef(qs.parse(search));
+  // 设置query
+  const setQuery = (handler) => {
+    const nextQuery = handler(queryState.current);
+    queryState.current = nextQuery;
+    // replace会使组件重新渲染
+    history.replace({
+      pathname: pathname,
+      search: qs.stringify(nextQuery),
+    });
+  };
+  return [queryState.current, setQuery];
+}
+```
+
+在组件中，可以这样使用：
+```js
+const [query, setQuery] = useQuery();
+
+// 接口请求依赖 page 和 size
+useEffect(() => {
+  api.getUsers();
+}, [query.page, query, size]);
+
+// 分页改变 触发接口重新请求
+const onPageChange = (page) => {
+  setQuery(prevQuery => ({
+    ...prevQuery,
+    page,
+  }));
+};
+```
+
