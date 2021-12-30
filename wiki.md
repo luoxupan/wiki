@@ -501,7 +501,7 @@ asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(() => {
 function asyncPool(poolLimit, array, iteratorFn) {
   let i = 0;
   const ret = [];
-  const executing = [];
+  const exec = [];
   const enqueue = function() {
     if (i === array.length) {
       return Promise.resolve();
@@ -513,10 +513,10 @@ function asyncPool(poolLimit, array, iteratorFn) {
     let r = Promise.resolve();
 
     if (poolLimit <= array.length) {
-      const e = p.then(() => executing.splice(executing.indexOf(e), 1));
-      executing.push(e);
-      if (executing.length >= poolLimit) {
-        r = Promise.race(executing);
+      p.then(() => exec.splice(exec.indexOf(p), 1));
+      exec.push(p);
+      if (exec.length >= poolLimit) {
+        r = Promise.race(exec);
       }
     }
 
@@ -525,9 +525,12 @@ function asyncPool(poolLimit, array, iteratorFn) {
   return enqueue().then(() => Promise.all(ret));
 }
 // 运行
-const timeout = i => new Promise(resolve => setTimeout(() => resolve(i), i));
-return asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(results => {
-  ...
+var timeout = i => new Promise(resolve => setTimeout(() => {
+  console.log(i);
+  resolve(i);
+}, i));
+asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(() => {
+  console.log('over!');
 });
 ```
 ### 连续子数组的和最大和
@@ -1291,3 +1294,6 @@ const onPageChange = (page) => {
 
 这四点再汇聚成一句话：**这孩子可以培养成自己人！**
 
+只要你在面试过程中向他展现了上面这四个特点，他会恨不得马上抓你去给他干活，因为他作为单位的顶梁柱通常相当累。
+
+记住，你要表达出来的就是上面这四个印象，所有的面试题的回答都要围绕这四点进行。
