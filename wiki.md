@@ -471,26 +471,30 @@ function new(func) {
 ```
 ### asyncPool
 ```js
-async function asyncPool(poolLimit, array, iteratorFn) {
+async function asyncPool(limit, array, iteratorFn) {
+  const exec = [];
   const ret = [];
-  const executing = [];
-  for (const item of array) {
-    const p = Promise.resolve().then(() => iteratorFn(item, array));
+  for (let i = 0; i < array.length; ++i) {
+    const p = Promise.resolve().then(() => iteratorFn(array[i]));
     ret.push(p);
-
-    if (poolLimit <= array.length) {
-      const e = p.then(() => executing.splice(executing.indexOf(e), 1));
-      executing.push(e);
-      if (executing.length >= poolLimit) {
-        await Promise.race(executing);
+    if (limit <= array.length) {
+      exec.push(p);
+      p.then(() => exec.splice(exec.indexOf(p), 1))
+      if (exec.length >= limit) {
+        await Promise.race(exec);
       }
     }
   }
   return Promise.all(ret);
 }
 // 运行
-const timeout = i => new Promise(resolve => setTimeout(() => resolve(i), i));
-const results = await asyncPool(2, [1000, 5000, 3000, 2000], timeout);
+var timeout = i => new Promise(resolve => setTimeout(() => {
+  console.log(i);
+  resolve(i);
+}, i));
+asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(() => {
+  console.log('over!');
+});
 ```
 
 ```js
