@@ -665,24 +665,24 @@ class Demo extends React.Component {
     this.setState({
       count: this.state.count + 1
     });
-    console.log(this.state.count)
+    console.log('this.state.count:1',this.state.count) // 0
     this.setState({
       count: this.state.count + 1
     });
-    console.log(this.state.count)
+    console.log('this.state.count:2',this.state.count) // 0
     setTimeout(() => {
       this.setState({
         count: this.state.count + 1
       });
-      console.log(this.state.count)
+      console.log('this.state.count:3',this.state.count) // 2
       this.setState({
         count: this.state.count + 1
       });
-      console.log(this.state.count)
+      console.log('this.state.count:4',this.state.count) // 3
     })
   }
   render() {
-    console.log('this.state.count:', this.state.count)
+    console.log('this.state.count:5', this.state.count) // 0,1,2,3
     return <h1>Hello, {this.state.count}</h1>;
   }
 }
