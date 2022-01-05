@@ -261,9 +261,14 @@ tranformMsg('@sds_4353ff_把九点半@nihao 第三方不仅是对', '把');
 })
 ```
 
-### Promise.all
+### [Promise.all](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
+
+返回一个Promise实例。
+
+1. 所有输入的promise的resolve回调都结束才返回
+2. 或者任何一个输入的promise的reject回调执行或者输入不合法的promise就会立即抛出错误
 ```js
-Promise.prototype.all = function(args) {
+Promise.all = function(args) {
   let index = 0
   const res = []
   return new Promise((resolve, reject) => {
@@ -290,17 +295,56 @@ Promise.prototype.all = function(args) {
 }
 ```
 
-### Promise.finally
+### [Promise.race](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
+
+返回一个 promise，一旦迭代器中的某个promise解决或拒绝，返回的 promise就会解决或拒绝。
+```js
+
+```
+
+### [Promise.any](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/any)
+
+接收一个Promise可迭代对象，只要其中的一个 promise 成功，就返回那个已经成功的 promise 。如果可迭代对象中没有一个 promise 成功（即所有的 promises 都失败/拒绝），就返回一个失败的 promise 和AggregateError类型的实例
+```js
+
+```
+
+### [Promise.resolve](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve)
+
+返回一个以给定值解析后的Promise 对象。如果这个值是一个 promise ，那么将返回这个 promise
+
+```js
+Promise.resolve = function(value) {
+  if (value instanceof Promise) {
+    return value;
+  }
+  return new Promise((resolve) => resolve(value));
+}
+```
+
+### [Promise.reject](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/reject)
+
+返回一个带有拒绝原因的Promise对象。
+
+```js
+Promise.reject = function(value) {
+  return new Promise((resolve, reject) => reject(value));
+}
+```
+
+### [Promise.prototype.finally](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally)
+
+finally() 方法返回一个Promise。在promise结束时，无论结果是fulfilled或者是rejected，都会执行指定的回调函数。
 ```js
 Promise.prototype.finally = function(onDone) {
   if (typeof onDone !== 'function') return this.then();
-  let Promise = this.constructor;
   return this.then(
-    value => Promise.resolve(onDone()).then(() => value),
-    reason => Promise.resolve(onDone()).then(() => { throw reason })
+    (value) => Promise.resolve(onDone()).then(() => value),
+    (reason) => Promise.resolve(onDone()).then(() => { throw reason })
   );
 }
-
+```
+```js
 Promise.resolve(4).finally(() => {
   console.log('finally')
 }).then((v) => {
@@ -310,18 +354,50 @@ Promise.resolve(4).finally(() => {
 new Promise((resolve, reject) => {
   resolve(4);
 }).then((v) => {
-  console.log(v);
+  console.log(v); // 4
 });
 
 try {
   Promise.reject().then(() => {
-    console.log('======');
+    console.log('======'); // 不会执行
     return Promise.resolve(3)
   }).catch(() => {
-    console.log('===catch===');
+    console.log('===catch==='); // 执行
   })
 } catch (error) {
-  console.log('error:', error);
+  console.log('error:', error); // 不会执行
+}
+```
+
+### [Promise.allSettled](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
+
+该Promise.allSettled()方法返回一个在所有给定的promise都已经fulfilled或rejected后的promise，并带有一个对象数组，每个对象表示对应的promise结果。
+```js
+Promise.allSettled = function(args) {
+  return new Promise((resolve, reject) => {
+    const n = args.length;
+    const ret = [];
+    let count = 0;
+    if (n === 0) {
+      resolve(ret);
+    } else {
+      for (let i = 0; i < n; i++) {
+        Promise.resolve(args[i]).then((value) => {
+          ret[i] = { status:'fulfilled', value };
+          count++;
+          if (count === n) {
+            resolve(ret);
+          }
+        }, (reason) => {
+          ret[i] = { status:'rejected', reason };
+          count++;
+          if (count === n) {
+            resolve(ret);
+          }
+        });
+      }
+    }
+  });
 }
 ```
 
