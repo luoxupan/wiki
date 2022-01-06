@@ -775,6 +775,172 @@ Func.b(); // b
 (new Func()).b(); // c 报错
 ```
 
+### 实现一个find函数，并且find函数能够满足下列条件
+```js
+// title数据类型为string|null
+// userId为主键，数据类型为number
+
+// 原始数据
+const data = [
+  {userId: 8, title: 'title1'},
+  {userId: 11, title: 'other'},
+  {userId: 15, title: null},
+  {userId: 19, title: 'title2'}
+];
+
+// 查找data中，符合条件的数据，并进行排序
+const result = find(data).where({
+  "title": /\d$/
+}).orderBy('userId', 'desc');
+
+// 输出
+[{ userId: 19, title: 'title2'}, { userId: 8, title: 'title1' }];
+```
+> jQuery链式调用是通过return this的形式来实现的
+```js
+const Student = function() {};
+Student.prototype.setMathScore = function(age){
+  this.math = math; 
+  return this;
+}
+Person.prototype.setEnglishScore = function(weight){
+  this.english = english; 
+  return this;
+}
+Person.prototype.getMathAndEnglish = function(){
+  return `{math: ${this.math}, english: ${this.english}}`;
+}
+
+const student = new Student();
+const score = student.setMathScore(130).setEnglishScore(118).getMathAndEnglish();
+console.log(score); // {math: 130, english: 118}
+```
+> 解答
+```js
+function find(origin) {
+  return {
+   data: origin,
+    where: function(searchObj) {
+     const keys = Reflect.ownKeys(searchObj)
+        for (let i = 0; i < keys.length; i++) {
+          this.data = this.data.filter(item => searchObj[keys[i]].test(item[keys[i]]))
+        }
+       return find(this.data);
+    },
+    orderBy: function(key, sorter) {
+      this.data.sort((a, b) => {
+        return sorter === 'desc' ? b[key] - a[key] : a[key] - b[key]
+      })
+      return this.data;
+    }
+  };
+}
+```
+
+### 对象的深度比较
+> 已知有两个对象obj1和obj2，实现isEqual函数判断对象是否相等
+```js
+const obj1 = {
+  a: 1,
+  c: 3,
+  b: {
+    c: [1, 2]
+  }
+}
+const obj2 = {
+  c: 4,
+  b: {
+    c: [1, 2]
+  },
+  a: 1
+}
+
+// isEqual函数，相等输出true，不相等输出false
+isEqual(obj1, obj2)
+```
+> 解答
+```js
+// 答案仅供参考
+// 更详细的解答建议参考Underscore源码[https://github.com/lessfish/underscore-analysis/blob/master/underscore-1.8.3.js/src/underscore-1.8.3.js#L1094-L1190](https://github.com/lessfish/underscore-analysis/blob/master/underscore-1.8.3.js/src/underscore-1.8.3.js#L1094-L1190)
+function isEqual(A, B) {
+  const keysA = Object.keys(A)
+  const keysB = Object.keys(B)
+  // 健长不一致的话就更谈不上相等了
+  if (keysA.length !== keysB.length) return false
+
+  for (let i = 0; i < keysA.length; i++) {
+    const key = keysA[i]
+
+    // 类型不等的话直接就不相等了
+    if (typeof A[key] !== typeof B[key]) return false
+
+    // 当都不是对象的时候直接判断值是否相等
+    if (typeof A[key] !== 'object' && typeof B[key] !== 'object' && A[key] !== B[key]) {
+      return false
+    }
+
+    if (Array.isArray(A[key]) && Array.isArray(B[key])) {
+      if (!arrayEqual(A[key], B[key])) return false
+    }
+
+    // 递归判断
+    if (typeof A[key] === 'object' && typeof B[key] === 'object') {
+      if (!isEqual(A[key], B[key])) return false
+    }
+  }
+    return true;
+}
+
+function arrayEqual(arr1, arr2) {
+  if (arr1.length !== arr2.length) return false
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) return false
+  }
+  return true
+}
+isEqual(obj1, obj2)
+```
+
+### 判断JS对象是否存在循环引用
+```js
+const obj = {
+ a: 1,
+ b: 2,
+}
+
+obj.c = obj
+
+// isHasCircle函数， 存在环输出true，不存在的话输出false
+isHasCircle(obj)
+```
+> 解答
+```js
+function isHasCircle(obj) {
+  let hasCircle = false
+  const map = new Map()
+
+  function loop(obj) {
+    const keys = Object.keys(obj)
+
+    keys.forEach(key => {
+      const value = obj[key]
+      if (typeof value == 'object' && value !== null) {
+        if (map.has(value)) {
+          hasCircle = true
+          return
+        } else {
+          map.set(value)
+          loop(value)
+        }
+      }
+    })
+  }
+
+  loop(obj)
+  return hasCircle
+}
+```
+
 ### flex:1; 具体是什么 [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#flex%E5%B8%83%E5%B1%80)
 
 ### 事件机制 [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)
