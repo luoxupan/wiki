@@ -1,4 +1,4 @@
-**努力工作 尽力协调 不卑不亢 做好自己**
+**努力工作，尽力协调，不卑不亢，做好自己。**
 
 ### [公务员面试](https://mp.weixin.qq.com/s/xO6_rDvsuEVPGazfxVulWw)
 
