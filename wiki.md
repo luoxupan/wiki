@@ -941,6 +941,60 @@ function isHasCircle(obj) {
 }
 ```
 
+### 深比较依赖
+```js
+import { isEqual } from 'lodash'; // 深比较
+export function useDeepCompareEffect(fn, deps) {
+  const trigger = React.useRef(0);
+  const prevDeps = React.useRef(deps);
+  if (!isEqual(prevDeps.current, deps)) {
+    trigger.current++;
+  }
+  prevDeps.current = deps;
+  return React.useEffect(fn, [trigger.current]);
+}
+```
+
+### 以URL为数据仓库 [https://mp.weixin.qq.com/s/G2PIkzmS10kwedioXhAAyw](https://mp.weixin.qq.com/s/G2PIkzmS10kwedioXhAAyw)
+
+```js
+function useQuery() {
+  const history = useHistory();
+  const { search, pathname } = useLocation();
+  // 保存query状态
+  const queryState = React.useRef(qs.parse(search));
+  // 设置query
+  const setQuery = (handler) => {
+    const nextQuery = handler(queryState.current);
+    queryState.current = nextQuery;
+    // replace会使组件重新渲染
+    history.replace({
+      pathname: pathname,
+      search: qs.stringify(nextQuery),
+    });
+  };
+  return [queryState.current, setQuery];
+}
+```
+
+在组件中，可以这样使用：
+```js
+const [query, setQuery] = useQuery();
+
+// 接口请求依赖 page 和 size
+useEffect(() => {
+  api.getUsers();
+}, [query.page, query, size]);
+
+// 分页改变 触发接口重新请求
+const onPageChange = (page) => {
+  setQuery(prevQuery => ({
+    ...prevQuery,
+    page,
+  }));
+};
+```
+
 ### flex:1; 具体是什么 [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#flex%E5%B8%83%E5%B1%80)
 
 ### 事件机制 [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)
@@ -1343,14 +1397,6 @@ typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symb
    - react 用的时候怎么减少不必要的渲染、怎么提高性能？
 5. 说一下 fiber 的节点遍历顺序
 
-第二个要命的问题，就是我发现自己在每一次事变里都不是核心成员。
-大家可以想象，一个想要从原来的单位出走自立的团队，其核心成员一定事先密谋了很久，等一切准备就绪了才会行动。
-举例来说，在上一个单位，我的同桌，就是和我坐相邻工位的同事，我们关系一直很好，我也以为我们和领导的亲密关系也是完全一样的，但事实是，离职创业这件事他从头到尾都在参与，领导最早就跟他通了气，而我是到了最后，事情几乎就已经发生了才知道内情的。
-我的业务能力是明显在这个小伙伴之上的，这只能说明，在领导眼中，他是更嫡系、更可靠的，是一定会跟他走的，而对我，其实没那么放心。
-但平时我们可是永远都一起喝酒一起称兄道弟的。因为确实都是好兄弟，我时候也问他们这个问题了，领导说其实也很简单，没什么复杂的，就是喝酒时我这个小伙伴说过，领导要是创业什么的他随时都会跟着走。
-而我，虽然心里是这么想的，但没说出口过。
-这里敲黑板了哈，有年轻同学们看到，可以吸取点教训，有些话要说出来，有些感情要表达，有些真心，你不说出来别人是真的get不到的。
-
 
 
 
@@ -1406,134 +1452,6 @@ bar.getLabel(); // "obj a"
 知道 ES6 的 Class 嘛？Static 关键字有了解吗？
 为这个类的函数对象直接添加方法，而不是加在这个函数对象的原型对象上
 
-深比较依赖
-```js
-import { isEqual } from 'lodash'; // 深比较
-export function useDeepCompareEffect(fn, deps) {
-  const trigger = React.useRef(0);
-  const prevDeps = React.useRef(deps);
-  if (!isEqual(prevDeps.current, deps)) {
-    trigger.current++;
-  }
-  prevDeps.current = deps;
-  return React.useEffect(fn, [trigger.current]);
-}
-```
 
-以 URL 为数据仓库
-https://mp.weixin.qq.com/s/G2PIkzmS10kwedioXhAAyw
-
-```js
-function useQuery() {
-  const history = useHistory();
-  const { search, pathname } = useLocation();
-  // 保存query状态
-  const queryState = React.useRef(qs.parse(search));
-  // 设置query
-  const setQuery = (handler) => {
-    const nextQuery = handler(queryState.current);
-    queryState.current = nextQuery;
-    // replace会使组件重新渲染
-    history.replace({
-      pathname: pathname,
-      search: qs.stringify(nextQuery),
-    });
-  };
-  return [queryState.current, setQuery];
-}
-```
-
-在组件中，可以这样使用：
-```js
-const [query, setQuery] = useQuery();
-
-// 接口请求依赖 page 和 size
-useEffect(() => {
-  api.getUsers();
-}, [query.page, query, size]);
-
-// 分页改变 触发接口重新请求
-const onPageChange = (page) => {
-  setQuery(prevQuery => ({
-    ...prevQuery,
-    page,
-  }));
-};
-```
-
-
-[https://mp.weixin.qq.com/s/xO6_rDvsuEVPGazfxVulWw](https://mp.weixin.qq.com/s/xO6_rDvsuEVPGazfxVulWw)
-
-考官们是谁呢？
-
-都是公务员。
-
-准确的说，都是领导干部。（主力是处级干部，少数科级）
-
-这个级别的干部是一个什么样的存在呢？
-
-1、他们是高层往基层的关键过渡者。
-
-2、他们是最熟悉一项任务从无到有是怎样做出来的的群体。
-
-3、他们最知道往上汇报的时候用怎样的方式方法。
-
-**总之，很多培训公司教给你的课程，糊弄不了这帮人，说实话隔行如隔山，外行教的一眼就会被看穿。**
-
-**他们通常能够在三分钟内清晰看出你的价值。**
-
-对这个群体，打动他们你要有怎样的素质呢？
-
-**1、这孩子有人品。**
-
-**2、这孩子懂规矩。**
-
-**3、这孩子会干活。**
-
-**4、这孩子能扛事。**
-
-这四点再汇聚成一句话：**这孩子可以培养成自己人！**
-
-只要你在面试过程中向他展现了上面这四个特点，他会恨不得马上抓你去给他干活，因为他作为单位的顶梁柱通常相当累。
-
-记住，你要表达出来的就是上面这四个印象，所有的面试题的回答都要围绕这四点进行。
-
-比如说这道题：**主管领导和直属领导巨大矛盾导致工作传导不清以至于完成的不好，同事小李一直消极怠工趁机还说你坏话，这项工作有经济利益家里亲戚让你帮忙给走走后门，此项工作涉及到了舆情问题老百姓来上访群情激奋，面对这个危机，你咋办？**
-
-一道题考察了四种关系，全都在对你进行围追堵截，还涉及到了棘手的突发事件。
-
-看似杂乱无章，其实还是刚才那个思路。
-
-一、对领导，我们脑子中要迅速闪过下面的这几个要点：**尊重、理解、学习、服从、请示、汇报、保密、维护。**
-
-我们要学习领导的优良素养与传统 **（尊重、学习）**，坚决不介入到领导的矛盾之中 **（尊重、理解）**，做到听话不传话，不激化扩大矛盾 **（保密）**，对外维护领导和本单位在外面的权威 **（维护）**。 **（自己在训练中自己对上述的关键词进行展开说明）**
-
-**注意，领导们之间的矛盾，你可千万别傻不愣登的去劝。**
-
-再延伸些，如果题目中明确的说领导安排你干一件事，但这事是错的，让你去跳火坑，你咋办？
-
-你要说领导也不是完人 **（尊重）** ，偶尔也会有失误 **（理解）**，我作为领导的下属，本着对领导、对单位负责的态度，有义务和责任给领导提供有价值的信息，供领导做出科学的、客观的判断，相信领导会做出改变。 **(请示、汇报）**
-
-**如果领导不改变，不涉及原则性的问题，我要坚决执行。（服从）**
-
-如果此事涉及原则性的错误，我会按照相应的规章制度进行处理。（体现出你尊重、理解领导，你说话很委婉）
-
-千万别说啥向上级领导反应，向巡视组反应的话！一句 **“按照相应的规章制度进行处理”** 就可以了。
-
-你要是把考官说的一身汗你就离死不远了。
-
-二、对同事，我们要迅速闪过下面几个要点：**尊重、理解、学习、团结、合作。**
-
-我要冷静自己的心情，不能激化矛盾，看看是不是自己的看法有误 **（尊敬、理解）**，如果真的存在消极怠工和背后诋毁的现象，也要本着顾全大局的合作、尊重的原则，在只有两人在的时候和小李进行沟通 **（尊敬、团结、合作）**，相信他一定会有所改变的。
-
-记住，千万也别傻不愣登的说他要是不改咋办，他一定会改！他一定会合作！
-
-所有的面试回答一定要建立在你做出完美反应后对方会被你搞定的前提下。
-
-**人家看的是你的人品，听的是你的工作思路，不是来看你斗争到底的。**
-
-三、对亲戚朋友，我们要**尊重、理解**他们的诉求，但是要本着**坚定原则**的前提下，向他们讲明白政策要求，并坚定的**公事公办**，相信他们会理解的。
-
-还是那句话，亲戚一定会理解，不理解的就不是你们家亲戚。
 
 
