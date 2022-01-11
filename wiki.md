@@ -1077,7 +1077,10 @@ webpack有哪些事件
 5. micro-task大概包括: process.nextTick, Promise, Object.observe(已废弃), MutationObserver(html5新特性)
 6. setTimeout/Promise等我们称之为任务源。来自不同任务源的任务会进入到不同的任务队列，而进入任务队列的是他们指定的具体执行任务。
 7. 异步任务首先到**Event Table**进行回调函数注册。当异步任务的触发条件满足，将回调函数从**Event Table**压入**Event Queue**中。
-8. **Event Loop执行顺序**
+8. eg:
+   - setTimeout(cb, 1000)，当1000ms后，就将cb压入Event Queue。
+   - ajax(请求条件, cb)，当http请求发送成功后，cb压入Event Queue。
+9. **Event Loop执行顺序**
    - 宏任务：DOM渲染后触发，如setTimeout
    - 微任务：DOM渲染前触发，如Promise
 
