@@ -1076,10 +1076,11 @@ webpack有哪些事件
 4. macro-task大概包括: script(整体代码), setTimeout, setInterval, setImmediate, I/O, UI rendering。
 5. micro-task大概包括: process.nextTick, Promise, Object.observe(已废弃), MutationObserver(html5新特性)
 6. setTimeout/Promise等我们称之为任务源。来自不同任务源的任务会进入到不同的任务队列，而进入任务队列的是他们指定的具体执行任务。
-7. **evenloop执行顺序**
+7. 异步任务首先到**Event Table**进行回调函数注册。当异步任务的触发条件满足，将回调函数从**Event Table**压入**Event Queue**中。
+8. **Event Loop执行顺序**
    - 宏任务：DOM渲染后触发，如setTimeout
    - 微任务：DOM渲染前触发，如Promise
-  
+
 ### CommonJS 和 ES6 中模块引入的区别？
 1. CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
 2. CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
