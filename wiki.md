@@ -1062,10 +1062,10 @@ class EventEmitter {
 // 测试
 let eventBus = new EventEmitter()
 let fn1 = function(name, age) {
-	console.log(`${name} ${age}`)
+  console.log(`${name} ${age}`)
 }
 let fn2 = function(name, age) {
-	console.log(`hello, ${name} ${age}`)
+  console.log(`hello, ${name} ${age}`)
 }
 eventBus.on('type1', fn1);
 eventBus.on('type1', fn2);
