@@ -1014,14 +1014,16 @@ const onPageChange = (page) => {
 1. `Object.defineProperty`只能逐个字段订阅
 2. 不能监听数组变化。vue通过重写数组方法和改变当前数组`__proto__`指向监听数组变化。
 ```js
+var obj = {};
 Object.defineProperty(obj, 'text', {
   get: function() {
-    console.log('get val');&emsp;
+    console.log('get val');
   },
   set: function(newVal) {
     console.log('set val:' + newVal);
   }
 });
+obj.text = 'TXT';
 ```
 #### Proxy
 1. Proxy可以直接监听对象而非某个属性。
