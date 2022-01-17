@@ -365,7 +365,7 @@ try {
     console.log('===catch==='); // 执行
   })
 } catch (error) {
-  console.log('error:', error); // 不会执行
+  console.log('error:', error); // 不会执行。错误被Promise内部吃掉了。
 }
 ```
 
@@ -399,6 +399,26 @@ Promise.allSettled = function(args) {
     }
   });
 }
+```
+
+### JS异步错误捕获
+
+> 这段代码中，setTimeout 的回调函数抛出一个错误，并不会在 catch 中捕获，会导致程序直接报错崩掉。
+
+main是无法catch error的。当异步task取出执行的时候，main的栈已经退出了，也就是上下文环境已经改变，所以main无法捕获task的错误。
+
+```js
+function main() {
+  try {
+    setTimeout(() => {
+      throw new Error('async error')
+    }, 1000)
+  } catch(e) {
+    console.log(e, 'err')
+    console.log('continue...')
+  }
+}
+main();
 ```
 
 ### 节流(throttle)：在n秒内只执行一次func
