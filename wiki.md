@@ -447,6 +447,13 @@ Function.prototype.bind2 = function(context) {
     _this.apply(context, [...args.slice(1), ...arguments]);
   }
 }
+
+// 测试用例
+function func(key) {
+  console.log('log:', this[key]);
+}
+var fn = func.bind2({ a: 55 }, 'a');
+fn();
 ```
 ### call
 ```js
@@ -458,6 +465,12 @@ Function.prototype.call2 = function(context) {
   delete context.fn;
   return res;
 }
+
+// 测试用例
+function func(key) {
+  console.log('log:', this[key]);
+}
+func.call2({ a: 44 }, 'a');
 ```
 ### instanceof
 ```js
