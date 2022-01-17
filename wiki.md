@@ -1008,6 +1008,39 @@ const onPageChange = (page) => {
 };
 ```
 
+### Object.defineProperty和Proxy区别
+
+#### Object.defineProperty
+1. `Object.defineProperty`只能逐个字段订阅
+2. 不能监听数组变化。vue通过重写数组方法和改变当前数组`__proto__`指向监听数组变化。
+```js
+Object.defineProperty(obj, 'text', {
+  get: function() {
+    console.log('get val');&emsp;
+  },
+  set: function(newVal) {
+    console.log('set val:' + newVal);
+  }
+});
+```
+#### Proxy
+1. Proxy可以直接监听对象而非某个属性。
+2. Proxy可以直接监听数组的变化。
+```js
+var arr = [1, 2, 3];
+var newArr = new Proxy(arr, {
+  get: function(target, key, receiver) {
+    console.log('key:', key);
+    return Reflect.get(target, key, receiver);
+  },
+  set: function(target, key, value, receiver) {
+    console.log('set:', target, key, value, receiver);
+    return Reflect.set(target, key, value, receiver);
+  },
+});
+newArr.push(6);
+```
+
 ### flex:1; 具体是什么 [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#flex%E5%B8%83%E5%B1%80)
 
 ### 事件机制 [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)
