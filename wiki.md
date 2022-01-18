@@ -297,21 +297,53 @@ Promise.all = function(args) {
 
 ### [Promise.race](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
 
-返回一个 promise，一旦迭代器中的某个promise解决或拒绝，返回的 promise就会解决或拒绝。
+返回一个promise，一旦迭代器中的某个promise解决或拒绝，返回的promise就会解决或拒绝。
 ```js
-
+Promise.race = function(args) {
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < args.length; i++) {
+      // 用Promise.resolve是考虑到参数可能是一个非Promise的变量
+      Promise.resolve(args[i]).then(
+        (value) => {
+          resolve(value);
+        },
+        (reason) => {
+          reject(reason)
+        },
+      )
+    }
+  })
+}
 ```
 
 ### [Promise.any](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/any)
 
-接收一个Promise可迭代对象，只要其中的一个 promise 成功，就返回那个已经成功的 promise 。如果可迭代对象中没有一个 promise 成功（即所有的 promises 都失败/拒绝），就返回一个失败的 promise 和AggregateError类型的实例
+接收一个Promise可迭代对象，只要其中的一个promise成功，就返回那个已经成功的promise。如果可迭代对象中没有一个promise成功（即所有的promises都失败/拒绝），就返回一个失败的promise和AggregateError类型的实例。
 ```js
-
+Promise.any = function(args) {
+  let index = 0;
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < args.length; i++) {
+      // 用Promise.resolve是考虑到参数可能是一个非Promise的变量
+      Promise.resolve(args[i]).then(
+        (value) => {
+          resolve(value);
+        },
+        (reason) => {
+          index++;
+          if (index === args.length) {
+            reject(new AggregateError('All promises were rejected'));
+          }
+        },
+      )
+    }
+  })
+}
 ```
 
 ### [Promise.resolve](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve)
 
-返回一个以给定值解析后的Promise 对象。如果这个值是一个 promise ，那么将返回这个 promise
+返回一个以给定值解析后的Promise对象。如果这个值是一个promise，那么将返回这个promise。
 
 ```js
 Promise.resolve = function(value) {
@@ -371,7 +403,7 @@ try {
 
 ### [Promise.allSettled](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
 
-该Promise.allSettled()方法返回一个在所有给定的promise都已经fulfilled或rejected后的promise，并带有一个对象数组，每个对象表示对应的promise结果。
+该Promise.allSettled方法返回一个在所有给定的promise都已经fulfilled或rejected后的promise，并带有一个对象数组，每个对象表示对应的promise结果。
 ```js
 Promise.allSettled = function(args) {
   return new Promise((resolve, reject) => {
