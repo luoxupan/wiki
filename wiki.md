@@ -324,7 +324,7 @@ Promise.resolve = function(value) {
 
 ### [Promise.reject](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/reject)
 
-返回一个带有拒绝原因的Promise对象。
+返回一个带有拒绝原因的Promise对象。Promise.resolve不同的是，如果给Promise.reject传递一个Promise对象，则这个对象会成为新 Promise的值。
 
 ```js
 Promise.reject = function(value) {
