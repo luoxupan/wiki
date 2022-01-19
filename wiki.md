@@ -982,7 +982,7 @@ isHasCircle(obj)
 ```js
 function isHasCircle(obj) {
   let hasCircle = false
-  const map = new Map()
+  const set = new Set()
 
   function loop(obj) {
     const keys = Object.keys(obj)
@@ -990,11 +990,11 @@ function isHasCircle(obj) {
     keys.forEach(key => {
       const value = obj[key]
       if (typeof value == 'object' && value !== null) {
-        if (map.has(value)) {
+        if (set.has(value)) {
           hasCircle = true
           return
         } else {
-          map.set(value)
+          set.add(value)
           loop(value)
         }
       }
