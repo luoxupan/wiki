@@ -162,6 +162,7 @@ console.log(add(1,2,3)(4)); // 10
 
 ### 深拷贝
 ```js
+// 如果有循环引用情况呢？
 function deepCopy(data) {
   var ret = data;
   if (Array.isArray(data)) {
@@ -173,6 +174,46 @@ function deepCopy(data) {
     Object.keys(data).forEach(key => ret[key] = deepCopy(data[key]));
   }
   return ret;
+}
+```
+
+### 判断JS对象是否存在循环引用
+```js
+const obj = {
+ a: 1,
+ b: 2,
+}
+
+obj.c = obj
+
+// isHasCircle函数， 存在环输出true，不存在的话输出false
+isHasCircle(obj)
+```
+> 解答
+```js
+function isHasCircle(obj) {
+  let hasCircle = false
+  const set = new Set()
+
+  function loop(obj) {
+    const keys = Object.keys(obj)
+
+    keys.forEach(key => {
+      const value = obj[key]
+      if (typeof value == 'object' && value !== null) {
+        if (set.has(value)) {
+          hasCircle = true
+          return
+        } else {
+          set.add(value)
+          loop(value)
+        }
+      }
+    })
+  }
+
+  loop(obj)
+  return hasCircle
 }
 ```
 
@@ -964,46 +1005,6 @@ function arrayEqual(arr1, arr2) {
   return true
 }
 isEqual(obj1, obj2)
-```
-
-### 判断JS对象是否存在循环引用
-```js
-const obj = {
- a: 1,
- b: 2,
-}
-
-obj.c = obj
-
-// isHasCircle函数， 存在环输出true，不存在的话输出false
-isHasCircle(obj)
-```
-> 解答
-```js
-function isHasCircle(obj) {
-  let hasCircle = false
-  const set = new Set()
-
-  function loop(obj) {
-    const keys = Object.keys(obj)
-
-    keys.forEach(key => {
-      const value = obj[key]
-      if (typeof value == 'object' && value !== null) {
-        if (set.has(value)) {
-          hasCircle = true
-          return
-        } else {
-          set.add(value)
-          loop(value)
-        }
-      }
-    })
-  }
-
-  loop(obj)
-  return hasCircle
-}
 ```
 
 ### 深比较依赖
