@@ -51,6 +51,14 @@ console.log(str);
 
 ----
 
+## Webpack `Tree Shaking`
+
+1. 保证代码是es module, @babel/preset-env的modules设置为false（防止webpack把代码编译成CommonJS规范）
+2. 将webpack的optimization.usedExports设置为true, production环境默认设置为true（webpack编译时在代码里打上“unused harmony export ***”标记）
+3. webpack将代码压缩的时候（mode为"production"自动压缩）会把标记为“unused harmony export ***”的代码删除
+
+----
+
 ## import moduleName from 'xxModule'和import('xxModule')经过webpack编译打包后最终变成了什么？在浏览器中是怎么运行的？
 
 - import经过webpack打包以后变成一些Map对象，key为模块路径，value为模块的可执行函数；
