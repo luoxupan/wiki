@@ -889,21 +889,27 @@ const result = find(data).where({
 > jQuery链式调用是通过return this的形式来实现的
 ```js
 var Student = function() {};
-Student.prototype.setMathScore = function(math){
+Student.prototype.where = function(math){
   this.math = math; 
   return this;
 }
-Student.prototype.setEnglishScore = function(english){
+Student.prototype.orderBy = function(english){
   this.english = english; 
   return this;
 }
-Student.prototype.getMathAndEnglish = function(){
+Student.prototype.getData = function(){
   return `{math: ${this.math}, english: ${this.english}}`;
 }
 
 var student = new Student();
-var score = student.setMathScore(130).setEnglishScore(118).getMathAndEnglish();
+var score = student.where(130).orderBy(118).getData();
 console.log(score); // {math: 130, english: 118}
+
+// 也可以这样
+function find() {
+  return new Student();
+}
+find().where(130).orderBy(118).getData();
 ```
 > 解答
 ```js
