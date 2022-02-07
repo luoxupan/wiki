@@ -1220,10 +1220,39 @@ webpack循环引用配置
 webpack有哪些事件
 
 
-### setTimeout 后面的时间指的是什么意思？
+### setTimeout 后面的时间指的是什么意思？[第二个参数的含义](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop#%E6%B7%BB%E5%8A%A0%E6%B6%88%E6%81%AF)
 
-函数 setTimeout 接受两个参数：待加入队列的消息和一个时间值（可选，默认为 0）。
-这个时间值代表了消息被实际加入到队列的最小延迟时间
+> 第二个参数默认(最小值)为1ms
+
+函数 setTimeout 接受两个参数：待加入队列的消息和一个时间值（可选，默认为 0）。**这个时间值代表了消息被实际加入到队列的最小延迟时间**。如果队列中没有其它消息并且栈为空，在这段延迟时间过去之后，消息会被马上处理。但是，如果有其它消息，setTimeout 消息必须等待其它消息处理完。因此第二个参数仅仅表示最少延迟时间，而非确切的等待时间。
+
+下面的例子演示了这个概念（setTimeout 并不会在计时器到期之后直接执行）：
+```js
+const s = new Date().getSeconds();
+
+setTimeout(function() {
+  // 输出 "2"，表示回调函数并没有在 2000 毫秒之后立即执行
+  console.log("Ran after " + (new Date().getSeconds() - s) + " seconds");
+}, 2000);
+
+while(true) {
+  if(new Date().getSeconds() - s >= 5) {
+    console.log("Good, looped for 2 seconds");
+    break;
+  }
+}
+/**
+ * 上述代码是怎么执行的:
+ * 1. 回调函数进入Event Table并注册,计时开始。
+ * 2. 执行while代码，很慢，非常慢，计时仍在继续。
+ * 3. 2秒到了，计时事件timeout完成，回调函数进入Event Queue，但是while代码也太慢了吧，还没执行完，只好等着。
+ */
+```
+
+### setInterval
+
+上面说完了`setTimeout`，当然不能错过它的孪生兄弟`setInterval`。他俩差不多，只不过后者是循环的执行。对于执行顺序来说，`setInterval`会每隔指定的时间将注册的函数置入Event Queue，如果前面的任务耗时太久，那么同样需要等待。
+唯一需要注意的一点是，对于`setInterval(fn,ms)`来说，我们已经知道不是每过ms秒会执行一次fn，而是每过ms秒，会有fn进入Event Queue。 **一旦setInterval的回调函数fn执行时间超过了延迟时间ms，那么就完全看不出来有时间间隔了。** 这句话请读者仔细品味。
 
 ### 事件循环机制
 1. 由于JavaScript执行代码的是单线程
