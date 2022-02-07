@@ -238,7 +238,7 @@ function delegate(element, targetSelector, type, handler) {
   var
     docEl = document.documentElement,
     resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-    scale = 1 / window.devicePixelRatio,
+    scale = 1 / window.devicePixelRatio, // iPhone的 devicePixelRatio==2，而 border-width: 1px; 描述的是设备独立像素，所以，border被放大到物理像素2px显示，在iPhone上就显得较粗。
     recalc = function() {
       var uiWidth = 1080; // 设计稿的尺寸是1080
       var clientWidth = docEl.clientWidth;
@@ -254,6 +254,17 @@ function delegate(element, targetSelector, type, handler) {
 })();
 ```
 ### rem布局中，1px像素处理: https://www.cnblogs.com/sonechao/p/14822241.html
+
+> 为什么会有1px问题
+
+要处理这个问题，必须先补充一个知识点，就是设备的 **物理像素[设备像素] & 逻辑像素[CSS像素]**。
+
+- 物理像素：移动设备出厂时，不同设备自带的不同像素，也称硬件像素。
+- 逻辑像素：css中记录的像素。
+
+在开发中，为什么移动端CSS里面写了1px，实际上看起来比1px粗；了解设备物理像素和逻辑像素的同学应该很容易理解，其实这两个px的含义其实是不一样的，**UI设计师要求的1px是指设备的物理像素1px，而CSS里记录的像素是逻辑像素**，它们之间存在一个比例关系，通常可以用 javascript 中的 `window.devicePixelRatio` 来获取，也可以用媒体查询的 `-webkit-min-device-pixel-ratio` 来获取。当然，比例多少与设备相关。
+
+在手机上border无法达到我们想要的效果。这是因为 `devicePixelRatio` 特性导致，iPhone的 `devicePixelRatio==2`，而 `border-width: 1px;` 描述的是设备独立像素，所以，border被放大到物理像素`2px`显示，在iPhone上就显得较粗。
 
 ### 正则匹配替换
 ```js
