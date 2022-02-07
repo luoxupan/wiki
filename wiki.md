@@ -748,8 +748,8 @@ maxSubNum([2,-3,3,50]);
 ### React.lazy
 ```js
 function LoadPage(loader: any) {
-  const Com = React.lazy(loader);
   // 已经Resolved了（已经加载完毕）则直接返回,否则将通过 throw 将 thenable 抛出到上层
+  const Com = React.lazy(loader);
   const Loading = (
     <Spin />
   );
@@ -779,7 +779,7 @@ LoadPage(() => import('src/app.tsx'));
 
 [import()懒加载例子](https://luoxupan.github.io/wiki/pages/page02/index.html)
 
-`LoadPage(() => import('src/app.tsx'));`会被webpack编译成如下代码
+`LoadPage(() => import('src/pages/app/app.tsx'));`会被webpack编译成如下代码
 ```js
 LoadPage(function() {
   return Promise.all([
