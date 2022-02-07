@@ -888,28 +888,24 @@ const result = find(data).where({
 ```
 > jQuery链式调用是通过return this的形式来实现的
 ```js
-var Student = function() {};
-Student.prototype.where = function(math){
+var Find = function() {};
+Find.prototype.where = function(math) {
   this.math = math; 
   return this;
 }
-Student.prototype.orderBy = function(english){
+Find.prototype.orderBy = function(english) {
   this.english = english; 
   return this;
 }
-Student.prototype.getData = function(){
+Find.prototype.getData = function() {
   return `{math: ${this.math}, english: ${this.english}}`;
 }
 
-var student = new Student();
-var score = student.where(130).orderBy(118).getData();
-console.log(score); // {math: 130, english: 118}
-
-// 也可以这样
+// 可以这样
 function find() {
-  return new Student();
+  return new Find();
 }
-find().where(130).orderBy(118).getData();
+find().where(130).orderBy(118).getData(); // {math: 130, english: 118}
 ```
 > 解答
 ```js
