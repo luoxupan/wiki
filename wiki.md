@@ -280,38 +280,7 @@ function tranformMsg(string, keyword) {
 tranformMsg('@sds_4353ff_把九点半@nihao 第三方不仅是对', '把');
 ```
 
-### webpack打包产物
-```js
-(function (modules) {
-  var installedModules = {};
-  function require(moduleId) {
-    if (installedModules[moduleId]) {
-      return installedModules[moduleId].exports;
-    }
-    var module = installedModules[moduleId] = {
-      i: moduleId,
-      l: false,
-      exports: {}
-    };
-    modules[moduleId].call(module.exports, module, require);
-    module.l = true;
-    return module.exports;
-  }
-  return require("./src/index.js");
-})({
-  "./src/a.js": function (module, require) {
-    let b = require("./src/base/b.js")
-    module.exports = 'a'+ b;
-  },
-  "./src/base/b.js": function (module) {
-    module.exports = 'b';
-  },
-  "./src/index.js": function (module, require) {
-    let str = require("./src/a.js")
-    console.log(str);
-  }
-})
-```
+### webpack打包产物 [链接](https://github.com/luoxupan/wiki/blob/master/issues/webpack.md)
 
 ### [Promise.all](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
 
