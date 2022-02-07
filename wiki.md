@@ -888,21 +888,21 @@ const result = find(data).where({
 ```
 > jQuery链式调用是通过return this的形式来实现的
 ```js
-const Student = function() {};
-Student.prototype.setMathScore = function(age){
+var Student = function() {};
+Student.prototype.setMathScore = function(math){
   this.math = math; 
   return this;
 }
-Person.prototype.setEnglishScore = function(weight){
+Student.prototype.setEnglishScore = function(english){
   this.english = english; 
   return this;
 }
-Person.prototype.getMathAndEnglish = function(){
+Student.prototype.getMathAndEnglish = function(){
   return `{math: ${this.math}, english: ${this.english}}`;
 }
 
-const student = new Student();
-const score = student.setMathScore(130).setEnglishScore(118).getMathAndEnglish();
+var student = new Student();
+var score = student.setMathScore(130).setEnglishScore(118).getMathAndEnglish();
 console.log(score); // {math: 130, english: 118}
 ```
 > 解答
