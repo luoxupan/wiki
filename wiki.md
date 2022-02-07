@@ -911,11 +911,11 @@ function find(origin) {
   return {
    data: origin,
     where: function(searchObj) {
-     const keys = Reflect.ownKeys(searchObj)
-        for (let i = 0; i < keys.length; i++) {
-          this.data = this.data.filter(item => searchObj[keys[i]].test(item[keys[i]]))
-        }
-       return find(this.data);
+      const keys = Reflect.ownKeys(searchObj)
+      for (let i = 0; i < keys.length; i++) {
+        this.data = this.data.filter(item => searchObj[keys[i]].test(item[keys[i]]))
+      }
+      return find(this.data);
     },
     orderBy: function(key, sorter) {
       this.data.sort((a, b) => {
