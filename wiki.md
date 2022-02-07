@@ -1215,7 +1215,7 @@ webpack有哪些事件
 这个时间值代表了消息被实际加入到队列的最小延迟时间
 
 ### 事件循环机制
-1. 由于JavaScript是单线程
+1. 由于JavaScript执行代码的是单线程
 2. JavaScript代码执行过程中，除了依靠函数调用栈来搞定函数的执行顺序外，还依靠任务队列(task queue)来搞定另外一些代码的执行。
 3. 任务队列又分为macro-task（宏任务）与micro-task（微任务），在最新标准中，它们被分别称为task与jobs。
 4. macro-task大概包括: script(整体代码), setTimeout, setInterval, setImmediate, I/O, UI rendering。
