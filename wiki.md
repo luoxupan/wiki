@@ -151,7 +151,7 @@ function add() {
     args = [...args, ...arguments];
     return func;
   }
-  func.toString = () => args.reduce((x, y) => x + y)
+  func.toString = () => args.reduce((acc, cur) => acc + cur, 0)
   return func;
 }
 console.log(add(1,2)); // 3
