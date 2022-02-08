@@ -955,10 +955,10 @@ isEqual(obj1, obj2);
 // 答案仅供参考
 // 更详细的解答建议参考Underscore源码[https://github.com/lessfish/underscore-analysis/blob/master/underscore-1.8.3.js/src/underscore-1.8.3.js#L1094-L1190](https://github.com/lessfish/underscore-analysis/blob/master/underscore-1.8.3.js/src/underscore-1.8.3.js#L1094-L1190)
 function isEqual(A, B) {
-  const keysA = Object.keys(A)
-  const keysB = Object.keys(B)
+  const keysA = Object.keys(A);
+  const keysB = Object.keys(B);
   // 健长不一致的话就更谈不上相等了
-  if (keysA.length !== keysB.length) return false
+  if (keysA.length !== keysB.length) return false;
 
   for (let i = 0; i < keysA.length; i++) {
     const key = keysA[i];
