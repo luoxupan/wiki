@@ -280,7 +280,7 @@ function tranformMsg(string, keyword) {
 tranformMsg('@sds_4353ff_把九点半@nihao 第三方不仅是对', '把');
 ```
 
-### webpack打包产物 [链接](https://github.com/luoxupan/wiki/blob/master/issues/webpack.md)
+### webpack [链接](https://github.com/luoxupan/wiki/blob/master/issues/webpack.md)
 
 ### [Promise.all](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
 
@@ -1149,80 +1149,6 @@ newArr.push(6);
 1. 第一次client => server 只能server判断出client具备发送能力
 2. 第二次 server => client client就可以判断出server具备发送和接受能力。此时client还需让server知道自己接收能力没问题于是就有了第三次
 3. 第三次 client => server 双方均保证了自己的接收和发送能力没有问题。其中，为了保证后续的握手是为了应答上一个握手，每次握手都会带一个标识 seq，后续的ACK都会对这个seq进行加一来进行确认。
-
-
-### webpack构建流程（原理）
-从启动构建到输出结果一系列过程：
-1. 初始化参数：解析webpack配置参数，合并shell传入和webpack.config.js文件配置的参数，形成最后的配置结果。
-2. 开始编译：上一步得到的参数初始化compiler对象，注册所有配置的插件，插件监听webpack构建生命周期的事件节点，做出相应的反应，执行对象的 run 方法开始执行编译。
-3. 确定入口：从配置的entry入口，开始解析文件构建AST语法树，找出依赖，递归下去。
-4. 编译模块：递归中根据文件类型和loader配置，调用所有配置的loader对文件进行转换，再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理。
-5. 完成模块编译并输出：递归完事后，得到每个文件结果，包含每个模块以及他们之间的依赖关系，根据entry配置生成代码块chunk。
-6. 输出完成：输出所有的chunk到文件系统。
-
-**注意：** 在构建生命周期中有一系列插件在做合适的时机做合适事情，比如UglifyPlugin会在loader转换递归完对结果使用UglifyJs压缩覆盖之前的结果。
-
-### loader和plugin的不同
-- 作用不同：
-  1. loader让webpack有加载和解析非js的能力；
-  2. plugin可以扩展webpack功能，在webpack运行周期中会广播很多事件，Plugin可以监听一些事件，通过webpack的api改变结果。
-- 用法不同：
-  1. loader在module.rule中配置。类型为数组，每一项都是Object；
-  2. plugin是单独配置的，类型为数组，每一项都是plugin实例，参数通过构造函数传入。
-
-### webpack的热更新原理
-1. 浏览器端和服务端有 websocket 长连接
-2. webpack监听源文件的变化，即当开发者保存文件时触发webpack的重新编译。
-   - 每次编译都会生成hash值、已改动模块的json文件、已改动模块代码的js文件
-   - 编译完成后通过socket通知客户端文件有变动
-3. 通过ajax获取json数据和script标签获取最新js资源
-
-webpack打包优化
-1. happypack多线程打包
-2. splitChunks.cacheGroups将功能库打成一个包（antd...）
-3. loader配置对应的include、exclude
-
-Tree Shaking 哪些情况下不会生效
-1. 只有在ES Module中才会生效
-2. CommonJS
-
-### webpack [hash策略](https://juejin.cn/post/6844903942384517127)
-
-1. **hash**
-
-    只要某一个文件被修改，所有输出文件的hash都会跟着变化；因此它有一个弊端，一旦修改了某一个文件，整个项目的文件缓存都会失效。
-
-    ```js
-    output: {
-      path: path.resolve(__dirname, OUTPUT_PATH),
-      filename: '[name].[hash].js', // 使用hash
-    }
-    ```
-2. **chunkhash**
-
-    不同组件的hash不同。相同组件内部js和css的hash相同。
-
-    ```js
-    output: {
-      path: path.resolve(__dirname, OUTPUT_PATH),
-      filename: '[name].[chunkhash].js', // 使用chunkhash
-    }
-    ```
-3. **contenthash**
-
-    每一个代码块（chunk）中的js和css输出文件都会独立生成一个hash，当某一个代码块（chunk）中的js源文件被修改时，只有该代码块（chunk）输出的js文件的hash会发生变化
-
-    ```js
-    output: {
-      path: path.resolve(__dirname, OUTPUT_PATH),
-      filename: '[name].[contenthash].js', // 使用contenthash
-    }
-    ```
-
-webpack打包成es modal的时候 最后是怎么执行的
-1. 最后都是CommonJS
-webpack循环引用配置
-webpack有哪些事件
 
 
 ### setTimeout 后面的时间指的是什么意思？[第二个参数的含义](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop#%E6%B7%BB%E5%8A%A0%E6%B6%88%E6%81%AF)
