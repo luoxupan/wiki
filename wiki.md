@@ -188,7 +188,7 @@ function isHasCircle(obj) {
 
 在手机上border无法达到我们想要的效果。这是因为 `devicePixelRatio` 特性导致，iPhone的 `devicePixelRatio==2`，而 `border-width: 1px;` 描述的是设备独立像素，所以，border被放大到物理像素`2px`显示，在iPhone上就显得较粗。
 
-### webpack [链接](https://github.com/luoxupan/wiki/blob/master/issues/webpack.md)
+### [webpack](https://github.com/luoxupan/wiki/blob/master/issues/webpack.md)
 
 ### [Promise.all](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
 
