@@ -1188,7 +1188,7 @@ Tree Shaking 哪些情况下不会生效
 
 ### webpack [hash策略](https://juejin.cn/post/6844903942384517127)
 
-1. hash
+1. **hash**
 
     只要某一个文件被修改，所有输出文件的hash都会跟着变化；因此它有一个弊端，一旦修改了某一个文件，整个项目的文件缓存都会失效。
 
@@ -1198,7 +1198,7 @@ Tree Shaking 哪些情况下不会生效
       filename: '[name].[hash].js', // 使用hash
     }
     ```
-2. chunkhash
+2. **chunkhash**
 
     不同组件的hash不同。相同组件内部js和css的hash相同。
 
@@ -1208,7 +1208,7 @@ Tree Shaking 哪些情况下不会生效
       filename: '[name].[chunkhash].js', // 使用chunkhash
     }
     ```
-3. contenthash
+3. **contenthash**
 
     每一个代码块（chunk）中的js和css输出文件都会独立生成一个hash，当某一个代码块（chunk）中的js源文件被修改时，只有该代码块（chunk）输出的js文件的hash会发生变化
 
