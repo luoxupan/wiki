@@ -1,69 +1,6 @@
 当然可以啊。比赛不限年龄学历的，比较常见的竞赛网站天池，aistudio，kaggle。拿个第一名基本都是五六万起步
 
 ```js
-// 以下是最终得到的数据结构
-[
-  {
-    type: 'select', // array, object, input, radio, select, textarea ...
-    subType: '',
-    name: 'filed_name', // 字段名字
-    label: '字段名字',
-    label_en: '字段名字',
-    required: true,
-    dataSource: {
-      type: '',
-      enum: [],
-      dictUrl: '',
-    },
-    items: []
-  },
-  {
-    type: 'array',
-    name: 'filed_name',
-    label: '字段名字',
-    label_en: '字段名字',
-    required: true,
-    items: [
-      {
-        type: 'input',
-        name: 'filed_name',
-        label: '字段名字',
-        label_en: '字段名字',
-        required: true,
-        items: [
-          {
-            type: 'input',
-            name: 'filed_name',
-            label: '字段名字',
-            label_en: '字段名字',
-            required: true,
-            items: []
-          },
-        ]
-      },
-    ]
-  },
-  {
-    type: 'object',
-    name: 'filed_name',
-    label: '字段名字',
-    label_en: '字段名字',
-    required: true,
-    items: [
-      {
-        type: 'input',
-        name: 'filed_name',
-        label: '字段名字',
-        label_en: '字段名字',
-        required: true,
-        items: []
-      },
-    ]
-  },
-]
-```
-
-```js
 window.addEventListener('hashchange', (event) => {
   console.log('event:', event);
 });
@@ -217,21 +154,6 @@ function isHasCircle(obj) {
 }
 ```
 
-### 事件代理
-```js
-// 用原生JavaScript实现事件代理
-function delegate(element, targetSelector, type, handler) {
-  element.addEventListener(type, function(event) {
-    var event = event || window.event;
-    var targets = Array.prototype.slice.call(element.querySelectorAll(targetSelector));
-    var target = event.target || event.srcElement;;
-    if (targets.indexOf(target) != -1) {
-      return handler.apply(target, arguments);
-    }
-  }, false);
-}
-```
-
 ### rem自适应方案初始化代码
 ```js
 (function() {
@@ -265,20 +187,6 @@ function delegate(element, targetSelector, type, handler) {
 在开发中，为什么移动端CSS里面写了1px，实际上看起来比1px粗；了解设备物理像素和逻辑像素的同学应该很容易理解，其实这两个px的含义其实是不一样的，**UI设计师要求的1px是指设备的物理像素1px，而CSS里记录的像素是逻辑像素**，它们之间存在一个比例关系，通常可以用 javascript 中的 `window.devicePixelRatio` 来获取，也可以用媒体查询的 `-webkit-min-device-pixel-ratio` 来获取。当然，比例多少与设备相关。
 
 在手机上border无法达到我们想要的效果。这是因为 `devicePixelRatio` 特性导致，iPhone的 `devicePixelRatio==2`，而 `border-width: 1px;` 描述的是设备独立像素，所以，border被放大到物理像素`2px`显示，在iPhone上就显得较粗。
-
-### 正则匹配替换
-```js
-// 正则匹配替换
-function tranformMsg(string, keyword) {
-  // var reg = /@\w+/g;
-  var reg = new RegExp(`(@\\w+_${keyword}|@\\w+)`, 'g');
-  var regReplaceFunc = function (match) {
-    return `<a href='https://ddp.com/profile/${match}'>${match}</a>`
-  };
-  return string.replaceAll(reg, regReplaceFunc);
-}
-tranformMsg('@sds_4353ff_把九点半@nihao 第三方不仅是对', '把');
-```
 
 ### webpack [链接](https://github.com/luoxupan/wiki/blob/master/issues/webpack.md)
 
