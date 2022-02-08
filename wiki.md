@@ -932,14 +932,14 @@ function find(origin) {
 ### 对象的深度比较
 > 已知有两个对象obj1和obj2，实现isEqual函数判断对象是否相等
 ```js
-const obj1 = {
+var obj1 = {
   a: 1,
   c: 3,
   b: {
     c: [1, 2]
   }
 }
-const obj2 = {
+var obj2 = {
   c: 4,
   b: {
     c: [1, 2]
@@ -948,7 +948,7 @@ const obj2 = {
 }
 
 // isEqual函数，相等输出true，不相等输出false
-isEqual(obj1, obj2)
+isEqual(obj1, obj2);
 ```
 > 解答
 ```js
@@ -961,36 +961,36 @@ function isEqual(A, B) {
   if (keysA.length !== keysB.length) return false
 
   for (let i = 0; i < keysA.length; i++) {
-    const key = keysA[i]
+    const key = keysA[i];
 
     // 类型不等的话直接就不相等了
-    if (typeof A[key] !== typeof B[key]) return false
+    if (typeof A[key] !== typeof B[key]) return false;
 
     // 当都不是对象的时候直接判断值是否相等
     if (typeof A[key] !== 'object' && typeof B[key] !== 'object' && A[key] !== B[key]) {
-      return false
+      return false;
     }
 
     if (Array.isArray(A[key]) && Array.isArray(B[key])) {
-      if (!arrayEqual(A[key], B[key])) return false
+      if (!arrayEqual(A[key], B[key])) return false;
     }
 
     // 递归判断
     if (typeof A[key] === 'object' && typeof B[key] === 'object') {
-      if (!isEqual(A[key], B[key])) return false
+      if (!isEqual(A[key], B[key])) return false;
     }
   }
-    return true;
+  return true;
 }
 
 function arrayEqual(arr1, arr2) {
-  if (arr1.length !== arr2.length) return false
+  if (arr1.length !== arr2.length) return false;
   for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i] !== arr2[i]) return false
+    if (arr1[i] !== arr2[i]) return false;
   }
-  return true
+  return true;
 }
-isEqual(obj1, obj2)
+isEqual(obj1, obj2);
 ```
 
 ### 深比较依赖
