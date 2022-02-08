@@ -5,188 +5,6 @@ window.addEventListener('hashchange', (event) => {
   console.log('event:', event);
 });
 ```
-### 数组拍平
-
-```js
-function flat(arr) {
-  let ret = [];
-  for (let i = 0; i < arr.length; ++i) {
-    if (Array.isArray(arr[i])) {
-      let data = flat(arr[i]);
-      // ret.push(...data);
-      Array.prototype.push.apply(ret, data);
-    } else {
-      ret.push(arr[i]);
-    }
-  }
-  return ret;
-};
-var arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
-console.log(flat(arr));
-```
-支持深度
-```js
-function flat(arr, d = 1) {
-  if (d <= 0) {
-    return arr.slice();
-  }
-  let ret = [];
-  for (let i = 0; i < arr.length; ++i) {
-    if (Array.isArray(arr[i])) {
-      let data = flat(arr[i], d - 1);
-      ret.push(...data);
-    } else {
-      ret.push(arr[i]);
-    }
-  }
-  return ret;
-};
-var arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
-console.log(flat(arr));
-```
-
-### useState倒计时
-```js
-function Count() {
-  const [count, setCount] = React.useState(0);
-  React.useEffect(() => {
-    console.log('========2')
-    this.timer = setInterval(() => {
-      setCount(count + 1)
-    }, 1000);
-    return () => {
-      clearInterval(this.timer);
-    }
-  }, []);
-  console.log('========1')
-  return (
-    <div>{count}</div>
-  );
-}
-```
-```js
-// 原理：相当于函数传参
-var count = 1;
-function log() {
-  var num = count; // 相当于hook的useState
-  setTimeout(() => {
-    console.log(num);
-  }, 3000);
-}
-log();
-count = 10;
-log();
-```
-
-### hooks模拟 this.setState(value, () => {}) [链接](https://github.com/luoxupan/wiki/blob/master/issues/reactjs%20%E6%8A%80%E6%9C%AF%E7%82%B9.md#hooks%E6%A8%A1%E6%8B%9Fsetstatestatechange-callback%E7%9A%84callback)
-
-### add(1, 2); add(1)(2);
-```js
-function add() {
-  var args = [...arguments];
-  var func = function() {
-    args = [...args, ...arguments];
-    return func;
-  }
-  func.toString = () => args.reduce((acc, cur) => acc + cur, 0)
-  return func;
-}
-console.log(add(1,2)); // 3
-console.log(add(1)(2)); // 3
-console.log(add(1)(2)(3)); // 6
-console.log(add(1,2,3)(4)); // 10
-```
-
-### 深拷贝
-```js
-// 如果有循环引用情况呢？
-function deepCopy(data) {
-  var ret = data;
-  if (Array.isArray(data)) {
-    ret = [];
-    data.forEach((item) => ret.push(deepCopy(item)));
-  }
-  if (Object.prototype.toString.call(data) === '[object Object]') {
-    ret = {};
-    Object.keys(data).forEach(key => ret[key] = deepCopy(data[key]));
-  }
-  return ret;
-}
-```
-
-### 判断JS对象是否存在循环引用
-```js
-const obj = {
- a: 1,
- b: 2,
-}
-
-obj.c = obj
-
-// isHasCircle函数， 存在环输出true，不存在的话输出false
-isHasCircle(obj)
-```
-> 解答
-```js
-function isHasCircle(obj) {
-  let hasCircle = false
-  const set = new Set()
-
-  function loop(obj) {
-    const keys = Object.keys(obj)
-
-    keys.forEach(key => {
-      const value = obj[key]
-      if (typeof value == 'object' && value !== null) {
-        if (set.has(value)) {
-          hasCircle = true
-          return
-        } else {
-          set.add(value)
-          loop(value)
-        }
-      }
-    })
-  }
-
-  loop(obj)
-  return hasCircle
-}
-```
-
-### rem自适应方案初始化代码
-```js
-(function() {
-  var
-    docEl = document.documentElement,
-    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-    scale = 1 / window.devicePixelRatio, // iPhone的 devicePixelRatio==2，而 border-width: 1px; 描述的是设备独立像素，所以，border被放大到物理像素2px显示，在iPhone上就显得较粗。
-    recalc = function() {
-      var uiWidth = 1080; // 设计稿的尺寸是1080
-      var clientWidth = docEl.clientWidth;
-
-      docEl.style.fontSize = 100 * (clientWidth / uiWidth) + 'px'; // 分成100等份
-    };
-    // 下面是根据设备像素设置viewport
-  document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable = no, shrink-to-fit=no');
-
-  if (!document.addEventListener) return;
-  window.addEventListener(resizeEvt, recalc, false);
-  document.addEventListener('DOMContentLoaded', recalc, false);
-})();
-```
-### rem布局中，1px像素处理: https://www.cnblogs.com/sonechao/p/14822241.html
-
-> 为什么会有1px问题
-
-要处理这个问题，必须先补充一个知识点，就是设备的 **物理像素[设备像素] & 逻辑像素[CSS像素]**。
-
-- 物理像素：移动设备出厂时，不同设备自带的不同像素，也称硬件像素。
-- 逻辑像素：css中记录的像素。
-
-在开发中，为什么移动端CSS里面写了1px，实际上看起来比1px粗；了解设备物理像素和逻辑像素的同学应该很容易理解，其实这两个px的含义其实是不一样的，**UI设计师要求的1px是指设备的物理像素1px，而CSS里记录的像素是逻辑像素**，它们之间存在一个比例关系，通常可以用 javascript 中的 `window.devicePixelRatio` 来获取，也可以用媒体查询的 `-webkit-min-device-pixel-ratio` 来获取。当然，比例多少与设备相关。
-
-在手机上border无法达到我们想要的效果。这是因为 `devicePixelRatio` 特性导致，iPhone的 `devicePixelRatio==2`，而 `border-width: 1px;` 描述的是设备独立像素，所以，border被放大到物理像素`2px`显示，在iPhone上就显得较粗。
 
 ### [webpack](https://github.com/luoxupan/wiki/blob/master/issues/webpack.md)
 
@@ -360,26 +178,6 @@ Promise.allSettled = function(args) {
     }
   });
 }
-```
-
-### JS异步错误捕获 [链接](https://juejin.cn/post/6844903830409183239)
-
-> 这段代码中，setTimeout 的回调函数抛出一个错误，并不会在 catch 中捕获，会导致程序直接报错崩掉。
-
-当异步task取出执行的时候，main的栈已经退出了，也就是上下文环境已经改变，所以main无法捕获异步task的错误。
-
-```js
-function main() {
-  try {
-    setTimeout(() => {
-      throw new Error('async error')
-    }, 1000)
-  } catch(e) {
-    console.log(e, 'err')
-    console.log('continue...')
-  }
-}
-main();
 ```
 
 ### 节流(throttle)：在n秒内只执行一次func
@@ -593,39 +391,6 @@ function maxSubNum(nums) {
 maxSubNum([2,-3,3,50]);
 ```
 
-```js
-// 在浏览器中实现0ms延时的定时器
-(function() {
-  var timeouts = [];
-  var messageName = "zero-timeout-message";
-
-  // Like setTimeout, but only takes a function argument.  There's
-  // no time argument (always zero) and no arguments (you have to
-  // use a closure).
-  function setZeroTimeout(fn) {
-    timeouts.push(fn);
-    window.postMessage(messageName, "*");
-  }
-
-  function handleMessage(event) {
-    if (event.source == window && event.data == messageName) {
-      event.stopPropagation();
-      if (timeouts.length > 0) {
-        var fn = timeouts.shift();
-        fn();
-      }
-    }
-  }
-  window.addEventListener("message", handleMessage, true);
-
-  // Add the one thing we want added to the window object.
-  window.setZeroTimeout = setZeroTimeout;
-})();
-
-// 最小延时 >=4ms
-// 在浏览器中，setTimeout()/setInterval() 的每调用一次定时器的最小间隔是4ms，
-// 这通常是由于函数嵌套导致（嵌套层级达到一定深度），或者是由于已经执行的setInterval的回调函数阻塞导致的。
-```
 ### 字符串相加
 ```js
 /**
@@ -651,6 +416,210 @@ maxSubNum([2,-3,3,50]);
   }
   return array.join('');
 };
+```
+
+
+### 数组拍平
+
+```js
+function flat(arr) {
+  let ret = [];
+  for (let i = 0; i < arr.length; ++i) {
+    if (Array.isArray(arr[i])) {
+      let data = flat(arr[i]);
+      // ret.push(...data);
+      Array.prototype.push.apply(ret, data);
+    } else {
+      ret.push(arr[i]);
+    }
+  }
+  return ret;
+};
+var arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
+console.log(flat(arr));
+```
+支持深度
+```js
+function flat(arr, d = 1) {
+  if (d <= 0) {
+    return arr.slice();
+  }
+  let ret = [];
+  for (let i = 0; i < arr.length; ++i) {
+    if (Array.isArray(arr[i])) {
+      let data = flat(arr[i], d - 1);
+      ret.push(...data);
+    } else {
+      ret.push(arr[i]);
+    }
+  }
+  return ret;
+};
+var arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
+console.log(flat(arr));
+```
+
+### useState倒计时
+```js
+function Count() {
+  const [count, setCount] = React.useState(0);
+  React.useEffect(() => {
+    console.log('========2')
+    this.timer = setInterval(() => {
+      setCount(count + 1)
+    }, 1000);
+    return () => {
+      clearInterval(this.timer);
+    }
+  }, []);
+  console.log('========1')
+  return (
+    <div>{count}</div>
+  );
+}
+```
+```js
+// 原理：相当于函数传参
+var count = 1;
+function log() {
+  var num = count; // 相当于hook的useState
+  setTimeout(() => {
+    console.log(num);
+  }, 3000);
+}
+log();
+count = 10;
+log();
+```
+
+### hooks模拟 this.setState(value, () => {}) [链接](https://github.com/luoxupan/wiki/blob/master/issues/reactjs%20%E6%8A%80%E6%9C%AF%E7%82%B9.md#hooks%E6%A8%A1%E6%8B%9Fsetstatestatechange-callback%E7%9A%84callback)
+
+### add(1, 2); add(1)(2);
+```js
+function add() {
+  var args = [...arguments];
+  var func = function() {
+    args = [...args, ...arguments];
+    return func;
+  }
+  func.toString = () => args.reduce((acc, cur) => acc + cur, 0)
+  return func;
+}
+console.log(add(1,2)); // 3
+console.log(add(1)(2)); // 3
+console.log(add(1)(2)(3)); // 6
+console.log(add(1,2,3)(4)); // 10
+```
+
+### 深拷贝
+```js
+// 如果有循环引用情况呢？
+function deepCopy(data) {
+  var ret = data;
+  if (Array.isArray(data)) {
+    ret = [];
+    data.forEach((item) => ret.push(deepCopy(item)));
+  }
+  if (Object.prototype.toString.call(data) === '[object Object]') {
+    ret = {};
+    Object.keys(data).forEach(key => ret[key] = deepCopy(data[key]));
+  }
+  return ret;
+}
+```
+
+### 判断JS对象是否存在循环引用
+```js
+const obj = {
+ a: 1,
+ b: 2,
+}
+
+obj.c = obj
+
+// isHasCircle函数， 存在环输出true，不存在的话输出false
+isHasCircle(obj)
+```
+> 解答
+```js
+function isHasCircle(obj) {
+  let hasCircle = false
+  const set = new Set()
+
+  function loop(obj) {
+    const keys = Object.keys(obj)
+
+    keys.forEach(key => {
+      const value = obj[key]
+      if (typeof value == 'object' && value !== null) {
+        if (set.has(value)) {
+          hasCircle = true
+          return
+        } else {
+          set.add(value)
+          loop(value)
+        }
+      }
+    })
+  }
+
+  loop(obj)
+  return hasCircle
+}
+```
+
+### rem自适应方案初始化代码
+```js
+(function() {
+  var
+    docEl = document.documentElement,
+    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+    scale = 1 / window.devicePixelRatio, // iPhone的 devicePixelRatio==2，而 border-width: 1px; 描述的是设备独立像素，所以，border被放大到物理像素2px显示，在iPhone上就显得较粗。
+    recalc = function() {
+      var uiWidth = 1080; // 设计稿的尺寸是1080
+      var clientWidth = docEl.clientWidth;
+
+      docEl.style.fontSize = 100 * (clientWidth / uiWidth) + 'px'; // 分成100等份
+    };
+    // 下面是根据设备像素设置viewport
+  document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable = no, shrink-to-fit=no');
+
+  if (!document.addEventListener) return;
+  window.addEventListener(resizeEvt, recalc, false);
+  document.addEventListener('DOMContentLoaded', recalc, false);
+})();
+```
+### rem布局中，1px像素处理: https://www.cnblogs.com/sonechao/p/14822241.html
+
+> 为什么会有1px问题
+
+要处理这个问题，必须先补充一个知识点，就是设备的 **物理像素[设备像素] & 逻辑像素[CSS像素]**。
+
+- 物理像素：移动设备出厂时，不同设备自带的不同像素，也称硬件像素。
+- 逻辑像素：css中记录的像素。
+
+在开发中，为什么移动端CSS里面写了1px，实际上看起来比1px粗；了解设备物理像素和逻辑像素的同学应该很容易理解，其实这两个px的含义其实是不一样的，**UI设计师要求的1px是指设备的物理像素1px，而CSS里记录的像素是逻辑像素**，它们之间存在一个比例关系，通常可以用 javascript 中的 `window.devicePixelRatio` 来获取，也可以用媒体查询的 `-webkit-min-device-pixel-ratio` 来获取。当然，比例多少与设备相关。
+
+在手机上border无法达到我们想要的效果。这是因为 `devicePixelRatio` 特性导致，iPhone的 `devicePixelRatio==2`，而 `border-width: 1px;` 描述的是设备独立像素，所以，border被放大到物理像素`2px`显示，在iPhone上就显得较粗。
+
+### JS异步错误捕获 [链接](https://juejin.cn/post/6844903830409183239)
+
+> 这段代码中，setTimeout 的回调函数抛出一个错误，并不会在 catch 中捕获，会导致程序直接报错崩掉。
+
+当异步task取出执行的时候，main的栈已经退出了，也就是上下文环境已经改变，所以main无法捕获异步task的错误。
+
+```js
+function main() {
+  try {
+    setTimeout(() => {
+      throw new Error('async error')
+    }, 1000)
+  } catch(e) {
+    console.log(e, 'err')
+    console.log('continue...')
+  }
+}
+main();
 ```
 
 ### React.lazy
