@@ -1186,8 +1186,39 @@ Tree Shaking 哪些情况下不会生效
 1. 只有在ES Module中才会生效
 2. CommonJS
 
-webpack chunk
-文件内容没改变单身hash值改变了 https://juejin.cn/post/6844903942384517127
+### webpack [hash策略](https://juejin.cn/post/6844903942384517127)
+
+1. hash
+
+只要某一个文件被修改，所有输出文件的hash都会跟着变化；因此它有一个弊端，一旦修改了某一个文件，整个项目的文件缓存都会失效。
+
+```js
+output: {
+  path: path.resolve(__dirname, OUTPUT_PATH),
+  filename: '[name].[hash].js', // 使用hash
+}
+```
+
+2. chunkhash
+
+不同组件的hash不同。相同组件内部js和css的hash相同。
+
+```js
+output: {
+  path: path.resolve(__dirname, OUTPUT_PATH),
+  filename: '[name].[chunkhash].js', // 使用chunkhash
+}
+```
+3. contenthash
+
+每一个代码块（chunk）中的js和css输出文件都会独立生成一个hash，当某一个代码块（chunk）中的js源文件被修改时，只有该代码块（chunk）输出的js文件的hash会发生变化
+
+```js
+output: {
+  path: path.resolve(__dirname, OUTPUT_PATH),
+  filename: '[name].[contenthash].js', // 使用contenthash
+}
+```
 
 webpack打包成es modal的时候 最后是怎么执行的
 1. 最后都是CommonJS
