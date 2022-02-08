@@ -1141,7 +1141,8 @@ this对象是在运行时基于函数的执行环境绑定的：在全局函数�
 4. 搜索框节流（throttle）处理
 5. splitChunks提取公共第三⽅库
 6. Tree Shaking
-6. 代码压缩
+7. webpack编译后，组件按需加载
+8. 代码压缩
 
 ### react合成事件特点
 1. React 上注册的事件最终会绑定在document这个 DOM 上，
