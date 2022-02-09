@@ -1108,8 +1108,8 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
 var name = "The Window";
 var object = {
   name : "My Object",
-  getNameFunc : function(){
-    return function(){
+  getNameFunc: function() {
+    return function() {
       return this.name;
     };
   }
@@ -1119,13 +1119,15 @@ alert(object.getNameFunc()()); // result:The Window
 this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象调用时，this等于那个对象。不过，匿名函数具有全局性，因此this对象通常指向window。
 
 
-### 图片之间的缝隙: [链接]()
+### 图片之间的缝隙: [链接](https://developer.mozilla.org/zh-CN/docs/Web/CSS/vertical-align)
    - 原因：是行内元素之间的回车符系统默认为一个空格，占据了一定宽度
-   - 深入原因：vertical-align默认的对齐方式是baseline。
+   - 深入原因：vertical-align默认的对齐方式是baseline。（baseline使元素的基线与父元素的基线对齐）
 **如何消除:**
 1. 父元素设置font-size: 0;
 2. img标签设置display: block;
-3. img标签设置vertical-align: bottom;
+3. img标签设置vertical-align: bottom;（使元素及其后代元素的底部与整行的底部对齐）
+    - vertical-align 用来指定行内元素（inline）、行内块元素或表格单元格（table-cell）元素的垂直对齐方式。
+    - 字母x的下边缘(线)就是我们的baseline（基线）。
 
 ### async await原理
 1. async 函数是 Generator 函数的语法糖。
