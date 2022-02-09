@@ -589,7 +589,7 @@ function isHasCircle(obj) {
   document.addEventListener('DOMContentLoaded', recalc, false);
 })();
 ```
-### rem布局中，1px像素处理: https://www.cnblogs.com/sonechao/p/14822241.html
+### 1px像素处理: https://www.cnblogs.com/sonechao/p/14822241.html
 
 > 为什么会有1px问题
 
@@ -600,7 +600,34 @@ function isHasCircle(obj) {
 
 在开发中，为什么移动端CSS里面写了1px，实际上看起来比1px粗；了解设备物理像素和逻辑像素的同学应该很容易理解，其实这两个px的含义其实是不一样的，**UI设计师要求的1px是指设备的物理像素1px，而CSS里记录的像素是逻辑像素**，它们之间存在一个比例关系，通常可以用 javascript 中的 `window.devicePixelRatio` 来获取，也可以用媒体查询的 `-webkit-min-device-pixel-ratio` 来获取。当然，比例多少与设备相关。
 
+而在设备像素比大于`1`的屏幕上，我们写的`1px`实际上是被多个物理像素渲染，这就会出现`1px`在有些屏幕上看起来很粗的现象。
+
 在手机上border无法达到我们想要的效果。这是因为 `devicePixelRatio` 特性导致，iPhone的 `devicePixelRatio==2`，而 `border-width: 1px;` 描述的是设备独立像素，所以，border被放大到物理像素`2px`显示，在iPhone上就显得较粗。
+
+### 1px像素处理: 伪类 + transform
+
+基于`media`查询判断不同的设备像素比对线条进行缩放：
+```css
+.border_1px:before{
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 1px;
+  width: 100%;
+  background-color: #000;
+  transform-origin: 50% 0%;
+}
+@media only screen and (-webkit-min-device-pixel-ratio:2){
+  .border_1px:before{
+    transform: scaleY(0.5);
+  }
+}
+@media only screen and (-webkit-min-device-pixel-ratio:3){
+  .border_1px:before{
+    transform: scaleY(0.33);
+  }
+}
+```
 
 ### JS异步错误捕获 [链接](https://juejin.cn/post/6844903830409183239)
 
