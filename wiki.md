@@ -1494,6 +1494,7 @@ bar.getLabel(); // "obj a"
 2. 请求方式不一样，get参数都在url上 只允许ASCII字符 且长度有限制。post参数在request body中 且长度无限制。
 3. get请求会被浏览器缓存。post请求不会被缓存。
 
+
 ### ES6的新特性有哪些
 1. let const
 2. 箭头函数
@@ -1502,3 +1503,9 @@ bar.getLabel(); // "obj a"
 5. 展开运算符 `...`
 6. 类
 7. 函数参数支持默认值
+
+
+### ts中interface和type的区别
+1. interface只能定义对象类型。type可以声明任何类型，基础类型、联合类型、交叉类型。
+2. 类可以实现interface。也就是说interface可以限制类的属性。
+
