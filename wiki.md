@@ -1330,23 +1330,6 @@ browserHistory：通常应用于高版本浏览器，通过html5中的history来
   另一方面，客户端和服务器同时维护一张头信息表，所有字段都会存入这个表，产生一个索引号，之后就不发送同样字段了，只需发送索引号
 
 
-
-### 杂项聚合
-1. 0.1 + 0.2 精度的处理
-2. 错误监控
-3. 数字金额切割
-4. CORS options预检请求
-5. postMessage跨域处理
-6. button吸底效果
-7. Promise then返回是一个新的Promise。Promise优缺点 深入点的
-8. 垂直居中有哪些方案
-9. 一个iframe禁止嵌入 如何解决
-10. 原型链：先查找自己有没有这个属性，没有找__proto__上有没有
-11. 为什么 es module 能够更好的tree-shaking 而require不行？es module是编译时决定引用， commonjs是运行时决定引用。
-12. one(add(two())); two(add(one()));
-
-
-
 设置transform会有哪些变化
 <div style='background-color: red'>
   <div style='display: inline-block;'></div>
@@ -1370,7 +1353,7 @@ function Fcon() {
         setCount(count + 1);
       }}>+1</div>
     </div>
-  )
+  );
 }
 ```
 
@@ -1384,11 +1367,109 @@ typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symb
 
 
 
+### 0.1 + 0.2 精度的处理
+
+> 0.1 + 0.2 === 0.3吗？
+
+因为进制转换和对阶过程会出现精度损失，在两数相加时，会先转换成二进制，0.1 和 0.2 转换成二进制的时候尾数会发生无限循环，然后进行对阶运算，JS 引擎对二进制进行截断，所以造成精度丢失。
+
+**所以总结：精度丢失可能出现在进制转换和对阶运算中**
+
+
+### 如何判断一个对象是不是空对象？
+
+Object.keys(obj).length === 0;
+Object.keys({ s: undefined }); => ['s']
+
+### 问：说一下原型链和原型链的继承吧
+
+1. **什么是原型链？**
+
+  当对象查找一个属性的时候，**如果没有在自身找到**，那么就会查找**自身的原型**，如果原型还没有找到，那么会继续查找原型的原型，直到找到 Object.prototype 的原型时，此时原型为 null，查找停止。这种通过 通过原型链接的逐级向上的查找链被称为原型链
+
+2. **什么是原型继承？**
+
+  一个对象可以使用另外一个对象的属性或者方法，就称之为继承。具体是通过**将这个对象的原型设置为另外一个对象**，这样根据原型链的规则，如果查找一个对象属性且在自身不存在时，就会查找另外一个对象，相当于一个对象可以使用另外一个对象的属性和方法了。
+
+
+### ES5继承代码
+Object.create() 会创建一个 “新” 对象，然后将此对象内部的 [[Prototype]] 关联到你指定的对象（Foo.prototype）。Object.create(null) 创建一个空 [[Prototype]] 链接的对象，这个对象无法进行委托。
+```js
+function Parent(name) {
+  this.name = name;
+}
+Parent.prototype.getName = function() {
+  return this.name;
+}
+
+// 继承属性，通过借用构造函数调用
+function Bar(name, label) {
+  Parent.call(this, name);
+  this.label = label;
+}
+
+// 继承方法，创建备份
+Bar.prototype = Object.create(Parent.prototype);
+// 必须设置回正确的构造函数，要不然在会发生判断类型出错
+Bar.prototype.constructor = Bar;
+
+// 必须在上一步之后
+Bar.prototype.getLabel = function() {
+  return this.label;
+}
+
+const bar = new Bar("a", "obj a");
+bar.getName(); // "a"
+bar.getLabel(); // "obj a"
+```
+
+知道 ES6 的 Class 吗？Static 关键字有了解吗？
+
+为这个类的函数对象直接添加方法，而不是加在这个函数对象的原型对象上
+
+
+### get与post的区别
+1. 语义不一样，get表示数据获取 没有副作用 “幂等”。post表示传输数据 有副作用 “不幂等”。
+2. 请求方式不一样，get参数都在url上 只允许ASCII字符 且长度有限制。post参数在request body中 且长度无限制。
+3. get请求会被浏览器缓存。post请求不会被缓存。
+
+
+### ES6的新特性有哪些
+1. let const
+2. 箭头函数
+3. 字符串模板``
+4. 解构 `const {} = obj;`
+5. 展开运算符 `...`
+6. 类
+7. 函数参数支持默认值
+
+
+### ts中interface和type的区别
+1. interface只能定义对象类型。type可以声明任何类型，基础类型、联合类型、交叉类型。
+2. 类可以实现interface。也就是说interface可以限制类的属性。
+
+
+
+### 杂项聚合
+
+2. 错误监控
+3. 数字金额切割
+4. CORS options预检请求
+5. postMessage跨域处理
+6. button吸底效果
+7. Promise then返回是一个新的Promise。Promise优缺点 深入点的
+8. 垂直居中有哪些方案
+9. 一个iframe禁止嵌入 如何解决
+10. 原型链：先查找自己有没有这个属性，没有找__proto__上有没有
+11. 为什么 es module 能够更好的tree-shaking 而require不行？es module是编译时决定引用， commonjs是运行时决定引用。
+12. one(add(two())); two(add(one()));
+
+
+
 1. 做了什么事情, 解决了什么问题
 2. 做这个事情思考了哪些事情
 3. 达到了什么目标，得到了什么结果（技术问题 怎么解决 怎么思考，业务问题）
 4. 体验优势，反馈，给别人得到效率提升
-
 
 
 面试：基础、框架、项目、工具
@@ -1432,80 +1513,4 @@ typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symb
    - 什么情况用redux？redux数据类型怎么设计？react state有哪些设计原则？
    - react 用的时候怎么减少不必要的渲染、怎么提高性能？
 5. 说一下 fiber 的节点遍历顺序
-
-
-
-
-0.1 + 0.2 === 0.3吗？ , 因为进制转换和对阶过程会出现精度损失
-在两数相加时，会先转换成二进制，0.1 和 0.2 转换成二进制的时候尾数会发生无限循环，
-然后进行对阶运算，JS 引擎对二进制进行截断，所以造成精度丢失。
-所以总结：精度丢失可能出现在进制转换和对阶运算中
-
-如何判断一个对象是不是空对象？
-Object.keys(obj).length === 0;
-Object.keys({ s: undefined }); => ['s']
-
-问：说一下原型链和原型链的继承吧
-
-什么是原型链？
-当对象查找一个属性的时候，如果没有在自身找到，那么就会查找自身的原型，如果原型还没有找到，那么会继续查找原型的原型，直到找到 Object.prototype 的原型时，此时原型为 null，查找停止。这种通过 通过原型链接的逐级向上的查找链被称为原型链
-
-什么是原型继承？
-一个对象可以使用另外一个对象的属性或者方法，就称之为继承。具体是通过将这个对象的原型设置为另外一个对象，这样根据原型链的规则，如果查找一个对象属性且在自身不存在时，就会查找另外一个对象，相当于一个对象可以使用另外一个对象的属性和方法了。
-
-继承代码
-
-Object.create() 会创建一个 “新” 对象，然后将此对象内部的 [[Prototype]] 关联到你指定的对象（Foo.prototype）。Object.create(null) 创建一个空 [[Prototype]] 链接的对象，这个对象无法进行委托。
-```js
-function Parent(name) {
-  this.name = name;
-}
-Parent.prototype.getName = function() {
-  return this.name;
-}
-
-// 继承属性，通过借用构造函数调用
-function Bar(name, label) {
-  Parent.call(this, name);
-  this.label = label;
-}
-
-// 继承方法，创建备份
-Bar.prototype = Object.create(Parent.prototype);
-// 必须设置回正确的构造函数，要不然在会发生判断类型出错
-Bar.prototype.constructor = Bar;
-
-// 必须在上一步之后
-Bar.prototype.getLabel = function() {
-  return this.label;
-}
-
-const bar = new Bar("a", "obj a");
-bar.getName(); // "a"
-bar.getLabel(); // "obj a"
-```
-
-知道 ES6 的 Class 吗？Static 关键字有了解吗？
-为这个类的函数对象直接添加方法，而不是加在这个函数对象的原型对象上
-
-
-### get与post的区别
-1. 语义不一样，get表示数据获取 没有副作用 “幂等”。post表示传输数据 有副作用 “不幂等”。
-2. 请求方式不一样，get参数都在url上 只允许ASCII字符 且长度有限制。post参数在request body中 且长度无限制。
-3. get请求会被浏览器缓存。post请求不会被缓存。
-
-
-### ES6的新特性有哪些
-1. let const
-2. 箭头函数
-3. 字符串模板``
-4. 解构 `const {} = obj;`
-5. 展开运算符 `...`
-6. 类
-7. 函数参数支持默认值
-
-
-### ts中interface和type的区别
-1. interface只能定义对象类型。type可以声明任何类型，基础类型、联合类型、交叉类型。
-2. 类可以实现interface。也就是说interface可以限制类的属性。
 
