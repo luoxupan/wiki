@@ -34,7 +34,7 @@
 
 ## [生命周期](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
 
-![image](https://user-images.githubusercontent.com/7278711/125180778-cd8fe800-e230-11eb-9cae-c079517b4bd2.png)
+![image](https://luoxupan.github.io/img/lifecycle.png)
 
 ## 生命周期调用时机
 
