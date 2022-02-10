@@ -98,8 +98,8 @@ function reconcileSingleElement(
 
 1. 如果是新增节点, 直接新建 fiber, 没有多余的逻辑
 2. 如果是对比更新
-   - 如果`key`和`type`都相同(即: `ReactElement.key` === `Fiber.key` 且 `Fiber.elementType === ReactElement.type`), 则复用
-   - 否则新建
+   - 如果`key`和`type`都相同(即: `ReactElement.key` === `Fiber.key` 且 `Fiber.elementType === ReactElement.type`), 则复用。
+   - 否则新建。
 
 注意: 复用过程是调用`useFiber(child, element.props)`创建`新的fiber`对象, 这个`新fiber对象.stateNode = currentFirstChild.stateNode`, 即`stateNode`属性得到了复用, 故 DOM 节点得到了复用.
 
