@@ -995,6 +995,23 @@ eventBus.on('type1', fn2);
 eventBus.emit('type1', 'name', 12);
 ```
 
+### 观察者模式
+```js
+class Subscribe {
+  constructor() {
+    this.listener = [];
+  }
+  sub(fn) {
+    this.listener.push(fn);
+  }
+  emit(name, ...args) {
+    // 创建副本，如果回调函数内继续注册相同事件，会造成死循环
+    let tasks = this.listener.slice();
+    tasks.forEach((task) => task(...args));
+  }
+}
+```
+
 ### Object.defineProperty和Proxy区别
 
 #### Object.defineProperty
@@ -1472,5 +1489,13 @@ bar.getLabel(); // "obj a"
 为这个类的函数对象直接添加方法，而不是加在这个函数对象的原型对象上
 
 
+get与post的区别
+1. 语义不一样，get表示数据获取 没有副作用 “幂等”。post表示传输数据 有副作用 “不幂等”。
+2. 请求方式不一样，get参数都在url上 只允许ASCII字符 且长度有限制。post参数在request body中 且长度无限制。
+3. get请求会被浏览器缓存。post请求不会被缓存。
+
+DNS工作原理
+
+几种for循环的区别
 
 
