@@ -83,7 +83,7 @@
 
 ----
 
-## Diff算法 [详情](https://github.com/ygxqqx/wiki/issues/31)
+## Diff算法 [详情](https://github.com/luoxupan/wiki/blob/master/issues/Diff%E7%AE%97%E6%B3%95.md)
 
 由于`Diff`操作本身也会带来性能损耗，`React`文档中提到，即使在最前沿的算法中，将前后两棵树完全比对的算法的复杂程度为 `O(n 3 )`，其中n是树中元素的数量。
 
