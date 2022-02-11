@@ -215,6 +215,29 @@ function debounce(fn, delay) {
   };
 }
 ```
+
+### 防抖(useDebounce): 在n秒内执行最后一次func
+```js
+function useDebounce(fn, delay) {
+  const ref = React.useRef({ fn, timer: null } as any);
+
+  React.useEffect(function() {
+    ref.current.fn = fn;
+  }, [fn]);
+
+  return React.useCallback(function(...args) {
+    // @ts-ignore
+    const self = this;
+    if (ref.current.timer) {
+      clearTimeout(ref.current.timer);
+    }
+    ref.current.timer = setTimeout(function() {
+      ref.current.fn.apply(self, args);
+    }, delay);
+  }, []);
+}
+```
+
 ### bind
 ```js
 Function.prototype.bind2 = function(context) {

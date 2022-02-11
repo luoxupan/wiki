@@ -298,6 +298,29 @@ function usePreState(state) {
 }
 ```
 
+### 防抖(useDebounce): 在n秒内执行最后一次func
+
+```js
+function useDebounce(fn, delay) {
+  const ref = React.useRef({ fn, timer: null } as any);
+
+  React.useEffect(function() {
+    ref.current.fn = fn;
+  }, [fn]);
+
+  return React.useCallback(function(...args) {
+    // @ts-ignore
+    const self = this;
+    if (ref.current.timer) {
+      clearTimeout(ref.current.timer);
+    }
+    ref.current.timer = setTimeout(function() {
+      ref.current.fn.apply(self, args);
+    }, delay);
+  }, []);
+}
+```
+
 ### hooks模拟setState(stateChange[, callback])的callback
 
 `setState()` 的第二个参数为可选的回调函数，它将在 `setState` 完成合并并重新渲染组件后执行。通常，我们建议使用 `componentDidUpdate() `来代替此方式。
