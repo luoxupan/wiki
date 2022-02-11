@@ -186,16 +186,15 @@ Promise.allSettled = function(args) {
 // 应用场景：搜索框联想功能，表单重复提交，滚动加载-适用于触发之后内容不再变化
 function throttle(fn, delay) {
   var timer;
-  return function() {
+  return function(...args) {
     var self = this; // 取执行的匿名函数的指向，而不是throttle的指向
-    var args = arguments;
     if (timer) {
       return;
     }
     timer = setTimeout(function() {
       fn.apply(self, args)
       timer = null;
-    }, delay)
+    }, delay);
   }
 }
 ```
@@ -205,9 +204,8 @@ function throttle(fn, delay) {
 // 应用场景：手机号邮箱等输入检测，搜索框输入完执行最后一次搜索，鼠标移动-适用于用户输入完整的内容后执行
 function debounce(fn, delay) {
   var timer;
-  return function () {
+  return function(...args) {
     var self = this;
-    var args = arguments;
     if (timer) {
       clearTimeout(timer);
     }
