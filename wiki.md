@@ -1356,36 +1356,12 @@ browserHistory：通常应用于高版本浏览器，通过html5中的history来
   <div style='display: inline-block;'></div>
 </div>
 
-```js
-function Fcon() {
-  const [count, setCount] = React.useState(0);
-
-  const _onclick = () => {
-    setTimeout(() => {
-      console.log(count)
-    }, 3000)
-  }
-  return (
-    <div>
-      <div>{count}</div>
-      <div onClick={_onclick}>触发</div>
-      <div onClick={() => {
-        setCount(count + 1);
-        setCount(count + 1);
-      }}>+1</div>
-    </div>
-  );
-}
-```
-
-
 
 typeof null 结果是 object ，JavaScript 诞生以来便如此，由于 null 代表的是空指针（大多数平台下值为 0x00）。
 
 typeof [1, 2] 结果是 object ，结果中没有array 这一项，引用类型除了function其他的全部都是 object。
 
 typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symbol实例是唯一且不可改变的这是 ES6 新增的知识点.
-
 
 
 ### 0.1 + 0.2 精度的处理
