@@ -1402,6 +1402,17 @@ typeof Symbol() 用 typeof 获取 symbol 类型的值得到的是 symbol ，Symb
 Object.keys(obj).length === 0;
 Object.keys({ s: undefined }); => ['s']
 
+
+## 原型和原型链
+
+- 每个class都有显示原型prototype
+- 每个实例都有隐式原型__proto__
+- 实例的__proto__指向对应class的prototype
+- 基于原型的执行规则
+  - 先在自身寻找属性和方法
+  - 如果找不到则自动去__proto__中查找
+
+
 ### 问：说一下原型链和原型链的继承吧
 
 1. **什么是原型链？**
