@@ -1448,6 +1448,14 @@ bar.getLabel(); // "obj a"
 5. 展开运算符 `...`
 6. 类
 7. 函数参数支持默认值
+8. Promise
+
+### ES7的新特性有哪些
+1. 求幂运算符（**）: `Math.pow(3, 2) === 3 ** 2; // 9;`
+2. `Array.prototype.includes`
+
+### ES8的新特性有哪些
+1. async、await异步解决方案
 
 
 ### ts中interface和type的区别
