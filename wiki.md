@@ -1451,7 +1451,7 @@ bar.getLabel(); // "obj a"
 8. Promise
 
 ### ES7的新特性有哪些
-1. 求幂运算符（**）: `Math.pow(3, 2) === 3 ** 2; // 9;`
+1. 求幂运算符（**）: `Math.pow(3, 2) === 3 ** 2 // 9`
 2. `Array.prototype.includes`
 
 ### ES8的新特性有哪些
