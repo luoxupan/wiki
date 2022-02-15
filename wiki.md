@@ -240,11 +240,10 @@ function useDebounce(fn, delay) {
 
 ### bind
 ```js
-Function.prototype.bind2 = function(context) {
-  var args = [...arguments];
+Function.prototype.bind2 = function(context, ...args) {
   var _this = this;
   return function() {
-    _this.apply(context, [...args.slice(1), ...arguments]);
+    _this.apply(context, [...args, ...arguments]);
   }
 }
 
@@ -257,10 +256,9 @@ fn();
 ```
 ### call
 ```js
-Function.prototype.call2 = function(context) {
+Function.prototype.call2 = function(context, ...args) {
   context = context || window;
   context.fn = this;
-  let args = [...arguments].slice(1);
   let res = context.fn(...args);
   delete context.fn;
   return res;
