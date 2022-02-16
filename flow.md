@@ -24,8 +24,20 @@
 │   │   └── box-sizing的border-box和content-box含义
 │   └── sass/less
 ├── JavaScript
-│   ├── 新人串讲.pptx
-│   └── 电动车发票.pdf
+│   ├── 执行上下文/作用域链/闭包
+│   │   ├── 介绍一下JavaScript执行上下文
+│   │   ├── 介绍一下JavaScript作用域链
+│   │   └── 介绍一下JavaScript闭包/应用场景
+│   ├── this/call/apply/bind
+│   │   ├── 
+│   │   ├── 
+│   │   └── 
+│   ├── 原型/继承
+│   ├── Promise
+│   ├── 事件机制/Event Loop
+│   ├── 深浅拷贝
+│   ├── web worker
+│   └── ES6/ES7新增哪些东西
 ├── 框架（react为主）
 │   ├── CDN原理简介.md
 │   └── 编辑器导出代码.md
