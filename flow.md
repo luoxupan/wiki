@@ -29,15 +29,32 @@
 │   │   ├── 介绍一下JavaScript作用域链
 │   │   └── 介绍一下JavaScript闭包/应用场景
 │   ├── this/call/apply/bind
+│   │   ├── 介绍一下JavaScript的this
+│   │   ├── 如何改变this的指向
+│   │   ├── call和apply的区别
+│   │   ├── 如何实现call和apply
+│   │   └── 如何实现一个bind
+│   ├── 原型/继承
+│   │   ├── 介绍一下JavaScript的原型
+│   │   ├── 原型链是什么
+│   │   └── 如何利用原型实现继承
+│   ├── Promise
+│   │   ├── Promise解决了什么问题
+│   │   ├── Promise.all、Promise.race源代码
+│   │   └── async/await
+│   ├── 事件机制/Event Loop
+│   │   ├── 实现一个事件的发布订阅
+│   │   ├── 介绍一下事件循环
+│   │   └── 宏任务和微任务的区别
+│   ├── 深浅拷贝
 │   │   ├── 
 │   │   ├── 
 │   │   └── 
-│   ├── 原型/继承
-│   ├── Promise
-│   ├── 事件机制/Event Loop
-│   ├── 深浅拷贝
 │   ├── web worker
 │   └── ES6/ES7新增哪些东西
+│   │   ├── 
+│   │   ├── 
+│   │   └── 
 ├── 框架（react为主）
 │   ├── CDN原理简介.md
 │   └── 编辑器导出代码.md
