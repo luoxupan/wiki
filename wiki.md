@@ -1301,7 +1301,7 @@ browserHistory：通常应用于高版本浏览器，通过html5中的history来
 - HTTP/1.1 中增加了持久连接的方法，它的特点是在一个 TCP 连接上可以传输多个 HTTP 请求，
 - 只要浏览器或者服务器没有明确断开连接，那么该 TCP 连接会一直保持。
 - Connection: keep-alive(对于同一个域名，大多数浏览器允许同时建立6个持久连接)
-- 引入响应头cache-control
+- 引入响应头Cache-Control
 - 浏览器为每个域名最多同时维护 6 个 TCP 持久连接；
   
 - **管道机制**
