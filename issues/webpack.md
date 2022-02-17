@@ -77,9 +77,10 @@ console.log(str);
 3. 通过ajax获取json数据和script标签获取最新js资源
 
 ### webpack打包优化
-1. happypack多线程打包
-2. splitChunks.cacheGroups将功能库打成一个包（antd...）
-3. loader配置对应的include、exclude
+- happypack多线程打包
+- splitChunks.cacheGroups将功能库打成一个包（antd...）
+- loader配置对应的include、exclude
+- cache-loader缓存打包的结果
 
 ### Tree Shaking 哪些情况下不会生效
 1. 只有在ES Module中才会生效
