@@ -6,8 +6,6 @@ window.addEventListener('hashchange', (event) => {
 });
 ```
 
-### [webpack](https://github.com/luoxupan/wiki/blob/master/issues/webpack.md)
-
 ### [Promise.all](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
 
 返回一个Promise实例。
