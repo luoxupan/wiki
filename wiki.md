@@ -1190,9 +1190,32 @@ this对象是在运行时基于函数的执行环境绑定的：在全局函数�
     - vertical-align 用来指定行内元素（inline）、行内块元素或表格单元格（table-cell）元素的垂直对齐方式。
 
 ### async await原理
-1. async 函数是 Generator 函数的语法糖。
-2. async 返回值是 Promise。比 Generator 函数返回的 Iterator 对象方便，可以直接使用 then() 方法进行调用
-3. 更好的语义。async 和 await 相较于 * 和 yield 更加语义化
+> 解决异步回调
+
+1. async/await这哥俩个其实是 Promise 和 Generator 的语法糖。改变不了异步的本质，await后面的代码可以看做是异步内容
+2. async 返回值是 Promise。比Generator函数返回的Iterator对象方便，可以直接使用then()方法进行调用
+3. 更好的语义。async和await相较于*和yield更加语义化
+```js
+async function async1(){
+  console.log('async1 start');
+  await async2();
+  console.log('async1 end')
+}
+async function async2(){
+  console.log('async2')
+}
+console.log('script start');
+async1();
+console.log('script end')
+// 输出顺序：script start->async1 start->async2->script end->async1 end
+
+// async 函数返回一个 Promise 对象，当函数执行的时候，一旦遇到 await 就会先返回，等到触发的异步操作完成，再执行函数体内后面的语句。
+// 可以理解为，是让出了线程，跳出了 async 函数体。
+async function func1() {
+  return 1
+}
+console.log(func1()); // 返回是一个Promise
+```
 
 ### CORB [链接](https://github.com/luoxupan/wiki/blob/master/issues/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9.md#corb)
 
