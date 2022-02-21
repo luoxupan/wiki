@@ -1124,7 +1124,7 @@ while(true) {
 唯一需要注意的一点是，对于`setInterval(fn,ms)`来说，我们已经知道不是每过ms秒会执行一次fn，而是每过ms秒，会有fn进入Event Queue。 **一旦setInterval的回调函数fn执行时间超过了延迟时间ms，那么就完全看不出来有时间间隔了。** 这句话请读者仔细品味。
 
 ### 事件循环机制
-1. 由于JavaScript执行代码的是单线程
+1. 由于JavaScript引擎执行代码是单线程。（页面渲染、函数处理都在这个主线程上执行）
 2. JavaScript代码执行过程中，除了依靠函数调用栈来搞定函数的执行顺序外，还依靠任务队列(task queue)来搞定另外一些代码的执行。
 3. 任务队列又分为macro-task（宏任务）与micro-task（微任务），在最新标准中，它们被分别称为task与jobs。
 4. macro-task大概包括: script(整体代码), setTimeout, setInterval, setImmediate, I/O, UI rendering。
