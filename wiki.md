@@ -326,12 +326,14 @@ async function asyncPool(limit, array, iteratorFn) {
   return Promise.all(ret);
 }
 // 运行
-var timeout = i => new Promise((resolve, reject) => {
-  setTimeout(() => {
-    console.log(i);
-    resolve(i);
-  }, i);
-});
+function timeout(i) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log(i);
+      resolve(i);
+    }, i);
+  });
+}
 asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(() => {
   console.log('over!');
 });
@@ -365,12 +367,14 @@ function asyncPool(poolLimit, array, iteratorFn) {
   return enqueue().then(() => Promise.all(ret));
 }
 // 运行
-var timeout = i => new Promise((resolve, reject) => {
-  setTimeout(() => {
-    console.log(i);
-    resolve(i);
-  }, i);
-});
+function timeout(i) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log(i);
+      resolve(i);
+    }, i);
+  });
+}
 asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(() => {
   console.log('over!');
 });
