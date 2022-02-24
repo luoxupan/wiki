@@ -251,11 +251,31 @@ Virtual DOM 在内存中是以对象的形式存在的，如果想要在这些�
 
 ### hooks快照原理？
 
+> useState倒计时
+```js
+function Count() {
+  const [count, setCount] = React.useState(0);
+  React.useEffect(() => {
+    console.log('========2')
+    this.timer = setInterval(() => {
+      setCount(count + 1)
+    }, 1000);
+    return () => {
+      clearInterval(this.timer);
+    }
+  }, []);
+  console.log('========1')
+  return (
+    <div>{count}</div>
+  );
+}
+```
+
 每次setState都会导致函数执行一次。就好比函数执行的时候传递的参数，函数只记得执行的时候变量的值。
 
 ```js
+// 原理：相当于函数传参
 var count = 1;
-
 function log() {
   var num = count; // 相当于hook的useState
   setTimeout(() => {

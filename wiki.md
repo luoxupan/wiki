@@ -480,39 +480,6 @@ var arr = [1, 2, [3, 4, 5, [6, 7], 8], 9, 10, [11, [12, 13]]];
 console.log(flat(arr));
 ```
 
-### useState倒计时
-```js
-function Count() {
-  const [count, setCount] = React.useState(0);
-  React.useEffect(() => {
-    console.log('========2')
-    this.timer = setInterval(() => {
-      setCount(count + 1)
-    }, 1000);
-    return () => {
-      clearInterval(this.timer);
-    }
-  }, []);
-  console.log('========1')
-  return (
-    <div>{count}</div>
-  );
-}
-```
-```js
-// 原理：相当于函数传参
-var count = 1;
-function log() {
-  var num = count; // 相当于hook的useState
-  setTimeout(() => {
-    console.log(num);
-  }, 3000);
-}
-log();
-count = 10;
-log();
-```
-
 ### hooks模拟 this.setState(value, () => {}) [链接](https://github.com/luoxupan/wiki/blob/master/issues/reactjs%20%E6%8A%80%E6%9C%AF%E7%82%B9.md#hooks%E6%A8%A1%E6%8B%9Fsetstatestatechange-callback%E7%9A%84callback)
 
 ### add(1, 2); add(1)(2);
