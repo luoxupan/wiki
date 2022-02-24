@@ -249,7 +249,7 @@ Virtual DOM 在内存中是以对象的形式存在的，如果想要在这些�
 
 因为jsx是`React.createElement(component, props, ...children)`的语法糖。小写就会被识别为html标签`React.createElement('div', null)`,当做字符串传递，大写会被当做自定义组件 变量传递`React.createElement(Demo, null)`。
 
-### hooks快照原理？
+### hooks快照原理？[web示例](https://luoxupan.github.io/wiki/pages/page05/index.html)
 
 > useState倒计时
 ```js
