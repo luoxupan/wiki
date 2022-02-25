@@ -81,6 +81,8 @@ console.log(str);
 - splitChunks.cacheGroups将功能库打成一个包（antd...）
 - loader配置对应的include、exclude
 - cache-loader缓存打包的结果
+- import按需打包
+- Tree Shaking
 
 ### Tree Shaking 哪些情况下不会生效
 1. 只有在ES Module中才会生效
