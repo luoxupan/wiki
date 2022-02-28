@@ -9,6 +9,11 @@ buttonDom.addEventListener('click', function(event) {
   rootDom.innerHTML = window.location.pathname;
 });
 
+var backDom = document.querySelector('#back');
+backDom.addEventListener('click', function(event) {
+  history.back();
+});
+
 window.addEventListener('popstate', function(event) {
   console.log(event);
   rootDom.innerHTML = window.location.pathname;
