@@ -241,7 +241,7 @@ function useDebounce(fn, delay) {
 Function.prototype.bind2 = function(context, ...args) {
   var _this = this;
   return function() {
-    _this.apply(context, [...args, ...arguments]);
+    return _this.apply(context, [...args, ...arguments]);
   }
 }
 
