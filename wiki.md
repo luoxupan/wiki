@@ -6,6 +6,27 @@ window.addEventListener('hashchange', (event) => {
 });
 ```
 
+### 实现JSON.stringify
+```js
+function stringify(obj) {
+  if (Object.prototype.toString.call(obj) === '[object Object]') {
+    let ret = Object.keys(obj).map((key) => {
+      return `"${key}":${stringify(obj[key])}`
+    })
+    return `{${ret.join(',')}}`;
+  }
+  if (Array.isArray(obj)) {
+    let ret = obj.map((item) => stringify(item));
+    return `[${ret.join(',')}]`;
+  }
+  if (typeof obj === 'string') {
+    return `"${obj}"`
+  }
+  return obj
+}
+stringify({ a: 2, b: 'ss', arr: [1,2,3,4], o: { d: 8, arr: [{ss:3}]} });
+```
+
 ### [Promise.all](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
 
 返回一个Promise实例。
