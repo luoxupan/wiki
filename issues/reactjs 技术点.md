@@ -180,7 +180,7 @@ React内部运作主要分为两个阶段：**render** 和 **commit**。
 
 在`render`阶段，React 组件会应用通过`setState`或者 `React.render` 安排的更新，找出UI上需要更新的内容。如果是首次渲染，React 会为每个 render 函数返回的元素创建一个新的 Fiber。在后续更新中，现有的 React元素对应的 Fiber 会被重复利用和更新。
 
-**render 阶段完成后， 会得到一颗带有 side-effects 的 Fiber node tree。** effects 描述了在`commit`阶段需要完成的work。在`commit`阶段，React遍历这颗带有 effects 的 Fiber tree，并把更改应用到实例上。然后再遍历 effects list，执行DOM更新，和其它更改。并使之对用户可见。
+**render阶段完成后， 会得到一条带有副作用Fiber节点的effect链表。** 副作用Fiber节点描述了在`commit`阶段需要完成的work。在`commit`阶段，React遍历effect链表 ，执行DOM更新，和其它更改。并使之对用户可见。
 
 **需要明白，render阶段是可能会是异步执行的。** React 根据可用的时间，可能会处理一个或者多个 Fiber ，然后就会暂存当前已完成的work，让浏览器去处理某些事件，当有空余时间后，它又会从上次停下的地方继续处理。但有些时候，它可能放弃已经完成的 work，然后从头开始。
 
