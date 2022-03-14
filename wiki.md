@@ -824,7 +824,7 @@ find().where(130).orderBy(118).getData(); // {math: 130, english: 118}
 ```js
 function find(origin) {
   return {
-   data: origin,
+    data: origin,
     where: function(searchObj) {
       const keys = Reflect.ownKeys(searchObj)
       for (let i = 0; i < keys.length; i++) {
