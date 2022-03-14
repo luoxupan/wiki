@@ -916,7 +916,7 @@ export function useDeepCompareEffect(fn, deps) {
     trigger.current++;
   }
   prevDeps.current = deps;
-  return React.useEffect(fn, [trigger.current]);
+  React.useEffect(fn, [trigger.current]);
 }
 ```
 
