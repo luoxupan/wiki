@@ -1162,12 +1162,15 @@ var name = "The Window";
 var object = {
   name : "My Object",
   getNameFunc: function() {
+    var name = 'inner';
+    console.log('this.name::', this.name); // My Object
     return function() {
-      return this.name;
+      console.log('name:', name); // inner
+      console.log('this.name:', this.name); // The Window
     };
   }
 };
-alert(object.getNameFunc()()); // result:The Window
+object.getNameFunc()();
 ```
 this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象调用时，this等于那个对象。不过，匿名函数具有全局性，因此this对象通常指向window。
 
