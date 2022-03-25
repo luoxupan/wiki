@@ -17,17 +17,19 @@ function Count() {
 
 function App() {
   const [state, setState] = React.useState(false);
-  return (
-    React.createElement('div', null, [
+  const ele = (
+    React.createElement('div', { className: 'father-id' }, [
       React.createElement('button', {
         key: 1,
         onClick: function() {
           setState(!state);
         }
-      }, 'click'),
+      }, '点击'),
       state ? React.createElement(Count, { key: 2 }) : null
     ])
   );
+  console.log(ele)
+  return ele;
 }
 
 ReactDOM.render(

@@ -1565,3 +1565,37 @@ bar.getLabel(); // "obj a"
    - react 用的时候怎么减少不必要的渲染、怎么提高性能？
 5. 说一下 fiber 的节点遍历顺序
 
+
+
+The Role:
+ Our Applications Engineering organization is responsible for building applications to support aTesl's rapid growth while providing an amazing customer experience. The mission of our team is to streamline business operations, decrease costs, improve customer experiences, and solve the engineering challenges from both development and support.
+ Our engineers are hands-on and encouraged to own their own projects, contribute to new ideas, and make an impact on the way that our company operates.
+
+Responsibilities:
+ Build awesome web experiences using React.js
+ Build web experiences using PHP with Drupal CMS
+ Plan and accommodate all mediums, screen sizes and device types
+ Build in flexibility and customization from the start
+ Internalize the user and promote good usability and accessibility in every experience
+ Be nimble and react quickly to changing business conditions
+ Work with product managers, content producers, QA engineers and release engineers to own your solution from development to production
+
+Requirements:
+ Bachelor’s Degree in Computer Science or related field, or equivalent experience or other evidence of exceptional ability
+ Solid understanding of fundamental web technologies such as HTTP, REST, AJAX and JSON.
+ Strong proficiency in JavaScript / ES6, including DOM manipulation and the JavaScript object model
+ Thorough understanding of React.js and its core principles
+ Unit Testing with Jest/Enzyme
+ Experience with common front-end development tools such as Babel, Webpack,NPM, etc.
+ Experience working with RESTful APIs
+ Experience with Node.js and Express
+ Experience with Agile Methodology
+ Experience with version control system, like Git
+ Excellent mastery of web standards, cross-browser compatibility, accessibility and SEO.
+ Strong CSS skills w/ experience building responsive applications across a variety of browsers and devices using modern CSS3 techniques
+ Ability to identify tasks which require automation and automate them
+ Expert knowledge of maintaining and debuggin
+
+
+
+
