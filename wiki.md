@@ -906,20 +906,6 @@ function arrayEqual(arr1, arr2) {
 isEqual(obj1, obj2);
 ```
 
-### 深比较依赖
-```js
-import { isEqual } from 'lodash'; // 深比较
-export function useDeepCompareEffect(fn, deps) {
-  const trigger = React.useRef(0);
-  const prevDeps = React.useRef(deps);
-  if (!isEqual(prevDeps.current, deps)) {
-    trigger.current++;
-  }
-  prevDeps.current = deps;
-  React.useEffect(fn, [trigger.current]);
-}
-```
-
 ### 以URL为数据仓库 [https://mp.weixin.qq.com/s/G2PIkzmS10kwedioXhAAyw](https://mp.weixin.qq.com/s/G2PIkzmS10kwedioXhAAyw)
 
 ```js
