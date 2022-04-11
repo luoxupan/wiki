@@ -341,6 +341,20 @@ function useDebounce(fn, delay) {
 }
 ```
 
+### 深比较依赖
+```js
+import { isEqual } from 'lodash'; // 深比较
+export function useDeepCompareEffect(fn, deps) {
+  const trigger = React.useRef(0);
+  const prevDeps = React.useRef(deps);
+  if (!isEqual(prevDeps.current, deps)) {
+    trigger.current++;
+  }
+  prevDeps.current = deps;
+  React.useEffect(fn, [trigger.current]);
+}
+```
+
 ### hooks模拟setState(stateChange[, callback])的callback
 
 `setState()` 的第二个参数为可选的回调函数，它将在 `setState` 完成合并并重新渲染组件后执行。通常，我们建议使用 `componentDidUpdate() `来代替此方式。
