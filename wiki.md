@@ -519,6 +519,23 @@ console.log(add(1)(2)); // 3
 console.log(add(1)(2)(3)); // 6
 console.log(add(1,2,3)(4)); // 10
 ```
+改版：`add(1)(2)(5)(6).val`获取数据
+```js
+function add() {
+  var args = [...arguments];
+  var func = function() {
+    args = [...args, ...arguments];
+    return func;
+  }
+  Object.defineProperty(func, 'val', {
+    get: function() {
+      return args.reduce((acc, cur) => acc + cur, 0);
+    }
+  });
+  return func;
+}
+add(1)(2)(5)(6).val
+```
 
 ### 深拷贝
 ```js
