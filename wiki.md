@@ -27,6 +27,48 @@ function stringify(obj) {
 stringify({ a: 2, b: 'ss', arr: [1,2,3,4], o: { d: 8, arr: [{ss:3}]} });
 ```
 
+### 任务调度
+```js
+class Scheduler {
+  constructor() {
+    this.limit = 2
+    this.queue = []
+    this.execing = []
+    this.curIdx = 0
+  }
+  add(promiseCreator) {
+    this.queue.push(promiseCreator)
+    return this.exec()
+  }
+  exec() {
+    if (this.execing.length >= this.limit) {
+      return Promise.race(this.execing).then(() => this.exec())
+    } else if (this.curIdx < this.queue.length) {
+      const p = Promise.resolve().then(() => {
+        return this.queue[this.curIdx++]()
+      })
+      this.execing.push(p)
+      p.then(() => this.execing.splice(this.execing.length - 1, 1))
+      return p
+    }
+    return Promise.resolve()
+  }
+}
+const timeout = (time) => new Promise(resolve => {
+  setTimeout(resolve, time)
+})
+const scheduler = new Scheduler()
+const addTask = (time, order) => {
+scheduler.add(() => timeout(time))
+  .then(() => console.log(order))
+}
+addTask(1000, '1')
+addTask(500, '2')
+addTask(300, '3')
+addTask(400, '4')
+// 2,3,1,4
+```
+
 ### [Promise.all](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
 
 返回一个Promise实例。
