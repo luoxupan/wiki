@@ -48,7 +48,7 @@ class Scheduler {
         return this.queue[this.curIdx++]()
       })
       this.execing.push(p)
-      p.then(() => this.execing.splice(this.execing.length - 1, 1))
+      p.then(() => this.execing.splice(this.execing.indexOf(p) - 1, 1))
       return p
     }
     return Promise.resolve()
