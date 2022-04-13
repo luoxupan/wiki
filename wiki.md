@@ -1369,6 +1369,67 @@ browserHistory：通常应用于高版本浏览器，通过html5中的history来
   另一方面，客户端和服务器同时维护一张头信息表，所有字段都会存入这个表，产生一个索引号，之后就不发送同样字段了，只需发送索引号
 
 
+### 算法时间复杂度
+
+1. 常数阶O(1)
+  ```js
+    let i = 1;
+    let j = 2;
+    ++i;
+    j++;
+    let m = i + j;
+  ```
+2. 线性阶O(n)
+  ```js
+  for(i = 1; i <= n; i++) {
+    j = i;
+    j++;
+  }
+  ```
+3. 对数阶O(logN)
+  ```js
+  let i = 1;
+  while(i < n) {
+    i = i * 2;
+  }
+  ```
+4. 线性对数阶O(nlogN)
+  ```js
+  for (m = 1; m < n; m++) {
+    i = 1;
+    while (i<n) {
+      i = i * 2;
+    }
+  }
+  ```
+5. 平方阶O(n²)
+  ```js
+  for (x = 1; i <= n; x++) {
+    for(i = 1; i <= n; i++) {
+      j = i;
+      j++;
+    }
+  }
+  ```
+### 算法的空间复杂度
+1. 空间复杂度 O(1)
+  ```js
+  let i = 1;
+  let j = 2;
+  ++i;
+  j++;
+  let m = i + j;
+  ```
+2. 空间复杂度 O(n)
+  ```js
+  let m = new Array(n)
+  for (i = 1; i <= n; ++i) {
+    j = i;
+    j++;
+  }
+  ```
+
+
 设置transform会有哪些变化
 <div style='background-color: red'>
   <div style='display: inline-block;'></div>
