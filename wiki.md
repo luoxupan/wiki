@@ -57,8 +57,8 @@ const timeout = (time) => new Promise(resolve => {
 })
 const scheduler = new Scheduler()
 const addTask = (time, order) => {
-scheduler.add(() => timeout(time))
-  .then(() => console.log(order))
+  scheduler.add(() => timeout(time))
+    .then(() => console.log(order))
 }
 addTask(1000, '1')
 addTask(500, '2')
