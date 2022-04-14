@@ -44,7 +44,7 @@ class Scheduler {
       return Promise.race(this.execing).then(() => this.exec())
     } else if (this.queue.length > 0) {
       const func = this.queue.shift()
-      const p = Promise.resolve().then(() => func())
+      const p = func()
       this.execing.push(p)
       p.then(() => this.execing.splice(this.execing.indexOf(p), 1))
       return p
@@ -374,7 +374,7 @@ async function asyncPool(limit, array, iteratorFn) {
   const exec = [];
   const ret = [];
   for (let i = 0; i < array.length; ++i) {
-    const p = Promise.resolve().then(() => iteratorFn(array[i]));
+    const p = iteratorFn(array[i]);
     ret.push(p);
     if (limit <= array.length) {
       exec.push(p);
@@ -410,7 +410,7 @@ function asyncPool(poolLimit, array, iteratorFn) {
       return Promise.resolve();
     }
     const item = array[i++];
-    const p = Promise.resolve().then(() => iteratorFn(item, array));
+    const p = iteratorFn(item, array);
     ret.push(p);
 
     let r = Promise.resolve();
