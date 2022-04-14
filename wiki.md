@@ -34,7 +34,6 @@ class Scheduler {
     this.limit = 2
     this.queue = []
     this.execing = []
-    this.curIdx = 0
   }
   add(promiseCreator) {
     this.queue.push(promiseCreator)
@@ -43,12 +42,11 @@ class Scheduler {
   exec() {
     if (this.execing.length >= this.limit) {
       return Promise.race(this.execing).then(() => this.exec())
-    } else if (this.curIdx < this.queue.length) {
-      const p = Promise.resolve().then(() => {
-        return this.queue[this.curIdx++]()
-      })
+    } else if (this.queue.length > 0) {
+      const func = this.queue.shift()
+      const p = Promise.resolve().then(() => func())
       this.execing.push(p)
-      p.then(() => this.execing.splice(this.execing.indexOf(p) - 1, 1))
+      p.then(() => this.execing.splice(this.execing.indexOf(p), 1))
       return p
     }
     return Promise.resolve()
