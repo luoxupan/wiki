@@ -17,7 +17,8 @@ const data = [
     type: "img",
     style: {
       marginTop: 50,
-      width: "200px"
+      width: "200px",
+      cursor: 'pointer'
     },
     props: {
       src: "https://dpubstatic.udache.com/static/dpubimg/0f5e3024-0731-4e02-b98c-184b39588607.jpg"
