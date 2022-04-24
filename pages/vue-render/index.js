@@ -4,7 +4,19 @@ const data = [
     props: {
       className: "div-01"
     },
-    children: "先写一些文字"
+    children: [
+      "先写一些文字",
+      {
+        type: "div",
+        props: {
+          className: "div-02"
+        },
+        style: {
+          color: 'red',
+        },
+        children: "这是一个儿子节点"
+      },
+    ]
   },
   {
     type: "h1",
@@ -27,21 +39,27 @@ const data = [
 ];
 
 function render(createElement, data) {
-  const child = data.map((item) => {
-    const { type, style, props, children } = item;
-    const on = {
-      click: () => {
-        console.log('====')
+  return data.map((item) => {
+    if (typeof item === 'object') {
+      const { type, style, props, children } = item;
+      const on = {
+        click: () => {
+          console.log('====')
+        }
+      };
+      let child = children
+      if (Array.isArray(children)) {
+        child = render(createElement, children);
       }
+      return createElement(type, { attrs: props, style, on }, child);
     }
-    return createElement(type, { attrs: props, style, on }, children);
+    return item;
   });
-  return createElement("div", {}, child);
 }
 
 new Vue({
   el: "#app",
   render: function (createElement) {
-    return render(createElement, data);
+    return createElement("div", {}, render(createElement, data));
   }
 });
