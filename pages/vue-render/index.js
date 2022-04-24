@@ -1,3 +1,23 @@
+Vue.component('button-counter', {
+  data: function () {
+    return {
+      count: 0
+    }
+  },
+  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+})
+
+Vue.component('blog-post', {
+  props: ['title', 'content'],
+  template: `
+    <div class="blog-post">
+      <h3>{{ title }}</h3>
+      <div v-html="content"></div>
+    </div>
+  `
+})
+
+
 const data = [
   {
     type: "div",
@@ -16,12 +36,27 @@ const data = [
         },
         children: "这是一个儿子节点"
       },
+      {
+        type: "button-counter",
+      },
     ]
   },
   {
     type: "h1",
     props: {
       className: "h1-01"
+    },
+    children: "这是一个h1"
+  },
+  {
+    type: 'blog-post',
+    props: {
+      title: 'title',
+      content: 'content'
+    },
+    style: {
+      border: '1px solid #234534',
+      width: '200px'
     },
     children: "这是一个h1"
   },
@@ -51,7 +86,7 @@ function render(createElement, data) {
       if (Array.isArray(children)) {
         child = render(createElement, children);
       }
-      return createElement(type, { attrs: props, style, on }, child);
+      return createElement(type, { attrs: props, props, style, on }, child);
     }
     return item;
   });
