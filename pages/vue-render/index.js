@@ -58,7 +58,6 @@ const data = [
       border: '1px solid #234534',
       width: '200px'
     },
-    children: "这是一个h1"
   },
   {
     type: "img",
