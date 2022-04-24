@@ -58,6 +58,10 @@ function render(createElement, data) {
 }
 
 new Vue({
+  /**
+   * https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0
+   * 使用文档
+   */
   el: "#app",
   render: function (createElement) {
     return createElement("div", {}, render(createElement, data));
