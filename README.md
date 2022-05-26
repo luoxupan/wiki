@@ -1,3 +1,10 @@
+## VPS网址
+- 飞讯
+  - https://www.feixun.co 最新网址
+  - https://meikimi.github.io  永久网址
+- 搬瓦工
+  - https://bwg.wiki
+
 ## Page链接：
 - [异步按需加载](https://luoxupan.github.io/wiki/pages/page02/index.html)
 - [react hooks 快照例子](https://luoxupan.github.io/wiki/pages/page05/index.html)
