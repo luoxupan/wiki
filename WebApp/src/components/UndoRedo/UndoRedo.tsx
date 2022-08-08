@@ -23,7 +23,10 @@ export function UndoRedo() {
         <div>
           <button
             className="increase-button"
-            onClick={() => setState(state + 1)}
+            onClick={() => {
+              console.log(state + 1);
+              setState(state + 1);
+            }}
           >
             Increase
           </button>
