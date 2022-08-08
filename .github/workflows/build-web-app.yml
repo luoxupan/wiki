@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: bash ./bin/build
+      - run: bash ./bin/build.sh
       # - run: cd ./WebApp && npm ci
       # - run: cd ./WebApp && npm run build
-      - run: bash ./bin/deploy
+      - run: bash ./bin/deploy.sh
