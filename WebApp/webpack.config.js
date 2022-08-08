@@ -2,6 +2,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+/**
+ * workbox-webpack-plugin文档`service worker`
+ * https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/
+ * https://webpack.docschina.org/guides/progressive-web-application/
+ */
 
 const isProduction = process.env.NODE_ENV == 'production';
 
@@ -10,6 +15,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: "[name]_[hash:8].js",
+    clean: true, // 清理/dist文件夹
   },
   devServer: {
     open: true,
