@@ -1,5 +1,6 @@
 #!/bin/bash
 
+git checkout gh-pages
 branch=$(git symbolic-ref --short -q HEAD)
 if [ $branch = "gh-pages" ]
 then
