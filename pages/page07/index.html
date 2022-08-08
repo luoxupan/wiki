@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>form app</title>
+  <style>
+    .father {
+      width: 200px;
+      height: 200px;
+      position: relative;
+    }
+    .child {
+    }
+  </style>
+</head>
+<body>
+  <form id="form">
+    <label for="name">
+      Enter your name: <input type="text" name="name" id="name">
+    </label>
+    <label for="email">
+      Enter your email: <input type="email" name="email" id="email">
+    </label>
+    <label for="user">
+      Enter your user: <input name="user" type="text">
+    </label>
+    <div>
+      <label for="open">
+        <input type="radio" name="open" value="r1">r1
+        <input type="radio" name="open" value="r2">r2
+      </label>
+    </div>
+    <div>
+      <input type="checkbox" name="menu" value="c1">c1
+      <input type="checkbox" name="menu" value="c2">c2
+    </div>
+    <!-- <button type="submit">login</button> -->
+    <!-- <button type="reset">reset</button> -->
+    <!-- <button type="button" id="get-form-value">Get Value</button> -->
+    <!-- <button type="button" id="reset-form-value">Reset Value</button> -->
+    <input type="submit" />
+  </form>
+</body>
+<script defer src="index.js"></script>
+</html>
