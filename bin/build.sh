@@ -1,9 +1,8 @@
 #!/bin/bash
 
-git pull
-git branch -D gh-pages
 git checkout gh-pages
-git merge master
+git pull
+git merge master --allow-unrelated-histories
 
-cd ../WebApp && npm ci
-cd ../WebApp && npm run build
+cd ./WebApp && npm ci
+cd ./WebApp && npm run build
