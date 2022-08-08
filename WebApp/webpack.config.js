@@ -9,6 +9,7 @@ const config = {
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
+    filename: "[name]_[hash:8].js",
   },
   devServer: {
     open: true,
