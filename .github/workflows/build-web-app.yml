@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      # - run: cd ./WebApp
+      - run: cd ./WebApp && git checkout github-pages && git merge master
       - run: cd ./WebApp && npm ci
       - run: cd ./WebApp && npm run build
+      - run: cd ./WebApp && npm run deploy
