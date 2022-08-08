@@ -53,7 +53,10 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = 'production';
-    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+    }));
   } else {
     config.mode = 'development';
   }
