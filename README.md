@@ -10,6 +10,7 @@
 - [react hooks 快照例子](https://luoxupan.github.io/wiki/pages/page05/index.html)
 - [history.pushState例子](https://luoxupan.github.io/wiki/pages/page06/index.html)
 - [vue动态render例子](https://luoxupan.github.io/wiki/pages/vue-render/index.html)
+- [WebApp](https://luoxupan.github.io/wiki/pages/webapp/index.html)
 
 ---
 
