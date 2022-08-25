@@ -1,6 +1,20 @@
-## 地址
+## 资源链接：
+
 - [浏览器工作原理与实践](https://blog.poetries.top/browser-working-principle/)
 - [React技术揭秘](https://react.iamkasong.com/#%E5%AF%BC%E5%AD%A6%E8%A7%86%E9%A2%91)
+
+- [https://github.com/rxaviers/async-pool](https://github.com/rxaviers/async-pool)
+
+- [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop)（高频LC）
+
+- [https://github.com/qappleh/Interview](https://github.com/qappleh/Interview)
+
+- [https://github.com/ascoders/weekly](https://github.com/ascoders/weekly)（前端精读周刊）
+
+- [https://github.com/mqyqingfeng/Blog](https://github.com/mqyqingfeng/Blog)（冴羽的博客）
+
+- [https://github.com/taowen/awesome-lowcode](https://github.com/taowen/awesome-lowcode)（国内低代码平台从业者交流）
+
 
 ## VPS网址
 - 飞讯
@@ -10,11 +24,11 @@
   - https://bwg.wiki
 
 ## Page链接：
+- [WebApp](https://luoxupan.github.io/wiki/pages/webapp/index.html)
 - [异步按需加载](https://luoxupan.github.io/wiki/pages/page02/index.html)
 - [react hooks 快照例子](https://luoxupan.github.io/wiki/pages/page05/index.html)
 - [history.pushState例子](https://luoxupan.github.io/wiki/pages/page06/index.html)
 - [vue动态render例子](https://luoxupan.github.io/wiki/pages/vue-render/index.html)
-- [WebApp](https://luoxupan.github.io/wiki/pages/webapp/index.html)
 
 ---
 
