@@ -1,7 +1,7 @@
 ## 资源链接：
 
-- [浏览器工作原理与实践](https://blog.poetries.top/browser-working-principle/)
-- [React技术揭秘](https://react.iamkasong.com/#%E5%AF%BC%E5%AD%A6%E8%A7%86%E9%A2%91)
+- [https://blog.poetries.top/browser-working-principle/](https://blog.poetries.top/browser-working-principle/) (浏览器工作原理与实践)
+- [https://react.iamkasong.com/](https://react.iamkasong.com/) (React技术揭秘)
 
 - [https://github.com/rxaviers/async-pool](https://github.com/rxaviers/async-pool)
 
@@ -13,9 +13,11 @@
 
 - [https://github.com/mqyqingfeng/Blog](https://github.com/mqyqingfeng/Blog)（冴羽的博客）
 
-- [汇总](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzA4MDg4NDczMQ==&action=getalbum&album_id=1790586969761103872#wechat_redirect)
+- [https://7kms.github.io/react-illustration-series/](https://7kms.github.io/react-illustration-series/) (图解React原理系列)
 
 - [https://github.com/taowen/awesome-lowcode](https://github.com/taowen/awesome-lowcode)（国内低代码平台从业者交流）
+
+- [汇总](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzA4MDg4NDczMQ==&action=getalbum&album_id=1790586969761103872#wechat_redirect)
 
 ### CSS
 
