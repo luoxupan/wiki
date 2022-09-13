@@ -57,10 +57,6 @@ export function Options() {
                         {...field}
                         className='item-switch'
                         name={[field.name, 'enabled']}
-                        rules={[
-                          { required: true, message: '输入URL链接' },
-                          { pattern: /^https?:\/\/.*$/i, message: '输入URL链接' }
-                        ]}
                       >
                         <Switch />
                       </Form.Item>
