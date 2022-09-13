@@ -96,7 +96,7 @@ export function Options() {
           const formData = await form.validateFields();
           console.log(formData);
           // @ts-ignore
-          chrome.storage.sync.set({ rules: formData });
+          chrome.storage.sync.set({ rules: formData.rules });
         }}
       >
         保存
