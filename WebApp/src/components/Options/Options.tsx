@@ -30,7 +30,7 @@ export function Options() {
               <>
                 {fields.map((field, index) => {
                   return (
-                    <div key={field.key} className="rules-list-item">
+                    <div key={index} className="rules-list-item">
                       <Form.Item
                         {...field}
                         label={'From'}
