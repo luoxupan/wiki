@@ -67,14 +67,14 @@
 - `sudo apachectl stop`
 - 修改服务器默认配置
   - `sudo vim /etc/apache2/httpd.conf`
-  - 将`<Directory "/Library/WebServer/Documents">`修改成`<Directory "/Users/didi">`
+  - 将`<Directory "/Library/WebServer/Documents">`修改成`<Directory "/Users/luoxupan">`
 - 浏览器输入`http://localhost/wiki/pages/page06/index.html`
 
 ---
 
 ### Mac启动Nginx服务器实现本地访问
 - `nginx -t` 查看`nginx.conf`配置文件路径
-- 配置资源根路径
+- 修改`nginx.conf`资源根路径
   ```
   location / {
     root /Users/luoxupan;
