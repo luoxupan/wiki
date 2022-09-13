@@ -1,7 +1,7 @@
 import "./Options.less";
 import * as React from "react";
 import { uuid } from '../../utils';
-import { Form, Button, Input, Switch } from 'antd';
+import { Form, Button, Input, Switch, message } from 'antd';
 
 export function Options() {
 
@@ -96,7 +96,8 @@ export function Options() {
           const formData = await form.validateFields();
           console.log(formData);
           // @ts-ignore
-          chrome.storage.sync.set({ rules: formData.rules });
+          await chrome.storage.sync.set({ rules: formData.rules });
+          message.success('保存成功');
         }}
       >
         保存
