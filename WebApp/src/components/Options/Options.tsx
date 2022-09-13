@@ -56,6 +56,7 @@ export function Options() {
                       <Form.Item
                         {...field}
                         className='item-switch'
+                        valuePropName='checked'
                         name={[field.name, 'enabled']}
                       >
                         <Switch />
