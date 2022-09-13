@@ -72,6 +72,18 @@
 
 ---
 
+### Mac启动Nginx服务器实现本地访问
+- `nginx -t` 查看`nginx.conf`配置文件路径
+- 配置资源根路径
+  ```
+  location / {
+    root /Users/luoxupan;
+    index  index.html index.htm;
+  }
+  ```
+
+---
+
 ![image](https://luoxupan.github.io/img/HTML_CSS_01.jpeg)
 ---
 ![image](https://luoxupan.github.io/img/Javascript_01.jpeg)
