@@ -98,10 +98,10 @@ export function Options() {
           console.log(formData);
           // @ts-ignore
           await chrome.storage.sync.set({ rules: formData.rules });
-          message.success('保存成功');
+          message.success('规则已经生效');
         }}
       >
-        保存
+        生效
       </Button>
     </div>
   );
