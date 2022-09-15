@@ -1,6 +1,6 @@
 import "./UndoRedo.less";
 import * as React from "react";
-import useUndoRedo from "../../hooks/use-undo-redo";
+import { useUndoRedo } from "../../hooks/index";
 import { Undo, Redo } from "@mui/icons-material";
 
 export function UndoRedo() {
