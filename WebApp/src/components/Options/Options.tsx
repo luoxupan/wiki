@@ -1,6 +1,7 @@
 import "./Options.less";
 import * as React from "react";
-import { uuid } from '../../utils';
+import { uuid, DownloadJsonDataToLocal } from '../../utils';
+import { Upload } from '../Upload/Upload';
 import { Form, Button, Input, Switch, message } from 'antd';
 
 export function Options() {
@@ -77,32 +78,48 @@ export function Options() {
           }}
         </Form.List>
       </Form>
-      <Button
-        className="add-button"
-        onClick={() => {
-          formRef.current.add({
-            id: uuid(),
-            enabled: false,
-            RegExp_url: '',
-            redirect_url: '',
-            type: 'ResProxy'
-          });
-        }}
-      >
-        增加
-      </Button>
-      <Button
-        type="primary"
-        onClick={async () => {
-          const formData = await form.validateFields();
-          console.log(formData);
-          // @ts-ignore
-          await chrome.storage.sync.set({ rules: formData.rules });
-          message.success('规则已经生效');
-        }}
-      >
-        生效
-      </Button>
+      <div className="option-buttons">
+        <Button
+          className="add-button"
+          onClick={() => {
+            formRef.current.add({
+              id: uuid(),
+              enabled: false,
+              RegExp_url: '',
+              redirect_url: '',
+              type: 'ResProxy'
+            });
+          }}
+        >
+          增加配置
+        </Button>
+        <Upload
+          onChange={(data: any) => {
+            form.setFieldsValue({ rules: data });
+          }}
+        />
+        <Button
+          onClick={async () => {
+            const formData = await form.validateFields();
+            DownloadJsonDataToLocal(formData.rules, 'ExtensionsConfig.json');
+          }}
+        >
+          导出配置
+        </Button>
+        <Button
+          type="primary"
+          className="primary-button"
+          onClick={async () => {
+            const formData = await form.validateFields();
+            console.log(formData);
+            // @ts-ignore
+            await chrome.storage.sync.set({ rules: formData.rules });
+            message.success('规则已经生效');
+          }}
+        >
+          生效
+        </Button>
+      </div>
     </div>
   );
 }
