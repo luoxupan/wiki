@@ -1,6 +1,6 @@
 import "./Options.less";
 import * as React from "react";
-import { uuid, DownloadJsonDataToLocal } from '../../utils';
+import { Utils } from '../../utils';
 import { Upload } from '../Upload/Upload';
 import { Form, Button, Input, Switch, message } from 'antd';
 
@@ -83,7 +83,7 @@ export function Options() {
           className="add-button"
           onClick={() => {
             formRef.current.add({
-              id: uuid(),
+              id: Utils.uuid(),
               enabled: false,
               RegExp_url: '',
               redirect_url: '',
@@ -101,7 +101,7 @@ export function Options() {
         <Button
           onClick={async () => {
             const formData = await form.validateFields();
-            DownloadJsonDataToLocal(formData.rules, 'ExtensionsConfig.json');
+            Utils.DownloadJsonDataToLocal(formData.rules, 'ExtensionsConfig.json');
           }}
         >
           导出配置
