@@ -10,7 +10,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   // target: '', // 需要看看
-  // mode: 'production',
   output: {
     // `path` is the folder where Webpack will place your bundles
     path: path.resolve(__dirname, '../dist'),
@@ -25,6 +24,10 @@ module.exports = {
     clean: true, // 清理/dist文件夹
   },
   module: {
+    /**
+     * Add your rules for custom modules here
+     * Learn more about loaders from https://webpack.js.org/loaders/
+     */
     rules: [
       {
         test: /\.(ts|tsx)$/i,
@@ -43,8 +46,6 @@ module.exports = {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: 'asset',
       },
-      // Add your rules for custom modules here
-      // Learn more about loaders from https://webpack.js.org/loaders/
       // {
       //   test: /\.ts$/,
       //   use: [
