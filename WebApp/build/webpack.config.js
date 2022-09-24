@@ -13,7 +13,7 @@ const isProduction = process.env.NODE_ENV == 'production';
 const config = {
   entry: './src/index.tsx',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../dist'),
     filename: "[name]_[hash:8].js",
     clean: true, // 清理/dist文件夹
   },
