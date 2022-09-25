@@ -41,7 +41,7 @@ export function Options() {
                           { pattern: /^https?:\/\/.*$/i, message: '输入URL链接' }
                         ]}
                       >
-                        <Input autoComplete="off" placeholder="http://xxx.com/aa.js" />
+                        <Input autoComplete="off" placeholder="http://x.com/a.js &ensp; 👈or👉 &ensp; http://x.com/*" />
                       </Form.Item>
                       <Form.Item
                         {...field}
@@ -52,7 +52,7 @@ export function Options() {
                           { pattern: /^https?:\/\/.*$/i, message: '输入URL链接' }
                         ]}
                       >
-                        <Input autoComplete="off" placeholder="http://localhost/map.js" />
+                        <Input autoComplete="off" placeholder="http://localhost/a.js  &ensp; 👈or👉 &ensp; http://localhost/static/js/" />
                       </Form.Item>
                       <Form.Item
                         {...field}
