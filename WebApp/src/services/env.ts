@@ -5,7 +5,7 @@ export class Env {
 
   static isTest = Env.env === 'test';
 
-  static isProduction = Env.env === 'production';
+  static isProd = Env.env === 'production';
 
   static isIframe = window.top !== window.self || window.location.search.includes('type=iframe');
 }
