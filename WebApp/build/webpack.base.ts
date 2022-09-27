@@ -22,6 +22,7 @@ module.exports = {
       arrowFunction: false, // webpack拼装的代码不要箭头函数
     },
     clean: true, // 清理/dist文件夹
+    publicPath: "//luoxupan.github.io/wiki/pages/webapp/", // 线上环境
   },
   module: {
     /**
