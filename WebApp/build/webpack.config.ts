@@ -36,6 +36,7 @@ module.exports = () => {
         port: 2002,
         compress: true,
         host: 'localhost',
+        historyApiFallback: true
       },
     }
   }
