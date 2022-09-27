@@ -4,7 +4,7 @@ import { WebApp } from "./WebApp";
 import 'antd/dist/antd.css';
 
 const root = createRoot(
-  document.getElementById("root")
+  document.getElementById("root") as HTMLElement
 );
 
 root.render(<WebApp />);

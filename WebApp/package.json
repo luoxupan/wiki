@@ -4,10 +4,11 @@
   "description": "WebApp",
   "main": "index.js",
   "scripts": {
-    "build:dev": "webpack --config ./build/webpack.config.ts",
+    "build:dev": "webpack --config ./build/webpack.config.ts --node-env=development",
+    "build:pre": "webpack --config ./build/webpack.config.ts --node-env=pre",
     "build:prod": "webpack --config ./build/webpack.config.ts --node-env=production",
-    "watch": "webpack --config ./build/webpack.config.ts --watch",
-    "serve": "webpack serve --config ./build/webpack.config.ts"
+    "watch": "webpack --config ./build/webpack.config.ts --watch --node-env=development",
+    "serve": "webpack serve --config ./build/webpack.config.ts --node-env=development"
   },
   "repository": {
     "type": "git",

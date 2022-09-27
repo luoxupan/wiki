@@ -1,14 +1,14 @@
-const path = require('path');
-const webpack = require("webpack");
-const HTMLWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+import * as path from "path";
+import * as webpack from "webpack";
+import * as HTMLWebpackPlugin from "html-webpack-plugin";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
 
 /**
  * npm i -D XXXX --registry https://registry.npmjs.org
  * npx webpack --help
  */
 
-module.exports = {
+export const Base = {
   // target: '', // 需要看看
   output: {
     // `path` is the folder where Webpack will place your bundles
@@ -22,7 +22,6 @@ module.exports = {
       arrowFunction: false, // webpack拼装的代码不要箭头函数
     },
     clean: true, // 清理/dist文件夹
-    publicPath: "//luoxupan.github.io/wiki/pages/webapp/", // 线上环境
   },
   module: {
     /**
@@ -98,4 +97,4 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
   },
   // devtool: 'inline-source-map', // 研究一下为何这个配置会导致包体积变大
-};
+} as any;
