@@ -1,5 +1,4 @@
 import * as path from "path";
-import * as webpack from "webpack";
 import * as HTMLWebpackPlugin from "html-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 
@@ -86,11 +85,6 @@ export const Base = {
     new CleanWebpackPlugin({}),
     new HTMLWebpackPlugin({
       template: 'index.html'
-    }),
-    // Add your plugins here
-    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    new webpack.DefinePlugin({
-      'WEB_ENV': '"production"', // 在代码里面直接用WEB_ENV
     }),
   ],
   resolve: {
