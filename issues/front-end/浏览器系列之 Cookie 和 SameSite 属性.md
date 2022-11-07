@@ -135,6 +135,8 @@ SameSite 可以有下面三种值：
 
 举几个例子，www.taobao.com 和 [www.baidu.com](http://www.baidu.com) 是跨站，www.a.taobao.com 和 [www.b.taobao.com](http://www.b.taobao.com) 是同站，a.github.io 和 b.github.io 是跨站(注意是跨站)。
 
+根据**跨域**和**跨站**定义的不同，我们可以知道**跨站一定跨域，但是跨域不一定跨站。**
+
 ##### 改变
 接下来看下从 None 改成 Lax 到底影响了哪些地方的 Cookies 的发送？直接来一个图表：
 
