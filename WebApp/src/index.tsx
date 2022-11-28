@@ -1,9 +1,17 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import { WebApp } from "./WebApp";
+import { router } from './router';
+import 'antd/dist/antd.css';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+} from "react-router-dom";
 
-const root = createRoot(
-  document.getElementById("root")
+createRoot(
+  document.getElementById("root") as HTMLElement
+).render(
+  <React.StrictMode>
+    <RouterProvider router={createBrowserRouter(router)} />
+  </React.StrictMode>
 );
-
-root.render(<WebApp />);

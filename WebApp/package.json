@@ -1,49 +1,53 @@
 {
-  "name": "my-webpack-project",
+  "name": "web-app",
   "version": "1.0.0",
-  "description": "My webpack project",
+  "description": "WebApp",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch",
-    "deploy": "bash ../bin/deploy.sh",
-    "serve": "webpack serve"
+    "build:dev": "webpack --config ./build/webpack.config.ts --node-env=development",
+    "build:pre": "webpack --config ./build/webpack.config.ts --node-env=pre",
+    "build:prod": "webpack --config ./build/webpack.config.ts --node-env=production",
+    "watch": "webpack --config ./build/webpack.config.ts --watch --node-env=development",
+    "serve": "webpack serve --config ./build/webpack.config.ts --node-env=development"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ygxqqx/wiki.git"
+    "url": "git+https://github.com/luoxupan/wiki.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ygxqqx/wiki/issues"
+    "url": "https://github.com/luoxupan/wiki/issues"
   },
-  "homepage": "https://github.com/ygxqqx/wiki#readme",
+  "homepage": "https://github.com/luoxupan/wiki#readme",
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.3",
+    "antd": "^4.23.1",
+    "axios": "^0.27.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.16",
     "@types/react-dom": "^18.0.6",
     "@webpack-cli/generators": "^2.5.0",
+    "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
     "less": "^4.1.3",
     "less-loader": "^11.0.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.7.4",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.3",
+    "webpack-merge": "^5.8.0",
     "workbox-webpack-plugin": "^6.5.4"
   }
 }

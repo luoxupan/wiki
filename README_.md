@@ -1,10 +1,13 @@
-## page链接：
-
-[page01](https://luoxupan.github.io/wiki/pages/page01/index.html)
+[interview个人竞争力](https://awhisper.github.io/2018/08/15/interview-suggestion/)
 
 ## 资源链接：
 
-- [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop)（汇总各大互联网高频LC题）
+- [https://blog.poetries.top/browser-working-principle/](https://blog.poetries.top/browser-working-principle/) (浏览器工作原理与实践)
+- [https://react.iamkasong.com/](https://react.iamkasong.com/) (React技术揭秘)
+
+- [https://github.com/rxaviers/async-pool](https://github.com/rxaviers/async-pool)
+
+- [https://github.com/afatcoder/LeetcodeTop](https://github.com/afatcoder/LeetcodeTop)（高频LC）
 
 - [https://github.com/qappleh/Interview](https://github.com/qappleh/Interview)
 
@@ -12,25 +15,19 @@
 
 - [https://github.com/mqyqingfeng/Blog](https://github.com/mqyqingfeng/Blog)（冴羽的博客）
 
-- [https://github.com/rxaviers/async-pool](https://github.com/rxaviers/async-pool)
+- [https://7kms.github.io/react-illustration-series/](https://7kms.github.io/react-illustration-series/) (图解React原理系列)
 
 - [https://github.com/taowen/awesome-lowcode](https://github.com/taowen/awesome-lowcode)（国内低代码平台从业者交流）
 
-## 大厂面试：
- - [大厂面经面试题汇总](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzA4MDg4NDczMQ==&action=getalbum&album_id=1790586969761103872#wechat_redirect)
-
-
-
-## 分类  
-
+- [汇总](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzA4MDg4NDczMQ==&action=getalbum&album_id=1790586969761103872#wechat_redirect)
 
 ### CSS
 
 - [介绍下重绘和回流（Repaint & Reflow），以及如何进行优化](https://github.com/qappleh/Web-Daily-Question/issues/26)
 
-- [响应式背后的浏览器原理你知道吗？（阿里）](https://github.com/qappleh/Web-Daily-Question/issues/205)
+- [响应式背后的浏览器原理你知道吗？](https://github.com/qappleh/Web-Daily-Question/issues/205)
 
-- [flex: 0 1 auto 表示什么意思?(拼多多）](https://github.com/qappleh/Web-Daily-Question/issues/222)
+- [flex: 0 1 auto 表示什么意思？](https://github.com/qappleh/Web-Daily-Question/issues/222)
 
 
 ### javaScript
@@ -46,5 +43,4 @@
 - [介绍下 Set、Map、WeakSet 和 WeakMap 的区别？](https://github.com/qappleh/Web-Daily-Question/issues/33)
 
 - [对作用域上下文和this的理解，看下列代码：](https://github.com/qappleh/Web-Daily-Question/issues/58)
-
 

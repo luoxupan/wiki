@@ -1,6 +1,6 @@
 import "./UndoRedo.less";
 import * as React from "react";
-import useUndoRedo from "../../hooks/use-undo-redo";
+import { useUndoRedo } from "../../hooks/index";
 import { Undo, Redo } from "@mui/icons-material";
 
 export function UndoRedo() {
@@ -24,7 +24,7 @@ export function UndoRedo() {
           <button
             className="increase-button"
             onClick={() => {
-              console.log(state + 1);
+              console.log('state:', state + 1);
               setState(state + 1);
             }}
           >

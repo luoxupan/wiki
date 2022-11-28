@@ -31,7 +31,7 @@ const reducerWithUndoRedo = (state: any, action: any) => {
   }
 };
 
-const useUndoRedo = (initialState = {}) => {
+export const useUndoRedo = (initialState = {}) => {
   const [state, dispatch] = React.useReducer(reducerWithUndoRedo, {
     past: [],
     present: initialState,
@@ -56,5 +56,3 @@ const useUndoRedo = (initialState = {}) => {
     isRedoPossible
   };
 };
-
-export default useUndoRedo;
