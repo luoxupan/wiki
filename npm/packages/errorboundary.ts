@@ -73,6 +73,10 @@ class ErrorBoundary {
     });
   }
   static start() {
+    /**
+     * https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event
+     * 更据mdn文档，应该在DOMContentLoaded事件之前就监听
+     */
     ErrorBoundary.listener();
   }
 }
