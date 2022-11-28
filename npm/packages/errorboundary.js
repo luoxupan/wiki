@@ -1,14 +1,21 @@
 "use strict";
+var errorTypes = [
+    "error" /* ErrorTypes.error */,
+    "componentdidcatch" /* ErrorTypes.componentdidcatch */,
+    "unhandledrejection" /* ErrorTypes.unhandledrejection */,
+];
 function errorHandler(data) {
-    if (data.type === 'componentdidcatch') {
+    if (errorTypes.includes(data.type)) {
+        if (data.type === "error" /* ErrorTypes.error */) {
+        }
+        else if (data.type === "componentdidcatch" /* ErrorTypes.componentdidcatch */) {
+        }
+        else if (data.type === "unhandledrejection" /* ErrorTypes.unhandledrejection */) {
+        }
+        else {
+        }
+        console.log('errordata:::', data);
     }
-    else if (data.type === 'error') {
-    }
-    else if (data.type === 'unhandledrejection') {
-    }
-    else {
-    }
-    console.log('errordata:::', data);
 }
 function errorBoundary() {
     window.addEventListener('error', function (e) {
