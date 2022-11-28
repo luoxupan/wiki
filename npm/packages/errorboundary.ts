@@ -1,10 +1,24 @@
+const enum ErrorTypes {
+  error='error',
+  componentdidcatch='componentdidcatch',
+  unhandledrejection='unhandledrejection',
+}
+
+const errorTypes = [
+  ErrorTypes.error,
+  ErrorTypes.componentdidcatch,
+  ErrorTypes.unhandledrejection,
+];
+
 function errorHandler(data: any) {
-  if (data.type === 'componentdidcatch') {
-  } else if (data.type === 'error') {
-  } else if (data.type === 'unhandledrejection') {
-  } else {
+  if (errorTypes.includes(data.type)) {
+    if (data.type === ErrorTypes.error) {
+    } else if (data.type === ErrorTypes.componentdidcatch) {
+    } else if (data.type === ErrorTypes.unhandledrejection) {
+    } else {
+    }
+    console.log('errordata:::', data);
   }
-  console.log('errordata:::', data);
 }
 
 function errorBoundary() {
