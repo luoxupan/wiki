@@ -22,46 +22,53 @@ var errorTypes = [
     "componentdidcatch" /* ErrorTypes.componentdidcatch */,
     "unhandledrejection" /* ErrorTypes.unhandledrejection */,
 ];
-function screenshot() {
-    var html2canvasurl = 'https://luoxupan.github.io/wiki/npm/lib/html2canvas.min.js';
-    loadScript(html2canvasurl).then(function () {
-        window.html2canvas(document.body).then(function (canvas) {
-            // document.body.appendChild(canvas);
-            var imgData = canvas.toDataURL('image/png');
-            var newWin = window.open('', '_blank');
-            var dataImg = new Image();
-            dataImg.style = "width: 100%";
-            dataImg.src = imgData;
-            newWin.document.write(dataImg.outerHTML);
-            newWin.document.close();
-        });
-    });
-}
-var timer = null;
-function errorHandler(data) {
-    if (errorTypes.includes(data.type)) {
-        if (data.type === "error" /* ErrorTypes.error */) {
-        }
-        else if (data.type === "componentdidcatch" /* ErrorTypes.componentdidcatch */) {
-        }
-        else if (data.type === "unhandledrejection" /* ErrorTypes.unhandledrejection */) {
-        }
-        else {
-        }
-        console.log('errordata:::', data);
-        clearTimeout(timer);
-        timer = setTimeout(screenshot, 1000);
+var ErrorBoundary = /** @class */ (function () {
+    function ErrorBoundary() {
     }
-}
-function errorBoundary() {
-    window.addEventListener('error', function (e) {
-        errorHandler({ type: 'error', data: e });
-    });
-    window.addEventListener('unhandledrejection', function (e) {
-        errorHandler({ type: 'unhandledrejection', data: e });
-    });
-    window.addEventListener('message', function (e) {
-        errorHandler(e.data);
-    });
-}
-errorBoundary();
+    ErrorBoundary.screenshot = function () {
+        var html2canvasurl = 'https://luoxupan.github.io/wiki/npm/lib/html2canvas.min.js';
+        loadScript(html2canvasurl).then(function () {
+            window.html2canvas(document.body).then(function (canvas) {
+                // document.body.appendChild(canvas);
+                var imgData = canvas.toDataURL('image/png');
+                var newWin = window.open('', '_blank');
+                var dataImg = new Image();
+                dataImg.style = "width: 100%";
+                dataImg.src = imgData;
+                newWin.document.write(dataImg.outerHTML);
+                newWin.document.close();
+            });
+        });
+    };
+    ErrorBoundary.errorHandler = function (data) {
+        if (errorTypes.includes(data.type)) {
+            if (data.type === "error" /* ErrorTypes.error */) {
+            }
+            else if (data.type === "componentdidcatch" /* ErrorTypes.componentdidcatch */) {
+            }
+            else if (data.type === "unhandledrejection" /* ErrorTypes.unhandledrejection */) {
+            }
+            else {
+            }
+            console.log('errordata:::', data);
+            clearTimeout(ErrorBoundary.timer);
+            ErrorBoundary.timer = setTimeout(ErrorBoundary.screenshot, 1000);
+        }
+    };
+    ErrorBoundary.listener = function () {
+        window.addEventListener('error', function (e) {
+            ErrorBoundary.errorHandler({ type: 'error', data: e });
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+            ErrorBoundary.errorHandler({ type: 'unhandledrejection', data: e });
+        });
+        window.addEventListener('message', function (e) {
+            ErrorBoundary.errorHandler(e.data);
+        });
+    };
+    ErrorBoundary.start = function () {
+        ErrorBoundary.listener();
+    };
+    return ErrorBoundary;
+}());
+ErrorBoundary.start();
