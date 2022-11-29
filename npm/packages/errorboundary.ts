@@ -20,12 +20,16 @@ function loadScript(src: string) {
 
 const enum ErrorTypes {
   error='error',
+  vue2errorhandler='vue2errorhandler',
+  vue3errorhandler='vue3errorhandler',
   componentdidcatch='componentdidcatch',
   unhandledrejection='unhandledrejection',
 }
 
 const errorTypes = [
   ErrorTypes.error,
+  ErrorTypes.vue2errorhandler,
+  ErrorTypes.vue3errorhandler,
   ErrorTypes.componentdidcatch,
   ErrorTypes.unhandledrejection,
 ];
