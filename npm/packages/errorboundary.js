@@ -60,7 +60,7 @@ var ErrorBoundary = /** @class */ (function () {
     ErrorBoundary.listener = function () {
         window.addEventListener('error', function (e) {
             ErrorBoundary.errorHandler({ type: 'error', data: e });
-        });
+        }, true);
         window.addEventListener('unhandledrejection', function (e) {
             ErrorBoundary.errorHandler({ type: 'unhandledrejection', data: e });
         });
