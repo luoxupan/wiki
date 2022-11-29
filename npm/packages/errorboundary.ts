@@ -68,7 +68,7 @@ class ErrorBoundary {
   static listener() {
     window.addEventListener('error', (e) => {
       ErrorBoundary.errorHandler({ type: 'error', data: e });
-    });
+    }, true);
     window.addEventListener('unhandledrejection', (e) => {
       ErrorBoundary.errorHandler({ type: 'unhandledrejection', data: e });
     });
