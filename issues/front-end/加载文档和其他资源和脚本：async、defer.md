@@ -1,3 +1,7 @@
+![](https://luoxupan.github.io/collection/img/async-vs-defer-attributes.png)
+
+---
+
 ### [DOMContentLoaded](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/DOMContentLoaded_event) 事件
 
 当纯HTML被完全加载以及解析时，**DOMContentLoaded** 事件会被触发，而**不必等待样式表，图片或者子框架完成加载**。
