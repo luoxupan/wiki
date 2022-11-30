@@ -1,3 +1,5 @@
+<details>
+<summary></summary>
 ### 说一下你自己的缺点?
 
 `我偶尔会因为专研技术问题，而搞到深夜，把自己弄得很累。今后我会多注意，把控好技术学习和工作状态的平衡。`
@@ -48,4 +50,4 @@
 
 
 ***转载自：https://github.com/airuikun/technology-blog/issues/51***
-
+</details>
