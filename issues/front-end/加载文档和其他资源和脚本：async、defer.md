@@ -1,4 +1,4 @@
-![](https://luoxupan.github.io/collection/img/async-vs-defer-attributes.png)
+<img width=70% src='https://luoxupan.github.io/collection/img/async-vs-defer-attributes.png' />
 
 ---
 
