@@ -36,13 +36,11 @@ class ErrorDetect {
     for (let i = 0; i < xpath.length; ++i) {
       for (let j = 0; j < ypath.length; ++j) {
         const ele = document.elementFromPoint(xpath[i], ypath[j]);
-        if (ele?.nodeName?.toLocaleLowerCase() !== 'html') {
-          points.push({
-            x: xpath[i],
-            y: ypath[j],
-            ele,
-          });
-        }
+        points.push({
+          x: xpath[i],
+          y: ypath[j],
+          ele,
+        });
       }
     }
   
