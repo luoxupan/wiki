@@ -36,6 +36,25 @@ var ErrorDetect = /** @class */ (function () {
         }
         return points;
     };
+    ErrorDetect.mergeHtmlAndBody = function (counts) {
+        var _a, _b, _c;
+        var bodyIdx = undefined;
+        var htmlIdx = undefined;
+        for (var i = 0; i < counts.length; ++i) {
+            var nodeName = (_c = (_b = (_a = counts[i]) === null || _a === void 0 ? void 0 : _a.ele) === null || _b === void 0 ? void 0 : _b.nodeName) === null || _c === void 0 ? void 0 : _c.toLocaleLowerCase();
+            if (nodeName === 'html') {
+                htmlIdx = i;
+            }
+            if (nodeName === 'body') {
+                bodyIdx = i;
+            }
+        }
+        if (bodyIdx !== undefined && htmlIdx !== undefined) {
+            counts[bodyIdx].count = counts[bodyIdx].count + counts[htmlIdx].count;
+            counts[bodyIdx].ele = [counts[bodyIdx].ele, counts[htmlIdx].ele];
+            counts.splice(htmlIdx, 1);
+        }
+    };
     ErrorDetect.getMaxPersent = function () {
         var points = ErrorDetect.getCoordinatesPoints();
         var array = [];
@@ -51,6 +70,7 @@ var ErrorDetect = /** @class */ (function () {
                 counts[idx].count = counts[idx].count + 1;
             }
         }
+        ErrorDetect.mergeHtmlAndBody(counts);
         // const total = counts.reduce((x: any, y: any) => x + y, 0);
         var total = points.length;
         var max = Math.max.apply(Math, counts.map(function (_a) {

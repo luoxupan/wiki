@@ -46,6 +46,24 @@ class ErrorDetect {
   
     return points;
   }
+  static mergeHtmlAndBody(counts: any) {
+    let bodyIdx = undefined;
+    let htmlIdx = undefined;
+    for (let i = 0; i < counts.length; ++i) {
+      let nodeName = counts[i]?.ele?.nodeName?.toLocaleLowerCase();
+      if (nodeName === 'html') {
+        htmlIdx = i;
+      }
+      if (nodeName === 'body') {
+        bodyIdx = i;
+      }
+    }
+    if (bodyIdx !== undefined && htmlIdx !== undefined) {
+      counts[bodyIdx].count = counts[bodyIdx].count + counts[htmlIdx].count;
+      counts[bodyIdx].ele = [counts[bodyIdx].ele, counts[htmlIdx].ele];
+      counts.splice(htmlIdx, 1);
+    }
+  }
   static getMaxPersent() {
     let points = ErrorDetect.getCoordinatesPoints();
     let array = [];
@@ -61,6 +79,8 @@ class ErrorDetect {
       }
     }
   
+    ErrorDetect.mergeHtmlAndBody(counts);
+
     // const total = counts.reduce((x: any, y: any) => x + y, 0);
     const total = points.length;
     const max = Math.max(...counts.map(({ count }: any) => count));
