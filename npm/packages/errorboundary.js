@@ -17,6 +17,7 @@ function loadScript(src) {
         }
     });
 }
+// @ts-ignore
 var errorTypes = [
     "error" /* ErrorTypes.error */,
     "vue2errorhandler" /* ErrorTypes.vue2errorhandler */,
