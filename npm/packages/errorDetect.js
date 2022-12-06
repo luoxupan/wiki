@@ -11,7 +11,6 @@ var ErrorDetect = /** @class */ (function () {
     function ErrorDetect() {
     }
     ErrorDetect.getCoordinatesPoints = function () {
-        var _a;
         var step = 20;
         var clientHeight = document.documentElement.clientHeight;
         var clientWidth = document.documentElement.clientWidth;
@@ -28,13 +27,11 @@ var ErrorDetect = /** @class */ (function () {
         for (var i = 0; i < xpath.length; ++i) {
             for (var j = 0; j < ypath.length; ++j) {
                 var ele = document.elementFromPoint(xpath[i], ypath[j]);
-                if (((_a = ele === null || ele === void 0 ? void 0 : ele.nodeName) === null || _a === void 0 ? void 0 : _a.toLocaleLowerCase()) !== 'html') {
-                    points.push({
-                        x: xpath[i],
-                        y: ypath[j],
-                        ele: ele,
-                    });
-                }
+                points.push({
+                    x: xpath[i],
+                    y: ypath[j],
+                    ele: ele,
+                });
             }
         }
         return points;
