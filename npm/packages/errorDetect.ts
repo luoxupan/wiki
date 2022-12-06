@@ -19,7 +19,7 @@ const errorTypes = [
 class ErrorDetect {
   static timer: any;
   static getCoordinatesPoints() {
-    const step = 20;
+    const step = 25;
     const clientHeight = document.documentElement.clientHeight;
     const clientWidth = document.documentElement.clientWidth;
     const y = Math.floor(clientHeight / step);
