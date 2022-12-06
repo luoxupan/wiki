@@ -1,3 +1,21 @@
+// @ts-ignore
+const enum ErrorTypes { // @ts-ignore
+  error='error', // @ts-ignore
+  vue2errorhandler='vue2errorhandler', // @ts-ignore
+  vue3errorhandler='vue3errorhandler', // @ts-ignore
+  componentdidcatch='componentdidcatch', // @ts-ignore
+  unhandledrejection='unhandledrejection', // @ts-ignore
+}
+
+// @ts-ignore
+const errorTypes = [
+  ErrorTypes.error,
+  ErrorTypes.vue2errorhandler,
+  ErrorTypes.vue3errorhandler,
+  ErrorTypes.componentdidcatch,
+  ErrorTypes.unhandledrejection,
+];
+
 class ErrorDetect {
   static timer: any;
   static getCoordinatesPoints() {

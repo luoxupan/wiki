@@ -1,4 +1,12 @@
 "use strict";
+// @ts-ignore
+var errorTypes = [
+    "error" /* ErrorTypes.error */,
+    "vue2errorhandler" /* ErrorTypes.vue2errorhandler */,
+    "vue3errorhandler" /* ErrorTypes.vue3errorhandler */,
+    "componentdidcatch" /* ErrorTypes.componentdidcatch */,
+    "unhandledrejection" /* ErrorTypes.unhandledrejection */,
+];
 var ErrorDetect = /** @class */ (function () {
     function ErrorDetect() {
     }
