@@ -35,11 +35,14 @@ class ErrorDetect {
     let points = [];
     for (let i = 0; i < xpath.length; ++i) {
       for (let j = 0; j < ypath.length; ++j) {
-        points.push({
-          x: xpath[i],
-          y: ypath[j],
-          ele: document.elementFromPoint(xpath[i], ypath[j])
-        });
+        const ele = document.elementFromPoint(xpath[i], ypath[j]);
+        if (ele?.nodeName?.toLocaleLowerCase() !== 'html') {
+          points.push({
+            x: xpath[i],
+            y: ypath[j],
+            ele,
+          });
+        }
       }
     }
   
@@ -60,7 +63,8 @@ class ErrorDetect {
       }
     }
   
-    const total = counts.reduce((x: any, y: any) => x + y, 0);
+    // const total = counts.reduce((x: any, y: any) => x + y, 0);
+    const total = points.length;
     const max = Math.max(...counts);
     return {
       points,
