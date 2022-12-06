@@ -55,15 +55,15 @@ class ErrorDetect {
       let idx = array.indexOf(ele);
       if (idx === -1) {
         array.push(ele);
-        counts[array.length - 1] = 1;
+        counts[array.length - 1] = { count: 1, ele };
       } else {
-        counts[idx] = counts[idx] + 1;
+        counts[idx].count = counts[idx].count + 1;
       }
     }
   
     // const total = counts.reduce((x: any, y: any) => x + y, 0);
     const total = points.length;
-    const max = Math.max(...counts);
+    const max = Math.max(...counts.map(({ count }: any) => count));
     return {
       points,
       counts,
