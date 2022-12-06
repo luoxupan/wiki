@@ -11,7 +11,7 @@ var ErrorDetect = /** @class */ (function () {
     function ErrorDetect() {
     }
     ErrorDetect.getCoordinatesPoints = function () {
-        var step = 20;
+        var step = 25;
         var clientHeight = document.documentElement.clientHeight;
         var clientWidth = document.documentElement.clientWidth;
         var y = Math.floor(clientHeight / step);
