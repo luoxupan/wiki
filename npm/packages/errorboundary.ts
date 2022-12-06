@@ -18,14 +18,16 @@ function loadScript(src: string) {
   });
 }
 
-const enum ErrorTypes {
-  error='error',
-  vue2errorhandler='vue2errorhandler',
-  vue3errorhandler='vue3errorhandler',
-  componentdidcatch='componentdidcatch',
-  unhandledrejection='unhandledrejection',
+// @ts-ignore
+const enum ErrorTypes { // @ts-ignore
+  error='error', // @ts-ignore
+  vue2errorhandler='vue2errorhandler', // @ts-ignore
+  vue3errorhandler='vue3errorhandler', // @ts-ignore
+  componentdidcatch='componentdidcatch', // @ts-ignore
+  unhandledrejection='unhandledrejection', // @ts-ignore
 }
 
+// @ts-ignore
 const errorTypes = [
   ErrorTypes.error,
   ErrorTypes.vue2errorhandler,
