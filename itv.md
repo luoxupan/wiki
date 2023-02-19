@@ -1060,7 +1060,7 @@
 
 
 
-### 第4部：粉饰太平 第七章 徐阶的觉醒 [链接](https://www.mingchaonaxieshier.com/fen-shi-tai-ping-07.html)
+### 明朝那些事儿: 第4部：粉饰太平 第七章 徐阶的觉醒 [链接](https://www.mingchaonaxieshier.com/fen-shi-tai-ping-07.html)
 
 <details>
 <summary></summary>
@@ -1158,7 +1158,7 @@
 </details>
 
 
-### 第4部：粉饰太平 第八章 天下，三人而已 [链接](https://www.mingchaonaxieshier.com/fen-shi-tai-ping-08.html)
+### 明朝那些事儿: 第4部：粉饰太平 第八章 天下，三人而已 [链接](https://www.mingchaonaxieshier.com/fen-shi-tai-ping-08.html)
 
 <details>
 <summary></summary>
@@ -1230,7 +1230,7 @@
 
 
 
-### 第4部：粉饰太平 第九章 致命的疏漏 [链接](https://www.mingchaonaxieshier.com/fen-shi-tai-ping-09.html)
+### 明朝那些事儿: 第4部：粉饰太平 第九章 致命的疏漏 [链接](https://www.mingchaonaxieshier.com/fen-shi-tai-ping-09.html)
 
 <details>
 <summary></summary>
