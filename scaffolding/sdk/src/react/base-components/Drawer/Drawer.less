@@ -1,0 +1,43 @@
+.crm-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  .crm-drawer-mask {
+    position: absolute;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,.45);
+    pointer-events: auto;
+  }
+  .crm-drawer-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    background: #fff;
+    pointer-events: auto;
+    width: 378px;
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: -6px 0 16px -8px #00000014, -9px 0 28px #0000000d, -12px 0 48px 16px #00000008;
+    .crm-drawer-header {
+      padding: 16px 24px;
+      font-size: 16px;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .crm-drawer-body {
+      overflow: auto;
+      height: 100%;
+    }
+    .crm-drawer-footer {
+      text-align: right;
+      padding: 16px 24px;
+      font-size: 16px;
+      border-top: 1px solid rgba(0,0,0,.06);
+    }
+  }
+}
