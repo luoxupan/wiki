@@ -45,9 +45,9 @@
 
 ---
 
-![image](https://luoxupan.github.io/img/HTML_CSS_01.jpeg)
+![image](https://luoxupan.github.io/wiki/image/HTML_CSS_01.jpeg)
 ---
-![image](https://luoxupan.github.io/img/Javascript_01.jpeg)
+![image](https://luoxupan.github.io/wiki/image/Javascript_01.jpeg)
 ---
-![image](https://luoxupan.github.io/img/algorithms_01.jpeg)
+![image](https://luoxupan.github.io/wiki/image/algorithms_01.jpeg)
 
