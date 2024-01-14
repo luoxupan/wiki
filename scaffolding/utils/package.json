@@ -1,0 +1,45 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/lib/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist",
+    "packages"
+  ],
+  "scripts": {
+    "dev": "jest --watch",
+    "test": "jest",
+    "deploy-test-npm": "node ./bin/deploy-test-npm.js",
+    "test:is-type": "jest ./__tests__/is-type.test.ts --watchAll",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
+    "build:esm": "tsc --module ESNext --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir dist/lib",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "node ./bin/pre-publish.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "@types/jest": "^27.0.2",
+    "chalk": "^4.1.2",
+    "commander": "^8.3.0",
+    "jest": "^27.3.1",
+    "shelljs": "^0.8.4",
+    "superagent": "^6.1.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {}
+}
