@@ -5,9 +5,9 @@ RM=rm -rf
 
 # make build
 build:
-  @echo compiling codes...
-  $(CC) $(CFLAG) http.c -ledit -o http
+	@echo compiling codes...
+	$(CC) $(CFLAG) http.c -ledit -o http
 .PHONY: clean
 
 clean:
-  $(RM) http
+	$(RM) http

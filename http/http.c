@@ -27,11 +27,6 @@ char *conf_file;
 char *log_file;
 char *mime_file;
 
-struct sigaction sa; 
-struct sockaddr_in address;
-struct sockaddr_storage connector;
-socklen_t addr_size;
-
 static void sigchld_handler(int s) {
   int saved_errno = errno;
   while(waitpid(-1, NULL, WNOHANG) > 0);
@@ -39,6 +34,7 @@ static void sigchld_handler(int s) {
 }
 
 static void setup_sigchld_handler() {
+  struct sigaction sa;
   sa.sa_handler = sigchld_handler; // reap all dead processes
   sigemptyset(&sa.sa_mask);
   sa.sa_flags = SA_RESTART;
@@ -200,15 +196,15 @@ int check_mime(char *extension, char *mime_type) {
 
   mime_type = (char*)malloc(200);
 
-  memset (mime_type,'\0',200);
+  memset(mime_type,'\0',200);
 
   while (fgets(line, 200, mimeFile) != NULL) { 
-    if ( line[0] != '#' ) {
+    if (line[0] != '#') {
       startline = scan(line, current_word, 0, 600);
       while (1) {
         startline = scan(line, word_holder, startline, 600);
-        if ( startline != -1 ) {
-          if ( strcmp ( word_holder, extension ) == 0 ) {
+        if (startline != -1) {
+          if (strcmp(word_holder, extension) == 0) {
             memcpy(mime_type, current_word, strlen(current_word));
             free(current_word);
             free(word_holder);
@@ -256,7 +252,7 @@ int get_extension(char *input, char *output, int max) {
   int i = 0;
   int count = 0;
 
-  for ( ; i < strlen(input); i ++ ) {		
+  for (; i < strlen(input); i++) {		
     if (in_position == 1) {
       if (count < max) {
         output[appended_position] = input[i];
@@ -264,14 +260,14 @@ int get_extension(char *input, char *output, int max) {
         count++;
       }
     }
-    if ( input[i] == '.' ) {
+    if (input[i] == '.') {
       in_position = 1;
     }
   }
 
   output[appended_position+1] = '\0';
 
-  if ( strlen(output) > 0 ) {
+  if (strlen(output) > 0) {
     return 1;
   }
   return -1;
@@ -322,7 +318,7 @@ int handle_http_get(char *input, int socket) {
         return -1;
       }
 
-      mimeSupported =  check_mime(extension, mime);
+      mimeSupported = check_mime(extension, mime);
 
       if (mimeSupported != 1) {
         printf("Mime not supported: %s\n", mime);
@@ -444,6 +440,8 @@ int receive(int socket) {
 
 void start_server() {
   int current_socket = socket(AF_INET, SOCK_STREAM, 0);
+  struct sockaddr_in address;
+
   if (current_socket == -1) {
     perror("create socket");
     exit(-1);
@@ -456,6 +454,7 @@ void start_server() {
   int on = 1;
   if (setsockopt(current_socket, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on)) == -1) {
   }
+
   if (bind(current_socket, (struct sockaddr *)&address, sizeof(address)) < 0) {
     perror("bind to port");
     exit(-1);
@@ -472,7 +471,8 @@ void start_server() {
 
   while (1) {
     int pid;
-    addr_size = sizeof(connector);
+    struct sockaddr_storage connector;
+    socklen_t addr_size = sizeof(connector);
     int connecting_socket = accept(current_socket, (struct sockaddr *)&connector, &addr_size);
 
     if ((pid = fork()) == -1) {
