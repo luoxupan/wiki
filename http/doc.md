@@ -1,6 +1,6 @@
 [HTTP会话消息格式](https://developer.mozilla.org/en-US/docs/Web/HTTP/Session)
 
-### Http请求报头格式
+### HTTP/1.x 请求报头格式
 ```
 GET /index.html HTTP/1.1
 Accept-Encoding: gzip, deflate, br
@@ -11,7 +11,7 @@ User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 ```
 
 
-### Http响应报头格式
+### HTTP/1.x 响应报头格式
 ```
 HTTP/1.1 200 OK
 Content-Encoding: gzip
@@ -33,7 +33,7 @@ Server: Apache
 ```
 
 
-### Http响应404报头格式
+### HTTP/1.x 响应404报头格式
 ```
 HTTP/1.1 404 Not Found
 Content-Encoding: gzip
