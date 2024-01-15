@@ -1,6 +1,5 @@
 
 ## Page链接：
-- [WebApp](https://luoxupan.github.io/wiki/pages/webapp/index.html)
 - [异步按需加载](https://luoxupan.github.io/wiki/pages/page02/index.html)
 - [react hooks 快照例子](https://luoxupan.github.io/wiki/pages/page05/index.html)
 - [history.pushState例子](https://luoxupan.github.io/wiki/pages/page06/index.html)
@@ -19,6 +18,8 @@
   - https://meikimi.github.io  永久网址
 - 搬瓦工
   - https://bwg.wiki
+- shadowsocks
+  - https://portal.shadowsocks.au/index.php
 
 ---
 
