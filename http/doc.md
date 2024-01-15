@@ -23,3 +23,22 @@ Date: Sun, 14 Jan 2024 12:19:56 GMT
 
 Server: Apache
 
+
+### Http响应404报头格式
+HTTP/1.1 404 Not Found
+
+Content-Encoding: gzip
+
+Content-Type: application/json; charset=UTF-8
+
+Date: Sun, 14 Jan 2024 12:19:56 GMT
+
+Server: Apache
+
+
+{
+  "errcode": "ResourceNotExist",
+  "errmsg": "reosurce not exit",
+  "status": "failure",
+  "status_code": 404
+}
