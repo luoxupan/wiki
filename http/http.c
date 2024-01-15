@@ -242,6 +242,9 @@ int get_extension(char *input, char *output, int max) {
   int count = 0;
 
   for (; i < strlen(input); i++) {		
+    if (input[i] == '?') {
+      break;
+    }
     if (in_position == 1) {
       if (count < max) {
         output[appended_position] = input[i];
@@ -322,7 +325,11 @@ int handle_http_get(char *input, int socket) {
 
       // Open the requesting file as binary
       strcpy(path, webroot);
-      strcat(path, filename);
+      if (strchr(filename, '?') == NULL) {
+        strcat(path, filename);
+      } else {
+        strncat(path, filename, strlen(filename) - strlen(strchr(filename, '?')));
+      }
 
       fp = fopen(path, "rb");
 
