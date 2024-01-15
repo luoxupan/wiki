@@ -122,11 +122,8 @@ void send_header(char *Status_code, char *Content_Type, int TotalSize, int socke
     sizeof(char)) * 2);
 
   if (message != NULL) {
-
     strcpy(message, head);
-
     strcat(message, Status_code);
-
     strcat(message, content_head);
     strcat(message, Content_Type);
     strcat(message, server_head);
@@ -184,19 +181,13 @@ int scan(char *input, char *output, int start, int max) {
   return i;
 }
 
-int check_mime(char *extension, char *mime_type) {
+char* check_mime(char *extension) {
   char *current_word = malloc(600);
   char *word_holder = malloc(600);
   char *line = malloc(200);
   int startline = 0;
 
   FILE *mimeFile = fopen(mime_file, "r");
-
-  free(mime_type);
-
-  mime_type = (char*)malloc(200);
-
-  memset(mime_type,'\0',200);
 
   while (fgets(line, 200, mimeFile) != NULL) { 
     if (line[0] != '#') {
@@ -205,11 +196,9 @@ int check_mime(char *extension, char *mime_type) {
         startline = scan(line, word_holder, startline, 600);
         if (startline != -1) {
           if (strcmp(word_holder, extension) == 0) {
-            memcpy(mime_type, current_word, strlen(current_word));
-            free(current_word);
             free(word_holder);
             free(line);
-            return 1;	
+            return current_word;
           }
         } else {
           break;
@@ -223,7 +212,7 @@ int check_mime(char *extension, char *mime_type) {
   free(word_holder);
   free(line);
 
-  return 0;
+  return NULL;
 }
 
 int get_http_version(char *input, char *output) {
@@ -285,17 +274,14 @@ int handle_http_get(char *input, int socket) {
   char *filename = (char*)malloc(200 * sizeof(char));
   char *path = (char*)malloc(1000 * sizeof(char));
   char *extension = (char*)malloc(10 * sizeof(char));
-  char *mime = (char*)malloc(200 * sizeof(char));
   char *httpVersion = (char*)malloc(20 * sizeof(char));
 
   int contentLength = 0;
-  int mimeSupported = 0;
   int fileNameLenght = 0;
 
   memset(path, '\0', 1000);
   memset(filename, '\0', 200);
   memset(extension, '\0', 10);
-  memset(mime, '\0', 200);
   memset(httpVersion, '\0', 20);
 
   fileNameLenght = scan(input, filename, 5, 200);
@@ -311,16 +297,15 @@ int handle_http_get(char *input, int socket) {
         send_string("400 Bad Request\n", socket);
 
         free(filename);
-        free(mime);
         free(path);
         free(extension);
 
         return -1;
       }
 
-      mimeSupported = check_mime(extension, mime);
+      char* mime = check_mime(extension);
 
-      if (mimeSupported != 1) {
+      if (mime == NULL) {
         printf("Mime not supported: %s\n", mime);
 
         char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
@@ -334,7 +319,8 @@ int handle_http_get(char *input, int socket) {
 
         return -1;
       }
-      // Open the requesting file as binary //
+
+      // Open the requesting file as binary
       strcpy(path, webroot);
       strcat(path, filename);
 
@@ -354,7 +340,7 @@ int handle_http_get(char *input, int socket) {
         return -1;
       }
 
-      // Calculate Content Length //
+      // Calculate Content Length
       contentLength = content_lenght(fp);
       if (contentLength < 0 ) {
         printf("File size is zero\n");
@@ -369,7 +355,7 @@ int handle_http_get(char *input, int socket) {
         return -1;
       }
 
-      // Send File Content //
+      // Send File Content
       send_header("200 OK", mime, contentLength, socket);
 
       send_file(fp, contentLength, socket);
@@ -398,7 +384,7 @@ int get_request_type(char *input) {
   scan(input, requestType, 0, 5);
 
   if (strcmp("GET", requestType) == 0) {
-    printf("requestType: %s\n", requestType);
+    printf("request type: %s\n", requestType);
     type = 1;
   } else if (strcmp("HEAD", requestType) == 0) {
     type = 2;
