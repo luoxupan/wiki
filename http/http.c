@@ -565,7 +565,7 @@ int main(int argc, char* argv[]) {
   printf("webroot:\t\t%s\n", webroot);
   printf("configuration file:\t%s\n", conf_file);
   printf("log file:\t\t%s\n", log_file);
-  printf("deamon:\t\t\t%i\n", deamon);
+  printf("deamon:\t\t\t%s\n", deamon == TRUE ? "true" : "false");
 
   if (deamon == TRUE) {
     daemonize();
