@@ -391,7 +391,6 @@ int get_request_type(char *input) {
   scan(input, requestType, 0, 5);
 
   if (strcmp("GET", requestType) == 0) {
-    printf("request type: %s\n", requestType);
     type = 1;
   } else if (strcmp("HEAD", requestType) == 0) {
     type = 2;
