@@ -465,14 +465,12 @@ void start_server() {
   setup_sigchld_handler();
 
   while (1) {
-    int pid;
     struct sockaddr_storage connector;
     socklen_t addr_size = sizeof(connector);
     int connecting_socket = accept(current_socket, (struct sockaddr *)&connector, &addr_size);
 
-    if ((pid = fork()) == -1) {
-      close(connecting_socket);
-    } else if (pid == 0) {
+    int pid = fork();
+    if (pid == 0) {
       if (connecting_socket < 0) {
         perror("accepting sockets");
         exit(-1);
@@ -483,6 +481,9 @@ void start_server() {
       }
       close(connecting_socket);
       exit(0);
+    } else if (pid == -1) {
+      perror("fork failed");
+      close(connecting_socket);
     }
   }
 }
