@@ -323,7 +323,9 @@ int handle_http_get(char *input, int socket) {
       if (mimeSupported != 1) {
         printf("Mime not supported: %s\n", mime);
 
-        send_string("400 Bad Request\n", socket);
+        char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
+        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), socket);
+        send_string(mimeNotSp, socket);
 
         free(filename);
         free(mime);
@@ -341,8 +343,9 @@ int handle_http_get(char *input, int socket) {
       if (fp == NULL) {
         printf("Unable to open file: %s\n", filename);
 
-        send_header("200 OK", "text/html", 200, socket);
-        send_string("404 Not Found\n", socket);
+        char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
+        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), socket);
+        send_string(s404, socket);
 
         free(filename);
         free(mime);
