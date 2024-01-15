@@ -1,3 +1,5 @@
+[HTTP会话消息格式](https://developer.mozilla.org/en-US/docs/Web/HTTP/Session)
+
 ### Http请求报头格式
 ```
 GET /index.html HTTP/1.1
