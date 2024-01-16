@@ -11,7 +11,7 @@ User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 ```
 
 
-### HTTP/1.x 响应报头格式
+### HTTP/1.x 响应200格式
 ```
 HTTP/1.1 200 OK
 Content-Encoding: gzip
@@ -33,7 +33,7 @@ Server: Apache
 ```
 
 
-### HTTP/1.x 响应404报头格式
+### HTTP/1.x 响应404格式
 ```
 HTTP/1.1 404 Not Found
 Content-Encoding: gzip
