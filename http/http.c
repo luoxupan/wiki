@@ -391,6 +391,7 @@ int get_request_type(char *input) {
     // IF NOT VALID REQUEST 
     type = -1;
   }
+  free(requestType);
   return type;
 }
 
