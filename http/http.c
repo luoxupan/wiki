@@ -150,10 +150,10 @@ int scan(char *input, char *output, int start, int max) {
   int i = start;
   int count = 0;
 
-  for (; i < strlen(input); i ++) {
-    if ( *(input + i) != '\t' && *(input + i) != ' ' && *(input + i) != '\n' && *(input + i) != '\r') {
+  for (; i < strlen(input); i++) {
+    if (*(input + i) != '\t' && *(input + i) != ' ' && *(input + i) != '\n' && *(input + i) != '\r') {
       if (count < (max-1)) {
-        *(output + appending_char_count) = *(input + i );
+        *(output + appending_char_count) = *(input + i);
         appending_char_count += 1;
 
         count++;
@@ -168,7 +168,7 @@ int scan(char *input, char *output, int start, int max) {
   i += 1;
 
   for (; i < strlen(input); i++) {
-    if ( *(input + i ) != '\t' && *(input + i) != ' ' && *(input + i) != '\n' && *(input + i) != '\r')
+    if (*(input + i) != '\t' && *(input + i) != ' ' && *(input + i) != '\n' && *(input + i) != '\r')
       break;
   }
   return i;
@@ -198,7 +198,7 @@ char* check_mime(char *extension) {
         }
       }
     }
-    memset (line,'\0',200);
+    memset (line, '\0', 200);
   }
 
   free(current_word);
@@ -211,9 +211,9 @@ char* check_mime(char *extension) {
 int get_http_version(char *input, char *output) {
   char *filename = malloc(100);
   int start = scan(input, filename, 4, 100);
-  if ( start > 0 ) {
+  if (start > 0) {
     if (scan(input, output, start, 20)) {
-      output[strlen(output)+1] = '\0';
+      output[strlen(output) + 1] = '\0';
       if (strcmp("HTTP/1.1" , output) == 0) {
         return 1;
       } else if (strcmp("HTTP/1.0", output) == 0){
@@ -241,7 +241,7 @@ int get_extension(char *input, char *output, int max) {
     if (in_position == 1) {
       if (count < max) {
         output[appended_position] = input[i];
-        appended_position +=1;
+        appended_position += 1;
         count++;
       }
     }
@@ -250,7 +250,7 @@ int get_extension(char *input, char *output, int max) {
     }
   }
 
-  output[appended_position+1] = '\0';
+  output[appended_position + 1] = '\0';
 
   if (strlen(output) > 0) {
     return 1;
@@ -267,10 +267,10 @@ int content_lenght(FILE *fp) {
 }
 
 int handle_http_get(char *input, int socket) {
-  char *filename = (char*)malloc(200 * sizeof(char));
-  char *path = (char*)malloc(1000 * sizeof(char));
-  char *extension = (char*)malloc(10 * sizeof(char));
-  char *httpVersion = (char*)malloc(20 * sizeof(char));
+  char *filename = (char *)malloc(200 * sizeof(char));
+  char *path = (char *)malloc(1000 * sizeof(char));
+  char *extension = (char *)malloc(10 * sizeof(char));
+  char *httpVersion = (char *)malloc(20 * sizeof(char));
 
   memset(path, '\0', 1000);
   memset(filename, '\0', 200);
@@ -399,7 +399,7 @@ int receive(int socket) {
   int msgLen = 0;
   char buffer[BUFFER_SIZE];
 
-  memset(buffer,'\0', BUFFER_SIZE);
+  memset(buffer, '\0', BUFFER_SIZE);
 
   if ((msgLen = recv(socket, buffer, BUFFER_SIZE, 0)) == -1) {
     printf("Error handling incoming request");
