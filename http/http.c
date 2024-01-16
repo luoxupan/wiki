@@ -84,13 +84,6 @@ int send_string(char *message, int socket) {
   return bytes_sent;
 }
 
-int send_binary(int *byte, int length, int socket) {
-	int bytes_sent;
-
-	bytes_sent = send(socket, byte, length, 0);
-
-	return bytes_sent;
-}
 void send_header(char *Status_code, char *Content_Type, int TotalSize, int socket) {
   char *head = "\r\nHTTP/1.1 ";
   char *content_head = "\r\nContent-Type: ";
@@ -141,11 +134,11 @@ void send_header(char *Status_code, char *Content_Type, int TotalSize, int socke
 }
 
 void send_file(FILE *fp, int file_size, int socket) {
-  int current_char = 0;
+  int cur_char = 0;
   do {
-    current_char = fgetc(fp);
-    send_binary(&current_char, sizeof(char), socket);
-  } while (current_char != EOF);
+    cur_char = fgetc(fp);
+    send(socket, &cur_char, sizeof(char), 0);
+  } while (cur_char != EOF);
 }
 
 int scan(char *input, char *output, int start, int max) {
@@ -279,15 +272,12 @@ int handle_http_get(char *input, int socket) {
   char *extension = (char*)malloc(10 * sizeof(char));
   char *httpVersion = (char*)malloc(20 * sizeof(char));
 
-  int contentLength = 0;
-  int fileNameLenght = 0;
-
   memset(path, '\0', 1000);
   memset(filename, '\0', 200);
   memset(extension, '\0', 10);
   memset(httpVersion, '\0', 20);
 
-  fileNameLenght = scan(input, filename, 5, 200);
+  int fileNameLenght = scan(input, filename, 5, 200);
 
   if (fileNameLenght > 0) {
 
@@ -348,7 +338,7 @@ int handle_http_get(char *input, int socket) {
       }
 
       // Calculate Content Length
-      contentLength = content_lenght(fp);
+      int contentLength = content_lenght(fp);
       if (contentLength < 0 ) {
         printf("File size is zero\n");
 
