@@ -14,7 +14,6 @@ User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 ### HTTP/1.x 响应200格式
 ```
 HTTP/1.1 200 OK
-Content-Encoding: gzip
 Content-Type: text/html; charset=utf-8
 Date: Sun, 14 Jan 2024 12:19:56 GMT
 Server: Apache
@@ -36,7 +35,6 @@ Server: Apache
 ### HTTP/1.x 响应404格式
 ```
 HTTP/1.1 404 Not Found
-Content-Encoding: gzip
 Content-Type: application/json; charset=UTF-8
 Date: Sun, 14 Jan 2024 12:19:56 GMT
 Server: Apache
