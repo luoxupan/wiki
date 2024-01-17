@@ -479,7 +479,7 @@ void start_server() {
   }
 }
 
-void parse_conf() {
+void load_conf() {
   char* currentLine = malloc(100);
   webroot = malloc(100);
   conf_file = malloc(100);
@@ -521,7 +521,7 @@ void parse_conf() {
 int main(int argc, char* argv[]) {
   int parameterCount;
 
-  parse_conf();
+  load_conf();
 
   for (parameterCount = 1; parameterCount < argc; parameterCount++) {
     // If flag -p is used, set port
