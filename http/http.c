@@ -378,6 +378,7 @@ int receive(int socket) {
     printf("Error handling incoming request");
     return -1;
   }
+  printf("\n\n%s\n\n", buffer);
 
   int request = get_request_type(buffer);
 
