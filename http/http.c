@@ -84,48 +84,21 @@ int send_string(char *message, int socket) {
   return bytes_sent;
 }
 
-void send_header(char *Status_code, char *Content_Type, int TotalSize, int socket) {
-  char *head = "\r\nHTTP/1.1 ";
-  char *content_head = "\r\nContent-Type: ";
-  char *server_head = "\r\nServer: Http Server";
-  char *length_head = "\r\nContent-Length: ";
-  char *date_head = "\r\nDate: ";
-  char *etag_head = "\r\nEtag: etag";
-  char *newline = "\r\n";
-  char contentLength[200];
-
+void send_header(char *status, char *content_type, int content_length, int socket) {
   time_t rawtime;
-
   time(&rawtime);
 
-  sprintf(contentLength, "%i", TotalSize);
-
-  char *message = malloc((
-    strlen(head) +
-    strlen(content_head) +
-    strlen(server_head) +
-    strlen(etag_head) +
-    strlen(length_head) +
-    strlen(date_head) +
-    strlen(newline) +
-    strlen(Status_code) +
-    strlen(Content_Type) +
-    strlen(contentLength) +
-    28 +
-    sizeof(char)) * 2);
-
+  char *message = malloc(1024);
+  memset(message, '\0', 1024);
+  
   if (message != NULL) {
-    strcpy(message, head);
-    strcat(message, Status_code);
-    strcat(message, content_head);
-    strcat(message, Content_Type);
-    strcat(message, server_head);
-    strcat(message, etag_head);
-    strcat(message, length_head);
-    strcat(message, contentLength);
-    strcat(message, date_head);
-    strcat(message, (char*)ctime(&rawtime));
-    strcat(message, newline);
+    char *dst = message;
+    dst += sprintf(dst, "\r\nHTTP/1.1 %s", status);
+    dst += sprintf(dst, "\r\n%s %s", "Content-Type: ", content_type);
+    dst += sprintf(dst, "\r\n%s", "Server: Http Server");
+    dst += sprintf(dst, "\r\n%s %i", "Content-Length: ", content_length);
+    dst += sprintf(dst, "\r\n%s %s", "Date: ", (char*)ctime(&rawtime));
+    dst += sprintf(dst, "\r\n"); // new line
 
     send_string(message, socket);
 
