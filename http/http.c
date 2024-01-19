@@ -12,7 +12,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-#define BUFFER_SIZE 512
+#define BUFFER_SIZE 1024
 #define MAX_FILE_SIZE 5*1024
 #define MAX_CONNECTIONS 3
 #define TRUE 1
@@ -255,18 +255,12 @@ int handle_http_get(char *input, int socket) {
   if (fileNameLenght > 0) {
 
     if (get_http_version(input, httpVersion) != -1) {
-      FILE *fp;
 
       if (get_extension(filename, extension, 10) == -1) {
         printf("File extension not existing");
-
         send_string("400 Bad Request\n", socket);
 
-        free(filename);
-        free(path);
-        free(extension);
-
-        return -1;
+        goto Error;
       }
 
       char* mime = check_mime(extension);
@@ -278,12 +272,8 @@ int handle_http_get(char *input, int socket) {
         send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), socket);
         send_string(mimeNotSp, socket);
 
-        free(filename);
         free(mime);
-        free(path);
-        free(extension);
-
-        return -1;
+        goto Error;
       }
 
       // Open the requesting file as binary
@@ -294,7 +284,7 @@ int handle_http_get(char *input, int socket) {
         strncat(path, filename, strlen(filename) - strlen(strchr(filename, '?')));
       }
 
-      fp = fopen(path, "rb");
+      FILE *fp = fopen(path, "rb");
 
       if (fp == NULL) {
         printf("Unable to open file: %s\n", filename);
@@ -302,27 +292,17 @@ int handle_http_get(char *input, int socket) {
         char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
         send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), socket);
         send_string(s404, socket);
-
-        free(filename);
         free(mime);
-        free(extension);
-        free(path);
-        return -1;
+        goto Error;
       }
 
       // Calculate Content Length
       int contentLength = content_lenght(fp);
       if (contentLength < 0 ) {
         printf("File size is zero\n");
-
-        free(filename);
         free(mime);
-        free(extension);
-        free(path);
-
         fclose(fp);
-
-        return -1;
+        goto Error;
       }
 
       // Send File Content
@@ -342,7 +322,10 @@ int handle_http_get(char *input, int socket) {
       send_string("501 Not Implemented\n", socket);
     }
   }
-
+Error:
+  free(filename);
+  free(extension);
+  free(path);
   return -1;
 }
 
