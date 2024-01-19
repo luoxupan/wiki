@@ -20,12 +20,15 @@
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
 
-int port;
 int deamon = FALSE;
-char *webroot;
-char *conf_file;
-char *log_file;
-char *mime_file;
+typedef struct {
+  int port;
+  char *webroot;
+  char *conf_file;
+  char *log_file;
+  char *mime_file;
+} conf_t;
+conf_t conf;
 
 static void sigchld_handler(int s) {
   int saved_errno = errno;
@@ -153,7 +156,7 @@ char* check_mime(char *extension) {
   char *line = malloc(200);
   int startline = 0;
 
-  FILE *mimeFile = fopen(mime_file, "r");
+  FILE *mimeFile = fopen(conf.mime_file, "r");
 
   while (fgets(line, 200, mimeFile) != NULL) { 
     if (line[0] != '#') {
@@ -275,7 +278,7 @@ void handle_http_get(char *input, int socket) {
       }
 
       // Open the requesting file as binary
-      strcpy(path, webroot);
+      strcpy(path, conf.webroot);
       if (strchr(filename, '?') == NULL) {
         strcat(path, filename);
       } else {
@@ -384,7 +387,7 @@ void start_server() {
 
   address.sin_family = AF_INET;
   address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(port);
+  address.sin_port = htons(conf.port);
 
   int on = 1;
   if (setsockopt(current_socket, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on)) == -1) {
@@ -430,20 +433,20 @@ void start_server() {
 
 void load_conf() {
   char* currentLine = malloc(100);
-  webroot = malloc(100);
-  conf_file = malloc(100);
-  log_file = malloc(100);
-  mime_file = malloc(600);
+  conf.webroot = malloc(100);
+  conf.conf_file = malloc(100);
+  conf.log_file = malloc(100);
+  conf.mime_file = malloc(600);
 
   // Setting default values
-  conf_file = "http.conf";
-  log_file = ".log";
-  strcpy(mime_file, "mime.types");
+  conf.conf_file = "http.conf";
+  conf.log_file = ".log";
+  strcpy(conf.mime_file, "mime.types");
 
   // Set deamon to FALSE
   deamon = FALSE;
 
-  FILE *filePointer = fopen(conf_file, "r");
+  FILE *filePointer = fopen(conf.conf_file, "r");
 
   // Ensure that the configuration file is open
   if (filePointer == NULL) {
@@ -452,13 +455,13 @@ void load_conf() {
   }
 
   // get server root directory from configuration file
-  if (fscanf(filePointer, "%s %s", currentLine, webroot) != 2) {
+  if (fscanf(filePointer, "%s %s", currentLine, conf.webroot) != 2) {
     fprintf(stderr, "Error in configuration file on line 1!\n");
     exit(1);
   }
 
   // get default port from configuration file
-  if (fscanf(filePointer, "%s %i", currentLine, &port) != 2) {
+  if (fscanf(filePointer, "%s %i", currentLine, &conf.port) != 2) {
     fprintf(stderr, "Error in configuration file on line 2!\n");
     exit(1);
   }
@@ -478,7 +481,7 @@ int main(int argc, char* argv[]) {
       // Indicate that we want to jump over the next parameter
       parameterCount++;
       printf("setting port to %i\n", atoi(argv[parameterCount]));
-      port = atoi(argv[parameterCount]);
+      conf.port = atoi(argv[parameterCount]);
     } else if (strcmp(argv[parameterCount], "-d") == 0) {
       // If flag -d is used, set deamon to TRUE;
       printf("setting deamon = TRUE");
@@ -487,7 +490,7 @@ int main(int argc, char* argv[]) {
       // Indicate that we want to jump over the next parameter
       parameterCount++;
       printf("setting logfile = %s\n", argv[parameterCount]);
-      log_file = (char*)argv[parameterCount];
+      conf.log_file = (char*)argv[parameterCount];
     } else {
       printf("usage: %s [-p port] [-d] [-l logfile]\n", argv[0]);
       printf("\t\t-p port\t\tWhich port to listen to.\n");
@@ -497,10 +500,10 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  printf("port:\t\t\t%i\n", port);
-  printf("webroot:\t\t%s\n", webroot);
-  printf("configuration file:\t%s\n", conf_file);
-  printf("log file:\t\t%s\n", log_file);
+  printf("port:\t\t\t%i\n", conf.port);
+  printf("webroot:\t\t%s\n", conf.webroot);
+  printf("configuration file:\t%s\n", conf.conf_file);
+  printf("log file:\t\t%s\n", conf.log_file);
   printf("deamon:\t\t\t%s\n", deamon == TRUE ? "true" : "false");
 
   if (deamon == TRUE) {
