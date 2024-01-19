@@ -239,7 +239,7 @@ int content_lenght(FILE *fp) {
   return filesize;
 }
 
-int handle_http_get(char *input, int socket) {
+void handle_http_get(char *input, int socket) {
   char *filename = (char *)malloc(200 * sizeof(char));
   char *path = (char *)malloc(1000 * sizeof(char));
   char *extension = (char *)malloc(10 * sizeof(char));
@@ -259,12 +259,10 @@ int handle_http_get(char *input, int socket) {
       if (get_extension(filename, extension, 10) == -1) {
         printf("File extension not existing");
         send_string("400 Bad Request\n", socket);
-
-        goto Error;
+        goto End;
       }
 
       char* mime = check_mime(extension);
-
       if (mime == NULL) {
         printf("Mime not supported: %s\n", mime);
 
@@ -273,7 +271,7 @@ int handle_http_get(char *input, int socket) {
         send_string(mimeNotSp, socket);
 
         free(mime);
-        goto Error;
+        goto End;
       }
 
       // Open the requesting file as binary
@@ -292,8 +290,9 @@ int handle_http_get(char *input, int socket) {
         char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
         send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), socket);
         send_string(s404, socket);
+
         free(mime);
-        goto Error;
+        goto End;
       }
 
       // Calculate Content Length
@@ -302,31 +301,24 @@ int handle_http_get(char *input, int socket) {
         printf("File size is zero\n");
         free(mime);
         fclose(fp);
-        goto Error;
+        goto End;
       }
 
       // Send File Content
       send_header("200 OK", mime, contentLength, socket);
-
       send_file(fp, contentLength, socket);
 
-      free(filename);
       free(mime);
-      free(extension);
-      free(path);
-
       fclose(fp);
-
-      return 1;
+      goto End;
     } else {
       send_string("501 Not Implemented\n", socket);
     }
   }
-Error:
+End:
   free(filename);
   free(extension);
   free(path);
-  return -1;
 }
 
 int get_request_type(char *input) {
