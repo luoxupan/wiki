@@ -2,3 +2,7 @@
   font-weight: 500;
   color: #0069c2;
 }
+.click-btn {
+  height: 30px;
+  cursor: pointer;
+}
