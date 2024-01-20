@@ -33,6 +33,8 @@ typedef struct {
   int clientfd;
   char read_buffer[BUFFER_SIZE];
   char method[5];
+  char scheme[20];
+  char path[100];
 } http_request_t;
 
 static void sigchld_handler(int s) {
@@ -157,7 +159,7 @@ int scan(char *input, char *output, int start, int max) {
   return i;
 }
 
-char* check_mime(char *extension) {
+char* get_mime(char *extension) {
   char *current_word = malloc(600);
   char *word_holder = malloc(600);
   char *line = malloc(200);
@@ -189,26 +191,6 @@ char* check_mime(char *extension) {
   free(line);
 
   return NULL;
-}
-
-int get_http_version(char *input, char *output) {
-  char *filename = malloc(100);
-  int start = scan(input, filename, 4, 100);
-  if (start > 0) {
-    if (scan(input, output, start, 20)) {
-      output[strlen(output) + 1] = '\0';
-      if (strcmp("HTTP/1.1" , output) == 0) {
-        return 1;
-      } else if (strcmp("HTTP/1.0", output) == 0){
-        return 0;
-      } else {
-        return -1;
-      }
-    } else {
-      return -1;
-    }
-  }
-  return -1;
 }
 
 int get_extension(char *input, char *output, int max) {
@@ -250,86 +232,82 @@ int content_lenght(FILE *fp) {
 }
 
 void handle_http_get(http_request_t* request) {
-  char *filename = (char *)malloc(200 * sizeof(char));
-  char *path = (char *)malloc(1000 * sizeof(char));
+  char *static_path = (char *)malloc(1000 * sizeof(char));
   char *extension = (char *)malloc(10 * sizeof(char));
-  char *httpVersion = (char *)malloc(20 * sizeof(char));
 
-  memset(path, '\0', 1000);
-  memset(filename, '\0', 200);
+  memset(static_path, '\0', 1000);
   memset(extension, '\0', 10);
-  memset(httpVersion, '\0', 20);
 
-  int fileNameLenght = scan(request->read_buffer, filename, 5, 200);
+  if (strlen(request->path) > 0) {
 
-  if (fileNameLenght > 0) {
+    if (get_extension(request->path, extension, 10) == -1) {
+      printf("File extension not existing");
+      goto End;
+    }
 
-    if (get_http_version(request->read_buffer, httpVersion) != -1) {
+    char* mime = get_mime(extension);
+    if (mime == NULL) {
+      printf("Mime not supported: %s\n", mime);
 
-      if (get_extension(filename, extension, 10) == -1) {
-        printf("File extension not existing");
-        goto End;
-      }
+      char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
+      send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request);
+      send_body_s(mimeNotSp, request);
 
-      char* mime = check_mime(extension);
-      if (mime == NULL) {
-        printf("Mime not supported: %s\n", mime);
+      free(mime);
+      goto End;
+    }
 
-        char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
-        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request);
-        send_body_s(mimeNotSp, request);
+    // Open the requesting file as binary
+    strcpy(static_path, conf.webroot);
+    if (strchr(request->path, '?') == NULL) {
+      strcat(static_path, request->path);
+    } else {
+      strncat(static_path, request->path, strlen(request->path) - strlen(strchr(request->path, '?')));
+    }
 
-        free(mime);
-        goto End;
-      }
+    FILE *fp = fopen(static_path, "rb");
 
-      // Open the requesting file as binary
-      strcpy(path, conf.webroot);
-      if (strchr(filename, '?') == NULL) {
-        strcat(path, filename);
-      } else {
-        strncat(path, filename, strlen(filename) - strlen(strchr(filename, '?')));
-      }
+    if (fp == NULL) {
+      printf("Unable to open file: %s\n", request->path);
 
-      FILE *fp = fopen(path, "rb");
+      char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
+      send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request);
+      send_body_s(s404, request);
 
-      if (fp == NULL) {
-        printf("Unable to open file: %s\n", filename);
+      free(mime);
+      goto End;
+    }
 
-        char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
-        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request);
-        send_body_s(s404, request);
-
-        free(mime);
-        goto End;
-      }
-
-      // Calculate Content Length
-      int contentLength = content_lenght(fp);
-      if (contentLength < 0 ) {
-        printf("File size is zero\n");
-        free(mime);
-        fclose(fp);
-        goto End;
-      }
-
-      // Send File Content
-      send_header("200 OK", mime, contentLength, request);
-      send_body_f(fp, contentLength, request);
-
+    // Calculate Content Length
+    int contentLength = content_lenght(fp);
+    if (contentLength < 0 ) {
+      printf("File size is zero\n");
       free(mime);
       fclose(fp);
       goto End;
     }
+
+    // Send File Content
+    send_header("200 OK", mime, contentLength, request);
+    send_body_f(fp, contentLength, request);
+
+    free(mime);
+    fclose(fp);
+    goto End;
   }
 End:
-  free(filename);
   free(extension);
-  free(path);
+  free(static_path);
 }
 
 void parse_request(http_request_t* request) {
   scan(request->read_buffer, request->method, 0, 5);
+
+  // 解析文件路径和http协议
+  int start = scan(request->read_buffer, request->path, 4, 100);
+  if (start > 0) {
+    scan(request->read_buffer, request->scheme, start, 20);
+  }
 }
 
 int receive(http_request_t* request) {
@@ -341,7 +319,11 @@ int receive(http_request_t* request) {
   parse_request(request);
 
   if (strcmp(request->method, "GET") == 0) {
-    handle_http_get(request);
+    if (strcmp("HTTP/1.1" , request->scheme) == 0 || strcmp("HTTP/1.0" , request->scheme) == 0) {
+      handle_http_get(request);
+    } else {
+      return -1;
+    }
   } else {
     return -1;
   }
