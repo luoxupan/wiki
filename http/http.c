@@ -392,23 +392,23 @@ void start_server() {
   while (1) {
     struct sockaddr_storage connector;
     socklen_t addr_size = sizeof(connector);
-    int connecting_socket = accept(current_socket, (struct sockaddr *)&connector, &addr_size);
+    int accept_socket = accept(current_socket, (struct sockaddr *)&connector, &addr_size);
 
     int pid = fork();
     if (pid == 0) {
-      if (connecting_socket < 0) {
+      if (accept_socket < 0) {
         perror("accepting sockets");
         exit(-1);
       }
-      if (receive(connecting_socket) < 0) {
+      if (receive(accept_socket) < 0) {
         perror("receive error");
         exit(-1);
       }
-      close(connecting_socket);
+      close(accept_socket);
       exit(0);
     } else if (pid == -1) {
       perror("fork failed");
-      close(connecting_socket);
+      close(accept_socket);
     }
   }
 }
