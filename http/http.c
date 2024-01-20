@@ -86,13 +86,13 @@ static void daemonize(void) {
   }
 }
 
-int send_string(char *message, int socket) {
+int send_string(char *message, http_request_t* request) {
   int length = strlen(message);
-  int bytes_sent = send(socket, message, length, 0);
+  int bytes_sent = send(request->clientfd, message, length, 0);
   return bytes_sent;
 }
 
-void send_header(char *status, char *content_type, int content_length, int socket) {
+int send_header(char *status, char *content_type, int content_length, http_request_t* request) {
   time_t rawtime;
   time(&rawtime);
 
@@ -108,17 +108,19 @@ void send_header(char *status, char *content_type, int content_length, int socke
     dst += sprintf(dst, "\r\n%s %s", "Date: ", (char*)ctime(&rawtime));
     dst += sprintf(dst, "\r\n"); // new line
 
-    send_string(message, socket);
+    send_string(message, request);
 
     free(message);
+    return 1;
   }
+  return -1;
 }
 
-void send_file(FILE *fp, int file_size, int socket) {
+void send_file(FILE *fp, int file_size, http_request_t* request) {
   int cur_char = 0;
   do {
     cur_char = fgetc(fp);
-    send(socket, &cur_char, sizeof(char), 0);
+    send(request->clientfd, &cur_char, sizeof(char), 0);
   } while (cur_char != EOF);
 }
 
@@ -266,7 +268,7 @@ void handle_http_get(http_request_t* request) {
 
       if (get_extension(filename, extension, 10) == -1) {
         printf("File extension not existing");
-        send_string("400 Bad Request\n", request->clientfd);
+        send_string("400 Bad Request\n", request);
         goto End;
       }
 
@@ -275,8 +277,8 @@ void handle_http_get(http_request_t* request) {
         printf("Mime not supported: %s\n", mime);
 
         char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
-        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request->clientfd);
-        send_string(mimeNotSp, request->clientfd);
+        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request);
+        send_string(mimeNotSp, request);
 
         free(mime);
         goto End;
@@ -296,8 +298,8 @@ void handle_http_get(http_request_t* request) {
         printf("Unable to open file: %s\n", filename);
 
         char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
-        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request->clientfd);
-        send_string(s404, request->clientfd);
+        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request);
+        send_string(s404, request);
 
         free(mime);
         goto End;
@@ -313,14 +315,14 @@ void handle_http_get(http_request_t* request) {
       }
 
       // Send File Content
-      send_header("200 OK", mime, contentLength, request->clientfd);
-      send_file(fp, contentLength, request->clientfd);
+      send_header("200 OK", mime, contentLength, request);
+      send_file(fp, contentLength, request);
 
       free(mime);
       fclose(fp);
       goto End;
     } else {
-      send_string("501 Not Implemented\n", request->clientfd);
+      send_string("501 Not Implemented\n", request);
     }
   }
 End:
@@ -344,9 +346,9 @@ int receive(http_request_t* request) {
   if (strcmp(request->method, "GET") == 0) {
     handle_http_get(request);
   } else if (strcmp(request->method, "POST") == 0) {
-    send_string("501 Not Implemented\n", request->clientfd);
+    send_string("501 Not Implemented\n", request);
   } else {
-    send_string("400 Bad Request\n", request->clientfd);
+    send_string("400 Bad Request\n", request);
   }
 
   return 1;
