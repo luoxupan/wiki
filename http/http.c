@@ -29,6 +29,11 @@ typedef struct {
   char *mime_file;
 } conf_t;
 conf_t conf;
+typedef struct {
+  int clientfd;
+  char read_buffer[BUFFER_SIZE];
+  char method[5];
+} http_request_t;
 
 static void sigchld_handler(int s) {
   int saved_errno = errno;
@@ -81,13 +86,13 @@ static void daemonize(void) {
   }
 }
 
-int send_string(char *message, int socket) {
+int send_string(char *message, http_request_t* request) {
   int length = strlen(message);
-  int bytes_sent = send(socket, message, length, 0);
+  int bytes_sent = send(request->clientfd, message, length, 0);
   return bytes_sent;
 }
 
-void send_header(char *status, char *content_type, int content_length, int socket) {
+int send_header(char *status, char *content_type, int content_length, http_request_t* request) {
   time_t rawtime;
   time(&rawtime);
 
@@ -103,17 +108,19 @@ void send_header(char *status, char *content_type, int content_length, int socke
     dst += sprintf(dst, "\r\n%s %s", "Date: ", (char*)ctime(&rawtime));
     dst += sprintf(dst, "\r\n"); // new line
 
-    send_string(message, socket);
+    send_string(message, request);
 
     free(message);
+    return 1;
   }
+  return -1;
 }
 
-void send_file(FILE *fp, int file_size, int socket) {
+void send_file(FILE *fp, int file_size, http_request_t* request) {
   int cur_char = 0;
   do {
     cur_char = fgetc(fp);
-    send(socket, &cur_char, sizeof(char), 0);
+    send(request->clientfd, &cur_char, sizeof(char), 0);
   } while (cur_char != EOF);
 }
 
@@ -242,7 +249,7 @@ int content_lenght(FILE *fp) {
   return filesize;
 }
 
-void handle_http_get(char *input, int socket) {
+void handle_http_get(http_request_t* request) {
   char *filename = (char *)malloc(200 * sizeof(char));
   char *path = (char *)malloc(1000 * sizeof(char));
   char *extension = (char *)malloc(10 * sizeof(char));
@@ -253,15 +260,15 @@ void handle_http_get(char *input, int socket) {
   memset(extension, '\0', 10);
   memset(httpVersion, '\0', 20);
 
-  int fileNameLenght = scan(input, filename, 5, 200);
+  int fileNameLenght = scan(request->read_buffer, filename, 5, 200);
 
   if (fileNameLenght > 0) {
 
-    if (get_http_version(input, httpVersion) != -1) {
+    if (get_http_version(request->read_buffer, httpVersion) != -1) {
 
       if (get_extension(filename, extension, 10) == -1) {
         printf("File extension not existing");
-        send_string("400 Bad Request\n", socket);
+        send_string("400 Bad Request\n", request);
         goto End;
       }
 
@@ -270,8 +277,8 @@ void handle_http_get(char *input, int socket) {
         printf("Mime not supported: %s\n", mime);
 
         char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
-        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), socket);
-        send_string(mimeNotSp, socket);
+        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request);
+        send_string(mimeNotSp, request);
 
         free(mime);
         goto End;
@@ -291,8 +298,8 @@ void handle_http_get(char *input, int socket) {
         printf("Unable to open file: %s\n", filename);
 
         char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
-        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), socket);
-        send_string(s404, socket);
+        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request);
+        send_string(s404, request);
 
         free(mime);
         goto End;
@@ -308,14 +315,14 @@ void handle_http_get(char *input, int socket) {
       }
 
       // Send File Content
-      send_header("200 OK", mime, contentLength, socket);
-      send_file(fp, contentLength, socket);
+      send_header("200 OK", mime, contentLength, request);
+      send_file(fp, contentLength, request);
 
       free(mime);
       fclose(fp);
       goto End;
     } else {
-      send_string("501 Not Implemented\n", socket);
+      send_string("501 Not Implemented\n", request);
     }
   }
 End:
@@ -324,63 +331,34 @@ End:
   free(path);
 }
 
-int get_request_type(char *input) {
-  int type = -1;
-
-  char *requestType = malloc(5);
-
-  scan(input, requestType, 0, 5);
-
-  if (strcmp("GET", requestType) == 0) {
-    type = 1;
-  } else if (strcmp("HEAD", requestType) == 0) {
-    type = 2;
-  } else if (strlen(input) > 4 && strcmp("POST", requestType) == 0) {
-    // RETURN 0 IF NOT YET IMPLEMENTED
-    type = 0;
-  } else {
-    // IF NOT VALID REQUEST 
-    type = -1;
-  }
-  free(requestType);
-  return type;
+void parse_request(http_request_t* request) {
+  scan(request->read_buffer, request->method, 0, 5);
 }
 
-int receive(int socket) {
-  int msgLen = 0;
-  char buffer[BUFFER_SIZE];
-
-  memset(buffer, '\0', BUFFER_SIZE);
-
-  if ((msgLen = recv(socket, buffer, BUFFER_SIZE, 0)) == -1) {
+int receive(http_request_t* request) {
+  if (recv(request->clientfd, request->read_buffer, BUFFER_SIZE, 0) == -1) {
     printf("Error handling incoming request");
     return -1;
   }
-  printf("\n\n%s\n\n", buffer);
 
-  int request = get_request_type(buffer);
+  parse_request(request);
 
-  if (request == 1) {
-    // GET
-    handle_http_get(buffer, socket);
-  } else if (request == 2) {
-    // HEAD
-  } else if (request == 0) {
-    // POST
-    send_string("501 Not Implemented\n", socket);
+  if (strcmp(request->method, "GET") == 0) {
+    handle_http_get(request);
+  } else if (strcmp(request->method, "POST") == 0) {
+    send_string("501 Not Implemented\n", request);
   } else {
-    // GARBAGE
-    send_string("400 Bad Request\n", socket);
+    send_string("400 Bad Request\n", request);
   }
 
   return 1;
 }
 
 void start_server() {
-  int current_socket = socket(AF_INET, SOCK_STREAM, 0);
+  int listen_socket = socket(AF_INET, SOCK_STREAM, 0);
   struct sockaddr_in address;
 
-  if (current_socket == -1) {
+  if (listen_socket == -1) {
     perror("create socket");
     exit(-1);
   }
@@ -390,16 +368,16 @@ void start_server() {
   address.sin_port = htons(conf.port);
 
   int on = 1;
-  if (setsockopt(current_socket, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on)) == -1) {
+  if (setsockopt(listen_socket, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on)) == -1) {
   }
 
-  if (bind(current_socket, (struct sockaddr *)&address, sizeof(address)) < 0) {
+  if (bind(listen_socket, (struct sockaddr *)&address, sizeof(address)) < 0) {
     perror("bind to port");
     exit(-1);
   }
 
   // Start listening for connections and accept no more than MAX_CONNECTIONS in the Quee
-  if (listen(current_socket, MAX_CONNECTIONS) < 0 ) {
+  if (listen(listen_socket, MAX_CONNECTIONS) < 0 ) {
     perror("listen on port");
     exit(-1);
   }
@@ -410,23 +388,22 @@ void start_server() {
   while (1) {
     struct sockaddr_storage connector;
     socklen_t addr_size = sizeof(connector);
-    int connecting_socket = accept(current_socket, (struct sockaddr *)&connector, &addr_size);
+    int accept_socket = accept(listen_socket, (struct sockaddr *)&connector, &addr_size);
 
     int pid = fork();
     if (pid == 0) {
-      if (connecting_socket < 0) {
+      if (accept_socket < 0) {
         perror("accepting sockets");
         exit(-1);
       }
-      if (receive(connecting_socket) < 0) {
-        perror("receive error");
-        exit(-1);
-      }
-      close(connecting_socket);
+      http_request_t request = { .clientfd = accept_socket };
+      receive(&request);
+      printf("\n\n%s\n\n", request.read_buffer);
+      close(accept_socket);
       exit(0);
     } else if (pid == -1) {
       perror("fork failed");
-      close(connecting_socket);
+      close(accept_socket);
     }
   }
 }
