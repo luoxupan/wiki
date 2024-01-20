@@ -30,9 +30,9 @@ typedef struct {
 } conf_t;
 conf_t conf;
 typedef struct {
-  char *method;
   int clientfd;
   char read_buffer[BUFFER_SIZE];
+  char method[5];
 } http_request_t;
 
 static void sigchld_handler(int s) {
@@ -330,28 +330,23 @@ End:
 }
 
 void parse_request(http_request_t* request) {
-  request->method = malloc(5);
   scan(request->read_buffer, request->method, 0, 5);
 }
 
-int receive(int socket) {
-  http_request_t request;
-  request.clientfd = socket;
-
-  if (recv(socket, request.read_buffer, BUFFER_SIZE, 0) == -1) {
+int receive(http_request_t* request) {
+  if (recv(request->clientfd, request->read_buffer, BUFFER_SIZE, 0) == -1) {
     printf("Error handling incoming request");
     return -1;
   }
-  printf("\n\n%s\n\n", request.read_buffer);
-  
-  parse_request(&request);
 
-  if (strcmp(request.method, "GET") == 0) {
-    handle_http_get(&request);
-  } else if (strcmp(request.method, "POST") == 0) {
-    send_string("501 Not Implemented\n", socket);
+  parse_request(request);
+
+  if (strcmp(request->method, "GET") == 0) {
+    handle_http_get(request);
+  } else if (strcmp(request->method, "POST") == 0) {
+    send_string("501 Not Implemented\n", request->clientfd);
   } else {
-    send_string("400 Bad Request\n", socket);
+    send_string("400 Bad Request\n", request->clientfd);
   }
 
   return 1;
@@ -399,10 +394,9 @@ void start_server() {
         perror("accepting sockets");
         exit(-1);
       }
-      if (receive(accept_socket) < 0) {
-        perror("receive error");
-        exit(-1);
-      }
+      http_request_t request = { .clientfd = accept_socket };
+      receive(&request);
+      printf("\n\n%s\n\n", request.read_buffer);
       close(accept_socket);
       exit(0);
     } else if (pid == -1) {
