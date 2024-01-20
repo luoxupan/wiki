@@ -359,10 +359,10 @@ int receive(int socket) {
 }
 
 void start_server() {
-  int current_socket = socket(AF_INET, SOCK_STREAM, 0);
+  int listen_socket = socket(AF_INET, SOCK_STREAM, 0);
   struct sockaddr_in address;
 
-  if (current_socket == -1) {
+  if (listen_socket == -1) {
     perror("create socket");
     exit(-1);
   }
@@ -372,16 +372,16 @@ void start_server() {
   address.sin_port = htons(conf.port);
 
   int on = 1;
-  if (setsockopt(current_socket, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on)) == -1) {
+  if (setsockopt(listen_socket, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on)) == -1) {
   }
 
-  if (bind(current_socket, (struct sockaddr *)&address, sizeof(address)) < 0) {
+  if (bind(listen_socket, (struct sockaddr *)&address, sizeof(address)) < 0) {
     perror("bind to port");
     exit(-1);
   }
 
   // Start listening for connections and accept no more than MAX_CONNECTIONS in the Quee
-  if (listen(current_socket, MAX_CONNECTIONS) < 0 ) {
+  if (listen(listen_socket, MAX_CONNECTIONS) < 0 ) {
     perror("listen on port");
     exit(-1);
   }
@@ -392,7 +392,7 @@ void start_server() {
   while (1) {
     struct sockaddr_storage connector;
     socklen_t addr_size = sizeof(connector);
-    int accept_socket = accept(current_socket, (struct sockaddr *)&connector, &addr_size);
+    int accept_socket = accept(listen_socket, (struct sockaddr *)&connector, &addr_size);
 
     int pid = fork();
     if (pid == 0) {
