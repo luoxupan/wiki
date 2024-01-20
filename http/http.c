@@ -31,6 +31,8 @@ typedef struct {
 conf_t conf;
 typedef struct {
   char *method;
+  int clientfd;
+  char read_buffer[BUFFER_SIZE];
 } http_request_t;
 
 static void sigchld_handler(int s) {
@@ -245,7 +247,7 @@ int content_lenght(FILE *fp) {
   return filesize;
 }
 
-void handle_http_get(char *input, int socket) {
+void handle_http_get(http_request_t* request) {
   char *filename = (char *)malloc(200 * sizeof(char));
   char *path = (char *)malloc(1000 * sizeof(char));
   char *extension = (char *)malloc(10 * sizeof(char));
@@ -256,15 +258,15 @@ void handle_http_get(char *input, int socket) {
   memset(extension, '\0', 10);
   memset(httpVersion, '\0', 20);
 
-  int fileNameLenght = scan(input, filename, 5, 200);
+  int fileNameLenght = scan(request->read_buffer, filename, 5, 200);
 
   if (fileNameLenght > 0) {
 
-    if (get_http_version(input, httpVersion) != -1) {
+    if (get_http_version(request->read_buffer, httpVersion) != -1) {
 
       if (get_extension(filename, extension, 10) == -1) {
         printf("File extension not existing");
-        send_string("400 Bad Request\n", socket);
+        send_string("400 Bad Request\n", request->clientfd);
         goto End;
       }
 
@@ -273,8 +275,8 @@ void handle_http_get(char *input, int socket) {
         printf("Mime not supported: %s\n", mime);
 
         char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
-        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), socket);
-        send_string(mimeNotSp, socket);
+        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request->clientfd);
+        send_string(mimeNotSp, request->clientfd);
 
         free(mime);
         goto End;
@@ -294,8 +296,8 @@ void handle_http_get(char *input, int socket) {
         printf("Unable to open file: %s\n", filename);
 
         char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
-        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), socket);
-        send_string(s404, socket);
+        send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request->clientfd);
+        send_string(s404, request->clientfd);
 
         free(mime);
         goto End;
@@ -311,14 +313,14 @@ void handle_http_get(char *input, int socket) {
       }
 
       // Send File Content
-      send_header("200 OK", mime, contentLength, socket);
-      send_file(fp, contentLength, socket);
+      send_header("200 OK", mime, contentLength, request->clientfd);
+      send_file(fp, contentLength, request->clientfd);
 
       free(mime);
       fclose(fp);
       goto End;
     } else {
-      send_string("501 Not Implemented\n", socket);
+      send_string("501 Not Implemented\n", request->clientfd);
     }
   }
 End:
@@ -327,28 +329,25 @@ End:
   free(path);
 }
 
-void parse_request(char *input, http_request_t* request) {
+void parse_request(http_request_t* request) {
   request->method = malloc(5);
-  scan(input, request->method, 0, 5);
+  scan(request->read_buffer, request->method, 0, 5);
 }
 
 int receive(int socket) {
-  int msgLen = 0;
-  char buffer[BUFFER_SIZE];
+  http_request_t request;
+  request.clientfd = socket;
 
-  memset(buffer, '\0', BUFFER_SIZE);
-
-  if ((msgLen = recv(socket, buffer, BUFFER_SIZE, 0)) == -1) {
+  if (recv(socket, request.read_buffer, BUFFER_SIZE, 0) == -1) {
     printf("Error handling incoming request");
     return -1;
   }
-  printf("\n\n%s\n\n", buffer);
-
-  http_request_t request;
-  parse_request(buffer, &request);
+  printf("\n\n%s\n\n", request.read_buffer);
+  
+  parse_request(&request);
 
   if (strcmp(request.method, "GET") == 0) {
-    handle_http_get(buffer, socket);
+    handle_http_get(&request);
   } else if (strcmp(request.method, "POST") == 0) {
     send_string("501 Not Implemented\n", socket);
   } else {
