@@ -438,10 +438,9 @@ int main(int argc, char* argv[]) {
       printf("setting deamon = TRUE");
       deamon = TRUE;
     } else {
-      printf("usage: %s [-p port] [-d] [-l logfile]\n", argv[0]);
+      printf("usage: %s [-p port] [-d]\n", argv[0]);
       printf("\t\t-p port\t\tWhich port to listen to.\n");
       printf("\t\t-d\t\tEnables deamon mode.\n");
-      printf("\t\t-l logfile\tWhich file to store the log to.\n");
       return -1;
     }
   }
