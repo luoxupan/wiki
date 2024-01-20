@@ -86,7 +86,7 @@ static void daemonize(void) {
   }
 }
 
-int send_string(char *message, http_request_t* request) {
+int send_body_s(char *message, http_request_t* request) {
   int length = strlen(message);
   int bytes_sent = send(request->clientfd, message, length, 0);
   return bytes_sent;
@@ -108,7 +108,7 @@ int send_header(char *status, char *content_type, int content_length, http_reque
     dst += sprintf(dst, "\r\n%s %s", "Date: ", (char*)ctime(&rawtime));
     dst += sprintf(dst, "\r\n"); // new line
 
-    send_string(message, request);
+    send(request->clientfd, message, strlen(message), 0);
 
     free(message);
     return 1;
@@ -116,7 +116,7 @@ int send_header(char *status, char *content_type, int content_length, http_reque
   return -1;
 }
 
-void send_file(FILE *fp, int file_size, http_request_t* request) {
+void send_body_f(FILE *fp, int file_size, http_request_t* request) {
   int cur_char = 0;
   do {
     cur_char = fgetc(fp);
@@ -268,7 +268,6 @@ void handle_http_get(http_request_t* request) {
 
       if (get_extension(filename, extension, 10) == -1) {
         printf("File extension not existing");
-        send_string("400 Bad Request\n", request);
         goto End;
       }
 
@@ -278,7 +277,7 @@ void handle_http_get(http_request_t* request) {
 
         char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
         send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request);
-        send_string(mimeNotSp, request);
+        send_body_s(mimeNotSp, request);
 
         free(mime);
         goto End;
@@ -299,7 +298,7 @@ void handle_http_get(http_request_t* request) {
 
         char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
         send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request);
-        send_string(s404, request);
+        send_body_s(s404, request);
 
         free(mime);
         goto End;
@@ -316,13 +315,11 @@ void handle_http_get(http_request_t* request) {
 
       // Send File Content
       send_header("200 OK", mime, contentLength, request);
-      send_file(fp, contentLength, request);
+      send_body_f(fp, contentLength, request);
 
       free(mime);
       fclose(fp);
       goto End;
-    } else {
-      send_string("501 Not Implemented\n", request);
     }
   }
 End:
@@ -345,10 +342,8 @@ int receive(http_request_t* request) {
 
   if (strcmp(request->method, "GET") == 0) {
     handle_http_get(request);
-  } else if (strcmp(request->method, "POST") == 0) {
-    send_string("501 Not Implemented\n", request);
   } else {
-    send_string("400 Bad Request\n", request);
+    return -1;
   }
 
   return 1;
