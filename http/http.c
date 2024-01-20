@@ -29,6 +29,9 @@ typedef struct {
   char *mime_file;
 } conf_t;
 conf_t conf;
+typedef struct {
+  char *method;
+} http_request_t;
 
 static void sigchld_handler(int s) {
   int saved_errno = errno;
@@ -324,26 +327,9 @@ End:
   free(path);
 }
 
-int get_request_type(char *input) {
-  int type = -1;
-
-  char *requestType = malloc(5);
-
-  scan(input, requestType, 0, 5);
-
-  if (strcmp("GET", requestType) == 0) {
-    type = 1;
-  } else if (strcmp("HEAD", requestType) == 0) {
-    type = 2;
-  } else if (strlen(input) > 4 && strcmp("POST", requestType) == 0) {
-    // RETURN 0 IF NOT YET IMPLEMENTED
-    type = 0;
-  } else {
-    // IF NOT VALID REQUEST 
-    type = -1;
-  }
-  free(requestType);
-  return type;
+void parse_request(char *input, http_request_t* request) {
+  request->method = malloc(5);
+  scan(input, request->method, 0, 5);
 }
 
 int receive(int socket) {
@@ -358,18 +344,14 @@ int receive(int socket) {
   }
   printf("\n\n%s\n\n", buffer);
 
-  int request = get_request_type(buffer);
+  http_request_t request;
+  parse_request(buffer, &request);
 
-  if (request == 1) {
-    // GET
+  if (strcmp(request.method, "GET") == 0) {
     handle_http_get(buffer, socket);
-  } else if (request == 2) {
-    // HEAD
-  } else if (request == 0) {
-    // POST
+  } else if (strcmp(request.method, "POST") == 0) {
     send_string("501 Not Implemented\n", socket);
   } else {
-    // GARBAGE
     send_string("400 Bad Request\n", socket);
   }
 
