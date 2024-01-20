@@ -310,7 +310,7 @@ void parse_request(http_request_t* request) {
   }
 }
 
-int receive(http_request_t* request) {
+int accept_handle(http_request_t* request) {
   if (recv(request->clientfd, request->read_buffer, BUFFER_SIZE, 0) == -1) {
     printf("Error handling incoming request");
     return -1;
@@ -374,7 +374,7 @@ void start_server() {
         exit(-1);
       }
       http_request_t request = { .clientfd = accept_socket };
-      receive(&request);
+      accept_handle(&request);
       printf("\n\n%s\n\n", request.read_buffer);
       close(accept_socket);
       exit(0);
