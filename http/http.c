@@ -25,7 +25,6 @@ typedef struct {
   int port;
   char *webroot;
   char *conf_file;
-  char *log_file;
   char *mime_file;
 } conf_t;
 conf_t conf;
@@ -389,12 +388,10 @@ void load_conf() {
   char* currentLine = malloc(100);
   conf.webroot = malloc(100);
   conf.conf_file = malloc(100);
-  conf.log_file = malloc(100);
   conf.mime_file = malloc(600);
 
   // Setting default values
   conf.conf_file = "http.conf";
-  conf.log_file = ".log";
   strcpy(conf.mime_file, "mime.types");
 
   // Set deamon to FALSE
@@ -440,16 +437,10 @@ int main(int argc, char* argv[]) {
       // If flag -d is used, set deamon to TRUE;
       printf("setting deamon = TRUE");
       deamon = TRUE;
-    } else if (strcmp(argv[parameterCount], "-l") == 0) {
-      // Indicate that we want to jump over the next parameter
-      parameterCount++;
-      printf("setting logfile = %s\n", argv[parameterCount]);
-      conf.log_file = (char*)argv[parameterCount];
     } else {
-      printf("usage: %s [-p port] [-d] [-l logfile]\n", argv[0]);
+      printf("usage: %s [-p port] [-d]\n", argv[0]);
       printf("\t\t-p port\t\tWhich port to listen to.\n");
       printf("\t\t-d\t\tEnables deamon mode.\n");
-      printf("\t\t-l logfile\tWhich file to store the log to.\n");
       return -1;
     }
   }
@@ -457,8 +448,7 @@ int main(int argc, char* argv[]) {
   printf("port:\t\t\t%i\n", conf.port);
   printf("webroot:\t\t%s\n", conf.webroot);
   printf("configuration file:\t%s\n", conf.conf_file);
-  printf("log file:\t\t%s\n", conf.log_file);
-  printf("deamon:\t\t\t%s\n", deamon == TRUE ? "true" : "false");
+  printf("deamon:\t\t\t%s\n\n", deamon == TRUE ? "true" : "false");
 
   if (deamon == TRUE) {
     daemonize();
