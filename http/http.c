@@ -117,7 +117,7 @@ int send_header(char *status, char *content_type, int content_length, http_reque
   return -1;
 }
 
-void send_body_f(FILE *fp, int file_size, http_request_t* request) {
+void send_body_f(FILE *fp, http_request_t* request) {
   int cur_char = 0;
   do {
     cur_char = fgetc(fp);
@@ -158,8 +158,7 @@ int scan(char *input, char *output, int start, int max) {
   return i;
 }
 
-char* get_mime(char *extension) {
-  char *current_word = malloc(600);
+int get_mime(char *extension, char *mime) {
   char *word_holder = malloc(600);
   char *line = malloc(200);
   int startline = 0;
@@ -168,14 +167,14 @@ char* get_mime(char *extension) {
 
   while (fgets(line, 200, mimeFile) != NULL) { 
     if (line[0] != '#') {
-      startline = scan(line, current_word, 0, 600);
+      startline = scan(line, mime, 0, 600);
       while (1) {
         startline = scan(line, word_holder, startline, 600);
         if (startline != -1) {
           if (strcmp(word_holder, extension) == 0) {
             free(word_holder);
             free(line);
-            return current_word;
+            return 0;
           }
         } else {
           break;
@@ -185,11 +184,10 @@ char* get_mime(char *extension) {
     memset (line, '\0', 200);
   }
 
-  free(current_word);
   free(word_holder);
   free(line);
 
-  return NULL;
+  return -1;
 }
 
 int get_extension(char *input, char *output, int max) {
@@ -222,7 +220,7 @@ int get_extension(char *input, char *output, int max) {
   return -1;
 }
 
-int content_lenght(FILE *fp) {
+int get_file_size(FILE *fp) {
   int filesize = 0;
   fseek(fp, 0, SEEK_END);
   filesize = ftell(fp);
@@ -244,15 +242,14 @@ void handle_http_get(http_request_t* request) {
       goto End;
     }
 
-    char* mime = get_mime(extension);
-    if (mime == NULL) {
+    char mime[100] = {0};
+    if (get_mime(extension, mime) == -1) {
       printf("Mime not supported: %s\n", mime);
 
       char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
       send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request);
       send_body_s(mimeNotSp, request);
 
-      free(mime);
       goto End;
     }
 
@@ -273,24 +270,21 @@ void handle_http_get(http_request_t* request) {
       send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request);
       send_body_s(s404, request);
 
-      free(mime);
       goto End;
     }
 
     // Calculate Content Length
-    int contentLength = content_lenght(fp);
-    if (contentLength < 0 ) {
+    int file_size = get_file_size(fp);
+    if (file_size < 0 ) {
       printf("File size is zero\n");
-      free(mime);
       fclose(fp);
       goto End;
     }
 
     // Send File Content
-    send_header("200 OK", mime, contentLength, request);
-    send_body_f(fp, contentLength, request);
+    send_header("200 OK", mime, file_size, request);
+    send_body_f(fp, request);
 
-    free(mime);
     fclose(fp);
     goto End;
   }
