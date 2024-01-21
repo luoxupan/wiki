@@ -293,7 +293,7 @@ End:
   free(static_path);
 }
 
-void parse_request(http_request_t* request) {
+int parse_request(http_request_t* request) {
   scan(request->read_buffer, request->method, 0, 5);
 
   // 解析文件路径和http协议
@@ -301,6 +301,7 @@ void parse_request(http_request_t* request) {
   if (start > 0) {
     scan(request->read_buffer, request->scheme, start, 20);
   }
+  return 0;
 }
 
 int accept_handle(http_request_t* request) {
@@ -324,16 +325,16 @@ int accept_handle(http_request_t* request) {
     return -1;
   }
 
-  return 1;
+  return 0;
 }
 
-void start_server() {
+int start_server() {
   int listen_socket = socket(AF_INET, SOCK_STREAM, 0);
   struct sockaddr_in address;
 
   if (listen_socket == -1) {
     perror("create socket");
-    exit(-1);
+    return -1;
   }
 
   address.sin_family = AF_INET;
@@ -342,17 +343,18 @@ void start_server() {
 
   int on = 1;
   if (setsockopt(listen_socket, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on)) == -1) {
+    return -1;
   }
 
   if (bind(listen_socket, (struct sockaddr *)&address, sizeof(address)) < 0) {
     perror("bind to port");
-    exit(-1);
+    return -1;
   }
 
   // Start listening for connections and accept no more than MAX_CONNECTIONS in the Quee
   if (listen(listen_socket, MAX_CONNECTIONS) < 0 ) {
     perror("listen on port");
-    exit(-1);
+    return -1;
   }
 
   // reap zombie processes
@@ -379,10 +381,11 @@ void start_server() {
       close(accept_socket);
     }
   }
+  return 0;
 }
 
-void load_conf() {
-  char* currentLine = malloc(100);
+int load_conf() {
+  char cur_line[100];
   conf.webroot = malloc(100);
   conf.conf_file = malloc(100);
   conf.mime_file = malloc(600);
@@ -399,23 +402,26 @@ void load_conf() {
   // Ensure that the configuration file is open
   if (filePointer == NULL) {
     fprintf(stderr, "Can't open configuration file!\n");
-    exit(1);
+    goto Error;
   }
 
   // get server root directory from configuration file
-  if (fscanf(filePointer, "%s %s", currentLine, conf.webroot) != 2) {
+  if (fscanf(filePointer, "%s %s", cur_line, conf.webroot) != 2) {
     fprintf(stderr, "Error in configuration file on line 1!\n");
-    exit(1);
+    goto Error;
   }
 
   // get default port from configuration file
-  if (fscanf(filePointer, "%s %i", currentLine, &conf.port) != 2) {
+  if (fscanf(filePointer, "%s %i", cur_line, &conf.port) != 2) {
     fprintf(stderr, "Error in configuration file on line 2!\n");
-    exit(1);
+    goto Error;
   }
 
   fclose(filePointer);
-  free(currentLine);
+  return 0;
+Error:
+  fclose(filePointer);
+  return -1;
 }
 
 int main(int argc, char* argv[]) {
