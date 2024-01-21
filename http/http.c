@@ -311,10 +311,12 @@ int accept_handle(http_request_t* request) {
 
   parse_request(request);
 
-  if (strcmp(request->method, "GET") == 0) {
-    if (strcmp("HTTP/1.1" , request->scheme) == 0 || strcmp("HTTP/1.0" , request->scheme) == 0) {
+  if (strcmp("HTTP/1.1" , request->scheme) == 0 || strcmp("HTTP/1.0" , request->scheme) == 0) {
+    if (strcmp(request->method, "GET") == 0) {
       handle_http_get(request);
-    } else {
+    }
+    if (strcmp(request->method, "POST") == 0) {
+      // 处理
       return -1;
     }
   } else {
