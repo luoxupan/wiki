@@ -228,7 +228,7 @@ int get_file_size(FILE *fp) {
   return filesize;
 }
 
-void handle_http_get(http_request_t* request) {
+int handle_http_get(http_request_t* request) {
   char *static_path = (char *)malloc(1000 * sizeof(char));
   char *extension = (char *)malloc(10 * sizeof(char));
 
@@ -291,6 +291,7 @@ void handle_http_get(http_request_t* request) {
 End:
   free(extension);
   free(static_path);
+  return 0;
 }
 
 int parse_request(http_request_t* request) {
@@ -450,7 +451,7 @@ int main(int argc, char* argv[]) {
 
   printf("port:\t\t\t%i\n", conf.port);
   printf("webroot:\t\t%s\n", conf.webroot);
-  printf("configuration file:\t%s\n", conf.conf_file);
+  printf("conf file:\t\t%s\n", conf.conf_file);
   printf("deamon:\t\t\t%s\n\n", deamon == TRUE ? "true" : "false");
 
   if (deamon == TRUE) {
