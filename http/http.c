@@ -117,7 +117,7 @@ int send_header(char *status, char *content_type, int content_length, http_reque
   return -1;
 }
 
-void send_body_f(FILE *fp, int file_size, http_request_t* request) {
+void send_body_f(FILE *fp, http_request_t* request) {
   int cur_char = 0;
   do {
     cur_char = fgetc(fp);
@@ -222,7 +222,7 @@ int get_extension(char *input, char *output, int max) {
   return -1;
 }
 
-int content_lenght(FILE *fp) {
+int get_file_size(FILE *fp) {
   int filesize = 0;
   fseek(fp, 0, SEEK_END);
   filesize = ftell(fp);
@@ -278,8 +278,8 @@ void handle_http_get(http_request_t* request) {
     }
 
     // Calculate Content Length
-    int contentLength = content_lenght(fp);
-    if (contentLength < 0 ) {
+    int file_size = get_file_size(fp);
+    if (file_size < 0 ) {
       printf("File size is zero\n");
       free(mime);
       fclose(fp);
@@ -287,8 +287,8 @@ void handle_http_get(http_request_t* request) {
     }
 
     // Send File Content
-    send_header("200 OK", mime, contentLength, request);
-    send_body_f(fp, contentLength, request);
+    send_header("200 OK", mime, file_size, request);
+    send_body_f(fp, request);
 
     free(mime);
     fclose(fp);
