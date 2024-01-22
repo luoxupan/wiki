@@ -125,37 +125,33 @@ void send_body_f(FILE *fp, http_request_t* request) {
   } while (cur_char != EOF);
 }
 
-int scan(char *input, char *output, int start, int max) {
-  if ( start >= strlen(input) ) {
+int scan(char *input, char *output, int cur_idx) {
+  while (cur_idx < strlen(input)) {
+    char cur_char = *(input + cur_idx);
+    if (cur_char != '\t' && cur_char != ' ' && cur_char != '\n' && cur_char != '\r') {
+      break;
+    }
+    cur_idx++;
+  }
+
+  if (cur_idx >= strlen(input)) {
     return -1;
   }
 
-  int appending_char_count = 0;
-  int i = start;
-  int count = 0;
-
-  for (; i < strlen(input); i++) {
-    if (*(input + i) != '\t' && *(input + i) != ' ' && *(input + i) != '\n' && *(input + i) != '\r') {
-      if (count < (max-1)) {
-        *(output + appending_char_count) = *(input + i);
-        appending_char_count += 1;
-
-        count++;
-      }		
+  int append_char_idx = 0;
+  while (cur_idx < strlen(input)) {
+    char cur_char = *(input + cur_idx);
+    if (cur_char != '\t' && cur_char != ' ' && cur_char != '\n' && cur_char != '\r') {
+      *(output + append_char_idx) = cur_char;
+      append_char_idx += 1;
+      cur_idx++;
     } else {
+      *(output + append_char_idx) = '\0';
       break;
     }
   }
-  *(output + appending_char_count) = '\0';	
 
-  // Find next word start
-  i += 1;
-
-  for (; i < strlen(input); i++) {
-    if (*(input + i) != '\t' && *(input + i) != ' ' && *(input + i) != '\n' && *(input + i) != '\r')
-      break;
-  }
-  return i;
+  return cur_idx;
 }
 
 int get_mime(char *extension, char *mime) {
@@ -167,9 +163,9 @@ int get_mime(char *extension, char *mime) {
 
   while (fgets(line, 200, mimeFile) != NULL) { 
     if (line[0] != '#') {
-      startline = scan(line, mime, 0, 600);
+      startline = scan(line, mime, 0);
       while (1) {
-        startline = scan(line, word_holder, startline, 600);
+        startline = scan(line, word_holder, startline);
         if (startline != -1) {
           if (strcmp(word_holder, extension) == 0) {
             free(word_holder);
@@ -295,12 +291,12 @@ End:
 }
 
 int parse_request(http_request_t* request) {
-  scan(request->read_buffer, request->method, 0, 5);
+  scan(request->read_buffer, request->method, 0);
 
   // 解析文件路径和http协议
-  int start = scan(request->read_buffer, request->path, 4, 100);
+  int start = scan(request->read_buffer, request->path, 4);
   if (start > 0) {
-    scan(request->read_buffer, request->scheme, start, 20);
+    scan(request->read_buffer, request->scheme, start);
   }
   return 0;
 }
