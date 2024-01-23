@@ -154,7 +154,7 @@ int scan(char *input, char *output, int cur_idx) {
   return cur_idx;
 }
 
-int get_mime(char *extension, char *mime) {
+int get_mime_type(char *extension, char *mime_type) {
   char *word_holder = malloc(600);
   char *line = malloc(200);
   int startline = 0;
@@ -163,7 +163,7 @@ int get_mime(char *extension, char *mime) {
 
   while (fgets(line, 200, mimeFile) != NULL) { 
     if (line[0] != '#') {
-      startline = scan(line, mime, 0);
+      startline = scan(line, mime_type, 0);
       while (1) {
         startline = scan(line, word_holder, startline);
         if (startline != -1) {
@@ -238,9 +238,9 @@ int handle_http_get(http_request_t* request) {
       goto End;
     }
 
-    char mime[100] = {0};
-    if (get_mime(extension, mime) == -1) {
-      printf("Mime not supported: %s\n", mime);
+    char mime_type[100] = {0};
+    if (get_mime_type(extension, mime_type) == -1) {
+      printf("Mime not supported: %s\n", mime_type);
 
       char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
       send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request);
@@ -278,7 +278,7 @@ int handle_http_get(http_request_t* request) {
     }
 
     // Send File Content
-    send_header("200 OK", mime, file_size, request);
+    send_header("200 OK", mime_type, file_size, request);
     send_body_f(fp, request);
 
     fclose(fp);
