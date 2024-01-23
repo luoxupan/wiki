@@ -155,33 +155,22 @@ int scan(char *input, char *output, int cur_idx) {
 }
 
 int get_mime_type(char *extension, char *mime_type) {
-  char *word_holder = malloc(600);
-  char *line = malloc(200);
-  int startline = 0;
+  FILE *mime_file = fopen(conf.mime_file, "r");
+  char line_chars[200];
 
-  FILE *mimeFile = fopen(conf.mime_file, "r");
-
-  while (fgets(line, 200, mimeFile) != NULL) { 
-    if (line[0] != '#') {
-      startline = scan(line, mime_type, 0);
-      while (1) {
-        startline = scan(line, word_holder, startline);
-        if (startline != -1) {
-          if (strcmp(word_holder, extension) == 0) {
-            free(word_holder);
-            free(line);
-            return 0;
-          }
-        } else {
-          break;
+  while (fgets(line_chars, 200, mime_file) != NULL) { 
+    if (line_chars[0] != '#') {
+      int startline = scan(line_chars, mime_type, 0);
+      while (startline != -1) {
+        char word_holder[50];
+        startline = scan(line_chars, word_holder, startline);
+        if (strcmp(word_holder, extension) == 0) {
+          return 0;
         }
       }
     }
-    memset (line, '\0', 200);
+    memset(line_chars, '\0', 200);
   }
-
-  free(word_holder);
-  free(line);
 
   return -1;
 }
