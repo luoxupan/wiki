@@ -11,16 +11,11 @@
 #include <signal.h>
 #include <errno.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 #define BUFFER_SIZE 1024
-#define MAX_FILE_SIZE 5*1024
 #define MAX_CONNECTIONS 3
-#define TRUE 1
-#define FALSE 0
-#define EXIT_SUCCESS 0
-#define EXIT_FAILURE 1
 
-int deamon = FALSE;
 typedef struct {
   int port;
   char *webroot;
@@ -62,11 +57,11 @@ static void daemonize(void) {
   /* Fork off the parent process */
   pid = fork();
   if (pid < 0) {
-    exit(EXIT_FAILURE);
+    exit(1);
   }
   /* If we got a good PID, then we can exit the parent process. */
   if (pid > 0) {
-    exit(EXIT_SUCCESS);
+    exit(0);
   }
 
   /* At this point we are executing as the child process */
@@ -77,13 +72,13 @@ static void daemonize(void) {
   /* Create a new SID for the child process */
   sid = setsid();
   if (sid < 0) {
-    exit(EXIT_FAILURE);
+    exit(1);
   }
 
   /* Change the current working directory.  This prevents the current
   directory from being locked; hence not being able to remove it. */
   if ((chdir("/")) < 0) {
-    exit(EXIT_FAILURE);
+    exit(1);
   }
 }
 
@@ -97,24 +92,19 @@ int send_header(char *status, char *content_type, int content_length, http_reque
   time_t rawtime;
   time(&rawtime);
 
-  char *message = malloc(1024);
-  memset(message, '\0', 1024);
+  char message[1024] = {0};
   
-  if (message != NULL) {
-    char *dst = message;
-    dst += sprintf(dst, "\r\nHTTP/1.1 %s", status);
-    dst += sprintf(dst, "\r\n%s %s", "Content-Type: ", content_type);
-    dst += sprintf(dst, "\r\n%s", "Server: Http Server");
-    dst += sprintf(dst, "\r\n%s %i", "Content-Length: ", content_length);
-    dst += sprintf(dst, "\r\n%s %s", "Date: ", (char*)ctime(&rawtime));
-    dst += sprintf(dst, "\r\n"); // new line
+  char *dst = message;
+  dst += sprintf(dst, "\r\nHTTP/1.1 %s", status);
+  dst += sprintf(dst, "\r\n%s %s", "Content-Type: ", content_type);
+  dst += sprintf(dst, "\r\n%s", "Server: Http Server");
+  dst += sprintf(dst, "\r\n%s %i", "Content-Length: ", content_length);
+  dst += sprintf(dst, "\r\n%s %s", "Date: ", (char*)ctime(&rawtime));
+  dst += sprintf(dst, "\r\n"); // new line
 
-    send(request->clientfd, message, strlen(message), 0);
+  send(request->clientfd, message, strlen(message), 0);
 
-    free(message);
-    return 0;
-  }
-  return -1;
+  return 0;
 }
 
 int send_body_f(FILE *fp, http_request_t* request) {
@@ -359,13 +349,11 @@ int start_server() {
 int load_conf() {
   char cur_line[100];
   conf.webroot = malloc(100);
-  conf.conf_file = malloc(100);
-  conf.mime_file = malloc(600);
+  conf.conf_file = malloc(20);
+  conf.mime_file = malloc(20);
 
   conf.conf_file = "http.conf";
-  strcpy(conf.mime_file, "mime.types");
-
-  deamon = FALSE;
+  conf.mime_file = "mime.types";
 
   FILE *filePointer = fopen(conf.conf_file, "r");
 
@@ -393,12 +381,13 @@ int main(int argc, char* argv[]) {
 
   load_conf();
 
+  bool deamon = false;
   for (parameterCount = 1; parameterCount < argc; parameterCount++) {
     if (strcmp(argv[parameterCount], "-p") == 0) {
       parameterCount++;
       conf.port = atoi(argv[parameterCount]);
     } else if (strcmp(argv[parameterCount], "-d") == 0) {
-      deamon = TRUE;
+      deamon = true;
     } else {
       printf("usage: %s [-p port] [-d]\n", argv[0]);
       printf("\t\t-p port\t\tWhich port to listen to.\n");
@@ -410,9 +399,9 @@ int main(int argc, char* argv[]) {
   printf("port:\t\t\t%i\n", conf.port);
   printf("webroot:\t\t%s\n", conf.webroot);
   printf("conf file:\t\t%s\n", conf.conf_file);
-  printf("deamon:\t\t\t%s\n\n", deamon == TRUE ? "true" : "false");
+  printf("deamon:\t\t\t%s\n\n", deamon == true ? "true" : "false");
 
-  if (deamon == TRUE) {
+  if (deamon == true) {
     daemonize();
   }
 
