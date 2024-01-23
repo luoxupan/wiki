@@ -28,6 +28,7 @@ typedef struct {
   char *mime_file;
 } conf_t;
 conf_t conf;
+
 typedef struct {
   int clientfd;
   char read_buffer[BUFFER_SIZE];
@@ -48,7 +49,6 @@ static void setup_sigchld_handler() {
   sigemptyset(&sa.sa_mask);
   sa.sa_flags = SA_RESTART;
   if (sigaction(SIGCHLD, &sa, NULL) == -1) {
-    perror("sigaction");
     exit(1);
   }
 }
@@ -112,17 +112,18 @@ int send_header(char *status, char *content_type, int content_length, http_reque
     send(request->clientfd, message, strlen(message), 0);
 
     free(message);
-    return 1;
+    return 0;
   }
   return -1;
 }
 
-void send_body_f(FILE *fp, http_request_t* request) {
+int send_body_f(FILE *fp, http_request_t* request) {
   int cur_char = 0;
   do {
     cur_char = fgetc(fp);
     send(request->clientfd, &cur_char, sizeof(char), 0);
   } while (cur_char != EOF);
+  return 0;
 }
 
 int scan(char *input, char *output, int cur_idx) {
@@ -200,7 +201,7 @@ int get_extension(char *input, char *output, int max) {
   output[appended_position + 1] = '\0';
 
   if (strlen(output) > 0) {
-    return 1;
+    return 0;
   }
   return -1;
 }
@@ -223,14 +224,11 @@ int handle_http_get(http_request_t* request) {
   if (strlen(request->path) > 0) {
 
     if (get_extension(request->path, extension, 10) == -1) {
-      printf("File extension not existing");
       goto End;
     }
 
     char mime_type[100] = {0};
     if (get_mime_type(extension, mime_type) == -1) {
-      printf("Mime not supported: %s\n", mime_type);
-
       char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
       send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request);
       send_body_s(mimeNotSp, request);
@@ -249,8 +247,6 @@ int handle_http_get(http_request_t* request) {
     FILE *fp = fopen(static_path, "rb");
 
     if (fp == NULL) {
-      printf("Unable to open file: %s\n", request->path);
-
       char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
       send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request);
       send_body_s(s404, request);
@@ -258,15 +254,12 @@ int handle_http_get(http_request_t* request) {
       goto End;
     }
 
-    // Calculate Content Length
     int file_size = get_file_size(fp);
     if (file_size < 0 ) {
-      printf("File size is zero\n");
       fclose(fp);
       goto End;
     }
 
-    // Send File Content
     send_header("200 OK", mime_type, file_size, request);
     send_body_f(fp, request);
 
@@ -292,7 +285,6 @@ int parse_request(http_request_t* request) {
 
 int accept_handle(http_request_t* request) {
   if (recv(request->clientfd, request->read_buffer, BUFFER_SIZE, 0) == -1) {
-    printf("Error handling incoming request");
     return -1;
   }
 
@@ -319,7 +311,6 @@ int start_server() {
   struct sockaddr_in address;
 
   if (listen_socket == -1) {
-    perror("create socket");
     return -1;
   }
 
@@ -333,13 +324,10 @@ int start_server() {
   }
 
   if (bind(listen_socket, (struct sockaddr *)&address, sizeof(address)) < 0) {
-    perror("bind to port");
     return -1;
   }
 
-  // Start listening for connections and accept no more than MAX_CONNECTIONS in the Quee
   if (listen(listen_socket, MAX_CONNECTIONS) < 0 ) {
-    perror("listen on port");
     return -1;
   }
 
@@ -354,7 +342,6 @@ int start_server() {
     int pid = fork();
     if (pid == 0) {
       if (accept_socket < 0) {
-        perror("accepting sockets");
         exit(-1);
       }
       http_request_t request = { .clientfd = accept_socket };
@@ -363,7 +350,6 @@ int start_server() {
       close(accept_socket);
       exit(0);
     } else if (pid == -1) {
-      perror("fork failed");
       close(accept_socket);
     }
   }
@@ -376,30 +362,22 @@ int load_conf() {
   conf.conf_file = malloc(100);
   conf.mime_file = malloc(600);
 
-  // Setting default values
   conf.conf_file = "http.conf";
   strcpy(conf.mime_file, "mime.types");
 
-  // Set deamon to FALSE
   deamon = FALSE;
 
   FILE *filePointer = fopen(conf.conf_file, "r");
 
-  // Ensure that the configuration file is open
   if (filePointer == NULL) {
-    fprintf(stderr, "Can't open configuration file!\n");
     goto Error;
   }
 
-  // get server root directory from configuration file
   if (fscanf(filePointer, "%s %s", cur_line, conf.webroot) != 2) {
-    fprintf(stderr, "Error in configuration file on line 1!\n");
     goto Error;
   }
 
-  // get default port from configuration file
   if (fscanf(filePointer, "%s %i", cur_line, &conf.port) != 2) {
-    fprintf(stderr, "Error in configuration file on line 2!\n");
     goto Error;
   }
 
@@ -416,15 +394,10 @@ int main(int argc, char* argv[]) {
   load_conf();
 
   for (parameterCount = 1; parameterCount < argc; parameterCount++) {
-    // If flag -p is used, set port
     if (strcmp(argv[parameterCount], "-p") == 0) {
-      // Indicate that we want to jump over the next parameter
       parameterCount++;
-      printf("setting port to %i\n", atoi(argv[parameterCount]));
       conf.port = atoi(argv[parameterCount]);
     } else if (strcmp(argv[parameterCount], "-d") == 0) {
-      // If flag -d is used, set deamon to TRUE;
-      printf("setting deamon = TRUE");
       deamon = TRUE;
     } else {
       printf("usage: %s [-p port] [-d]\n", argv[0]);
