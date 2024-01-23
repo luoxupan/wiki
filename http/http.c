@@ -18,11 +18,15 @@
 
 typedef struct {
   int port;
-  char *webroot;
+  char webroot[100];
   char *conf_file;
   char *mime_file;
-} conf_t;
-conf_t conf;
+} http_conf_t;
+http_conf_t http_conf = {
+  .webroot = {0},
+  .conf_file = "http.conf",
+  .mime_file = "mime.types"
+};
 
 typedef struct {
   int clientfd;
@@ -146,7 +150,7 @@ int scan(char *input, char *output, int cur_idx) {
 }
 
 int get_mime_type(char *extension, char *mime_type) {
-  FILE *mime_file = fopen(conf.mime_file, "r");
+  FILE *mime_file = fopen(http_conf.mime_file, "r");
   char line_chars[200];
 
   while (fgets(line_chars, 200, mime_file) != NULL) { 
@@ -227,7 +231,7 @@ int handle_http_get(http_request_t* request) {
     }
 
     // Open the requesting file as binary
-    strcpy(static_path, conf.webroot);
+    strcpy(static_path, http_conf.webroot);
     if (strchr(request->path, '?') == NULL) {
       strcat(static_path, request->path);
     } else {
@@ -306,7 +310,7 @@ int start_server() {
 
   address.sin_family = AF_INET;
   address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(conf.port);
+  address.sin_port = htons(http_conf.port);
 
   int on = 1;
   if (setsockopt(listen_socket, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on)) == -1) {
@@ -348,24 +352,18 @@ int start_server() {
 
 int load_conf() {
   char cur_line[100];
-  conf.webroot = malloc(100);
-  conf.conf_file = malloc(20);
-  conf.mime_file = malloc(20);
 
-  conf.conf_file = "http.conf";
-  conf.mime_file = "mime.types";
-
-  FILE *filePointer = fopen(conf.conf_file, "r");
+  FILE *filePointer = fopen(http_conf.conf_file, "r");
 
   if (filePointer == NULL) {
     goto Error;
   }
 
-  if (fscanf(filePointer, "%s %s", cur_line, conf.webroot) != 2) {
+  if (fscanf(filePointer, "%s %s", cur_line, http_conf.webroot) != 2) {
     goto Error;
   }
 
-  if (fscanf(filePointer, "%s %i", cur_line, &conf.port) != 2) {
+  if (fscanf(filePointer, "%s %i", cur_line, &http_conf.port) != 2) {
     goto Error;
   }
 
@@ -385,7 +383,7 @@ int main(int argc, char* argv[]) {
   for (parameterCount = 1; parameterCount < argc; parameterCount++) {
     if (strcmp(argv[parameterCount], "-p") == 0) {
       parameterCount++;
-      conf.port = atoi(argv[parameterCount]);
+      http_conf.port = atoi(argv[parameterCount]);
     } else if (strcmp(argv[parameterCount], "-d") == 0) {
       deamon = true;
     } else {
@@ -396,9 +394,9 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  printf("port:\t\t\t%i\n", conf.port);
-  printf("webroot:\t\t%s\n", conf.webroot);
-  printf("conf file:\t\t%s\n", conf.conf_file);
+  printf("port:\t\t\t%i\n", http_conf.port);
+  printf("webroot:\t\t%s\n", http_conf.webroot);
+  printf("conf file:\t\t%s\n", http_conf.conf_file);
   printf("deamon:\t\t\t%s\n\n", deamon == true ? "true" : "false");
 
   if (deamon == true) {
