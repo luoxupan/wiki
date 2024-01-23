@@ -28,6 +28,7 @@ typedef struct {
   char *mime_file;
 } conf_t;
 conf_t conf;
+
 typedef struct {
   int clientfd;
   char read_buffer[BUFFER_SIZE];
@@ -111,17 +112,18 @@ int send_header(char *status, char *content_type, int content_length, http_reque
     send(request->clientfd, message, strlen(message), 0);
 
     free(message);
-    return 1;
+    return 0;
   }
   return -1;
 }
 
-void send_body_f(FILE *fp, http_request_t* request) {
+int send_body_f(FILE *fp, http_request_t* request) {
   int cur_char = 0;
   do {
     cur_char = fgetc(fp);
     send(request->clientfd, &cur_char, sizeof(char), 0);
   } while (cur_char != EOF);
+  return 0;
 }
 
 int scan(char *input, char *output, int cur_idx) {
@@ -199,7 +201,7 @@ int get_extension(char *input, char *output, int max) {
   output[appended_position + 1] = '\0';
 
   if (strlen(output) > 0) {
-    return 1;
+    return 0;
   }
   return -1;
 }
@@ -227,7 +229,6 @@ int handle_http_get(http_request_t* request) {
 
     char mime_type[100] = {0};
     if (get_mime_type(extension, mime_type) == -1) {
-
       char *mimeNotSp = "{\"status_code\": 404, \"errmsg\": \"mime not supported\"}";
       send_header("404 Not Found", "application/json;charset=UTF-8", strlen(mimeNotSp), request);
       send_body_s(mimeNotSp, request);
@@ -246,8 +247,6 @@ int handle_http_get(http_request_t* request) {
     FILE *fp = fopen(static_path, "rb");
 
     if (fp == NULL) {
-      printf("Unable to open file: %s\n", request->path);
-
       char *s404 = "{\"status_code\": 404, \"errmsg\": \"reosurce not exit\"}";
       send_header("404 Not Found", "application/json;charset=UTF-8", strlen(s404), request);
       send_body_s(s404, request);
@@ -257,7 +256,6 @@ int handle_http_get(http_request_t* request) {
 
     int file_size = get_file_size(fp);
     if (file_size < 0 ) {
-      printf("File size is zero\n");
       fclose(fp);
       goto End;
     }
@@ -329,7 +327,6 @@ int start_server() {
     return -1;
   }
 
-  // Start listening for connections and accept no more than MAX_CONNECTIONS in the Quee
   if (listen(listen_socket, MAX_CONNECTIONS) < 0 ) {
     return -1;
   }
