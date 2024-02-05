@@ -6,9 +6,9 @@ RM=rm -rf
 # make build
 build:
 	@echo compiling codes...
-	$(CC) $(CFLAG) udp_client.c -ledit -o udp_client
-	$(CC) $(CFLAG) udp_server.c -ledit -o udp_server
+	$(CC) $(CFLAG) client.c -ledit -o client
+	$(CC) $(CFLAG) server.c -ledit -o server
 .PHONY: clean
 
 clean:
-	$(RM) udp_client udp_server
+	$(RM) client server
