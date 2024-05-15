@@ -16,6 +16,6 @@
   document.addEventListener('DOMContentLoaded', recalc, false);
 })()
 
-// 按照设计稿宽度，1rem=1px, 其他屏宽按比例缩放
+// 按照设计稿宽度，1rem=1px（1px指的是设计稿标注的尺寸1px）, 其他屏宽按比例缩放
 // 使用：当设计稿标注的尺寸是45px的时候，我们代码里面写45rem
 // 从网易与淘宝的font-size思考前端设计稿与工作流：https://www.cnblogs.com/lyzg/p/4877277.html
