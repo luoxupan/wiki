@@ -9,7 +9,7 @@
 
       docEl.style.fontSize = (clientWidth / uiWidth) + 'px';
     };
-  document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable = no, shrink-to-fit=no');
+  // document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable = no, shrink-to-fit=no');
 
   if (!document.addEventListener) return;
   window.addEventListener(resizeEvt, recalc, false);
