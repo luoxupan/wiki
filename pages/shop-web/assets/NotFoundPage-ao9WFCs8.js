@@ -1,1 +1,0 @@
-import{j as t}from"./index-z2DBMOph.js";import{o,c as e}from"./antd-D2Yjf1nr.js";import{L as r}from"./react-D86LVym-.js";function n(){return t.jsx(o,{status:"404",title:"Page not found",subTitle:"The page you are looking for does not exist.",extra:t.jsx(r,{to:"/",children:t.jsx(e,{type:"primary",children:"Back to home"})})})}export{n as default};

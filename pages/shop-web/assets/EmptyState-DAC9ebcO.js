@@ -1,0 +1,1 @@
+import{j as t}from"./index-BlZ0NRav.js";import{E as s}from"./antd-D2Yjf1nr.js";function o({title:e="Nothing here yet",description:r}){return t.jsx("div",{className:"empty-state",children:t.jsx(s,{description:r||e})})}export{o as E};
